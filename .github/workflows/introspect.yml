@@ -31,17 +31,14 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Get ENV variables
       - run: |
           touch .env
           echo SHOP_HANDLE =${{ secrets.SHOP_HANDLE }} >> .env
           echo API_VERSION =${{ secrets.API_VERSION }} >> .env
           echo API_KEY =${{ secrets.API_KEY }} >> .env
-      - name: Install dependencies
       - run: npm install
-      - name: Introspect the API
       - run: npm run introspect
-      - name: Move files to output # Move the generated files into output folder
+      - name: move to dir # Move the generated files into output folder
         run: |
           mkdir -p output
           yes| cp -rf ${{ secrets.API_VERSION }}.gql ./output/
