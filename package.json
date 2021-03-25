@@ -2,9 +2,8 @@
   "name": "shopify-graphql-api-version-history",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "introspect": "node introspect.js"
+    "introspect": "node introspect"
   },
   "repository": {
     "type": "git",
