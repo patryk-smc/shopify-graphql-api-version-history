@@ -47,7 +47,7 @@ jobs:
           git config --local user.email "bot@example.com"
           git config --local user.name "Bot"
           git add ./output
-          git commit -m "Update introspection file"
+          git commit -m "Update introspection file" || echo "No changes to commit"
       - name: Push changes # push the output folder to your repo
         uses: ad-m/github-push-action@master
         with:
