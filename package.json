@@ -1,0 +1,25 @@
+{
+  "name": "shopify-graphql-api-version-history",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "introspect": "node introspect.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patryk-smc/shopify-graphql-api-version-history.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/patryk-smc/shopify-graphql-api-version-history/issues"
+  },
+  "homepage": "https://github.com/patryk-smc/shopify-graphql-api-version-history#readme",
+  "dependencies": {
+    "dotenv": "8.2.0",
+    "graphql": "15.5.0",
+    "node-fetch": "2.6.1"
+  }
+}
