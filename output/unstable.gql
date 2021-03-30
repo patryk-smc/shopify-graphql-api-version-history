@@ -9879,6 +9879,9 @@ type FulfillmentOrder implements Node {
   """Globally unique identifier."""
   id: ID!
 
+  """The duties delivery method of this fulfillment order."""
+  internationalDuties: FulfillmentOrderInternationalDuties
+
   """A list of the fulfillment order's line items."""
   lineItems(
     """Returns up to the first `n` elements from the list."""
@@ -10157,6 +10160,15 @@ type FulfillmentOrderEdge {
 
   """The item at the end of FulfillmentOrderEdge."""
   node: FulfillmentOrder!
+}
+
+"""
+The international duties relevant to a fulfillment order.
+
+"""
+type FulfillmentOrderInternationalDuties {
+  """The method of duties payment."""
+  incoterm: String!
 }
 
 """
@@ -14901,6 +14913,12 @@ type Mutation {
     
     """
     trackingSupport: Boolean = false
+
+    """
+    Whether the fulfillment service will use the new fulfillment request flow based on fulfillment orders.
+    
+    """
+    fulfillmentOrdersOptIn: Boolean = false
   ): FulfillmentServiceCreatePayload
 
   """Deletes a fulfillment service."""
