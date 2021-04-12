@@ -125,6 +125,9 @@ type App implements Node {
   """Whether the app was developed by Shopify."""
   shopifyDeveloped: Boolean!
 
+  """Access the Storefront API is possible on this app."""
+  storefrontApiAvailable: Boolean!
+
   """Name of the app."""
   title: String!
 
@@ -349,6 +352,11 @@ type AppInstallation implements Node {
     """Sort the underlying list by the given key."""
     sortKey: AppRevenueAttributionRecordSortKeys = CREATED_AT
   ): AppRevenueAttributionRecordConnection!
+
+  """
+  Storefront API access is enabled on the app and granted by a Shop staff member. Storefront API calls should succeed.
+  """
+  storefrontApiAccessible: Boolean!
 
   """Subscriptions charge to a shop on a recurring basis."""
   subscriptions: [AppSubscription!]! @deprecated(reason: "Use `activeSubscriptions` instead")
@@ -7908,11 +7916,11 @@ enum DiscountErrorCode {
   """Cannot have both minimum subtotal and quantity present."""
   MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
 
-  """Value is outside allowed range."""
-  VALUE_OUTSIDE_RANGE
-
   """Exceeded maximum allowed value."""
   EXCEEDED_MAX
+
+  """Value is outside allowed range."""
+  VALUE_OUTSIDE_RANGE
 
   """
   Active period overlaps with other automatic discounts. At any given time, only one automatic discount can be active.
