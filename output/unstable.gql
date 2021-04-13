@@ -16224,6 +16224,18 @@ type Mutation {
     id: ID!
   ): UrlRedirectDeletePayload
 
+  """Creates a URL redirect import."""
+  urlRedirectImportCreate(
+    """The S3 URL of the CSV file."""
+    url: URL!
+  ): UrlRedirectImportCreatePayload
+
+  """Submits a URL redirect import to be processed."""
+  urlRedirectImportSubmit(
+    """The ID of the URL redirect import."""
+    id: ID!
+  ): UrlRedirectImportSubmitPayload
+
   """Updates a redirect."""
   urlRedirectUpdate(
     """The ID of the redirect to update."""
@@ -16277,12 +16289,19 @@ type MutationsStagedUploadTargetGenerateUploadParameter {
 }
 
 """
-A default cursor for use in pagination.
-The default cursor can be used for next and previous navigation.
+A default cursor that you can use in queries to paginate your results. Each edge in a connection can
+return a cursor, which is a reference to the edge's position in the connection. You can use an edge's cursor as
+the starting point to retrieve the nodes before or after it in a connection.
+
+To learn more about using cursor-based pagination, refer to
+[Paginating results with GraphQL](https://shopify.dev/concepts/graphql/pagination).
 
 """
 interface Navigable {
-  """A default cursor for use in pagination."""
+  """
+  A default cursor that returns the single next record, sorted ascending by ID.
+  
+  """
   defaultCursor: String!
 }
 
@@ -16312,7 +16331,10 @@ more information, refer to the [tagsAdd](https://shopify.dev/docs/admin-api/grap
 
 """
 type OnlineStoreArticle implements Node & Navigable & HasPublishedTranslations {
-  """A default cursor for use in pagination."""
+  """
+  A default cursor that returns the single next record, sorted ascending by ID.
+  
+  """
   defaultCursor: String!
 
   """Globally unique identifier."""
@@ -16343,7 +16365,10 @@ type OnlineStoreBlog implements Node & HasPublishedTranslations {
 
 """A custom page on the Online Store."""
 type OnlineStorePage implements Node & Navigable & HasPublishedTranslations {
-  """A default cursor for use in pagination."""
+  """
+  A default cursor that returns the single next record, sorted ascending by ID.
+  
+  """
   defaultCursor: String!
 
   """Globally unique identifier."""
@@ -19973,7 +19998,10 @@ type Product implements Node & Navigable & HasMetafields & HasPublishedTranslati
   """
   createdAt: DateTime!
 
-  """A default cursor for use in pagination."""
+  """
+  A default cursor that returns the single next record, sorted ascending by ID.
+  
+  """
   defaultCursor: String!
 
   """
@@ -21101,7 +21129,10 @@ type ProductVariant implements Node & HasMetafields & HasPublishedTranslations &
   """The date and time when the variant was created."""
   createdAt: DateTime!
 
-  """A default cursor for use in pagination."""
+  """
+  A default cursor that returns the single next record, sorted ascending by ID.
+  
+  """
   defaultCursor: String!
 
   """The delivery profile for the variant."""
@@ -23947,6 +23978,12 @@ type QueryRoot {
     """The ID of the UrlRedirect to return."""
     id: ID!
   ): UrlRedirect
+
+  """Returns a redirect import resource by ID."""
+  urlRedirectImport(
+    """ID of the URL redirect import."""
+    id: ID!
+  ): UrlRedirectImport
 
   """A list of the shop's URL redirect saved searches."""
   urlRedirectSavedSearches(
@@ -28340,14 +28377,17 @@ enum StagedUploadTargetGenerateUploadResource {
   """BulkOperation resource representation."""
   BULK_MUTATION_VARIABLES
 
-  """Merchandising::Video resource representation."""
-  VIDEO
+  """RedirectImport resource representation."""
+  URL_REDIRECT_IMPORT
+
+  """Merchandising::Image resource representation."""
+  IMAGE
 
   """Merchandising::Model3d resource representation."""
   MODEL_3D
 
-  """Merchandising::Image resource representation."""
-  IMAGE
+  """Merchandising::Video resource representation."""
+  VIDEO
 }
 
 """Return type for `stagedUploadTargetsGenerate` mutation."""
@@ -30719,7 +30759,7 @@ input UpdateMediaInput {
 
 """A redirect on the Online Store."""
 type UrlRedirect implements Node {
-  """Globally unique identifier."""
+  """The ID of the URL redirect."""
   id: ID!
 
   """
@@ -30891,6 +30931,84 @@ enum UrlRedirectErrorCode {
 
   """Redirect could not be deleted."""
   DELETE_FAILED
+}
+
+"""A request to import redirects into the Online Store."""
+type UrlRedirectImport implements Node {
+  """The number of rows in the file."""
+  count: Int
+
+  """The number of redirects created from this import."""
+  createdCount: Int
+
+  """The number of redirects that failed to be imported from this import."""
+  failedCount: Int
+
+  """Whether the import is finished."""
+  finished: Boolean!
+
+  """The date and time the import finished."""
+  finishedAt: DateTime
+
+  """The ID of the URL redirect import."""
+  id: ID!
+
+  """Up to 3 previews of the URL redirects that will be imported."""
+  previewRedirects: [UrlRedirectImportPreview!]!
+
+  """The number of redirects updated during this import."""
+  updatedCount: Int
+}
+
+"""Return type for `urlRedirectImportCreate` mutation."""
+type UrlRedirectImportCreatePayload {
+  """The created URL redirect import."""
+  urlRedirectImport: UrlRedirectImport
+
+  """List of errors that occurred executing the mutation."""
+  userErrors: [UrlRedirectImportUserError!]!
+}
+
+"""
+Possible error codes that could be returned by UrlRedirectImportUserError.
+"""
+enum UrlRedirectImportErrorCode {
+  """CSV file does not exist at given URL."""
+  FILE_DOES_NOT_EXIST
+}
+
+"""A preview of a URL redirect import row."""
+type UrlRedirectImportPreview {
+  """
+  The old path to be redirected. When the user visits this path, they will be redirected to the target.
+  """
+  path: String!
+
+  """The target location where the user will be redirected."""
+  target: String!
+}
+
+"""Return type for `urlRedirectImportSubmit` mutation."""
+type UrlRedirectImportSubmitPayload {
+  """The asynchronous job importing the redirects."""
+  job: Job
+
+  """List of errors that occurred executing the mutation."""
+  userErrors: [UrlRedirectImportUserError!]!
+}
+
+"""
+Represents an error that happens during execution of a redirect import mutation.
+"""
+type UrlRedirectImportUserError implements DisplayableError {
+  """Error code to uniquely identify the error."""
+  code: UrlRedirectImportErrorCode
+
+  """Path to the input field which caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
 }
 
 """Input fields for a redirect."""
