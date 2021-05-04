@@ -10522,6 +10522,9 @@ enum FulfillmentOrderStatus {
 
   """The fulfillment order is scheduled for fulfillment."""
   SCHEDULED
+
+  """The fulfillment order is on hold and can't be fulfilled."""
+  ON_HOLD
 }
 
 """Return type for `fulfillmentOrderSubmitCancellationRequest` mutation."""
@@ -10572,6 +10575,40 @@ type FulfillmentOrderSupportedAction {
   The external URL to be used to initiate the fulfillment process outside Shopify.
   """
   externalUrl: URL
+}
+
+"""The input fields used to release hold on fulfillment orders."""
+input FulfillmentOrdersReleaseHoldInput {
+  """The ID of the order for which the fulfillment hold should be released."""
+  orderId: ID!
+}
+
+"""Return type for `fulfillmentOrdersReleaseHold` mutation."""
+type FulfillmentOrdersReleaseHoldPayload {
+  """List of errors that occurred executing the mutation."""
+  userErrors: [FulfillmentOrdersReleaseHoldUserError!]!
+}
+
+"""
+An error that occurs during the execution of FulfillmentOrdersReleaseHold.
+"""
+type FulfillmentOrdersReleaseHoldUserError implements DisplayableError {
+  """Error code to uniquely identify the error."""
+  code: FulfillmentOrdersReleaseHoldUserErrorCode
+
+  """Path to the input field which caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by FulfillmentOrdersReleaseHoldUserError.
+"""
+enum FulfillmentOrdersReleaseHoldUserErrorCode {
+  """The order could not be found."""
+  ORDER_NOT_FOUND
 }
 
 """
@@ -14913,6 +14950,12 @@ type Mutation {
     shippingMethod: String
   ): FulfillmentOrderSubmitFulfillmentRequestPayload
 
+  """Releases the hold on all fulfillmentOrders for an order."""
+  fulfillmentOrdersReleaseHold(
+    """The input fields used to release hold on fulfillment orders."""
+    input: FulfillmentOrdersReleaseHoldInput!
+  ): FulfillmentOrdersReleaseHoldPayload
+
   """Creates a fulfillment service."""
   fulfillmentServiceCreate(
     """The name of the fulfillment service."""
@@ -17394,6 +17437,9 @@ enum OrderDisplayFulfillmentStatus {
 
   """Displayed as **In progress**."""
   IN_PROGRESS
+
+  """Displayed as **On hold**."""
+  ON_HOLD
 
   """Displayed as **Scheduled**."""
   SCHEDULED
@@ -28054,7 +28100,7 @@ Payments balance and their bank account.
 """
 type ShopifyPaymentsPayout implements LegacyInteroperability & Node {
   """The bank account for the payout."""
-  bankAccount: ShopifyPaymentsBankAccount!
+  bankAccount: ShopifyPaymentsBankAccount
 
   """The total amount and currency of the payout."""
   gross: MoneyV2! @deprecated(reason: "Use `net` instead")
