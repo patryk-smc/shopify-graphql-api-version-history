@@ -1939,6 +1939,118 @@ type CalculatedScriptDiscountApplication implements CalculatedDiscountApplicatio
   value: PricingValue!
 }
 
+"""Represents a capture session."""
+type CaptureSession {
+  """A globally unique identifier."""
+  id: ID!
+
+  """The capture status."""
+  status: CaptureSessionStatus!
+}
+
+"""Return type for `captureSessionReject` mutation."""
+type CaptureSessionRejectPayload {
+  """The updated capture session."""
+  captureSession: CaptureSession
+
+  """List of errors that occurred executing the mutation."""
+  userErrors: [CaptureSessionRejectUserError!]!
+}
+
+"""An error that occurs during the execution of CaptureSessionReject."""
+type CaptureSessionRejectUserError implements DisplayableError {
+  """Error code to uniquely identify the error."""
+  code: CaptureSessionRejectUserErrorCode
+
+  """Path to the input field which caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by CaptureSessionRejectUserError.
+"""
+enum CaptureSessionRejectUserErrorCode {
+  """Capture session not found."""
+  CAPTURE_SESSION_NOT_FOUND
+}
+
+"""Reason of the capture status."""
+input CaptureSessionRejectionReasonInput {
+  """The reason code."""
+  code: CaptureSessionStatusReasonRejectionCode!
+
+  """A custom, localized message for the merchant."""
+  merchantMessage: String
+}
+
+"""Return type for `captureSessionResolve` mutation."""
+type CaptureSessionResolvePayload {
+  """The updated capture session."""
+  captureSession: CaptureSession
+
+  """List of errors that occurred executing the mutation."""
+  userErrors: [CaptureSessionResolveUserError!]!
+}
+
+"""An error that occurs during the execution of CaptureSessionResolve."""
+type CaptureSessionResolveUserError implements DisplayableError {
+  """Error code to uniquely identify the error."""
+  code: CaptureSessionResolveUserErrorCode
+
+  """Path to the input field which caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by CaptureSessionResolveUserError.
+"""
+enum CaptureSessionResolveUserErrorCode {
+  """Capture session not found."""
+  CAPTURE_SESSION_NOT_FOUND
+}
+
+"""Represents a capture status."""
+type CaptureSessionStatus {
+  """The capture status code."""
+  code: CaptureSessionStatusCode!
+
+  """The capture status reason (if applicable)."""
+  reason: CaptureSessionStatusReason
+}
+
+"""Capture status codes."""
+enum CaptureSessionStatusCode {
+  """Capture rejected."""
+  REJECTED
+
+  """Capture resolved."""
+  RESOLVED
+}
+
+"""Capture status reason."""
+type CaptureSessionStatusReason {
+  """The reason code."""
+  code: CaptureSessionStatusReasonRejectionCode!
+
+  """The custom, localized message for the merchant."""
+  merchantMessage: String
+}
+
+"""Capture rejection reason codes."""
+enum CaptureSessionStatusReasonRejectionCode {
+  """Capture processing failure."""
+  PROCESSING_ERROR
+
+  """Authorization expired."""
+  AUTHORIZATION_EXPIRED
+}
+
 """
 A channel represents an app where you sell a group of products and collections.
 A channel can be a platform or marketplace such as Facebook or Pinterest, an online store, or POS.
@@ -7915,11 +8027,11 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
-  """Value is outside allowed range."""
-  VALUE_OUTSIDE_RANGE
-
   """Exceeded maximum allowed value."""
   EXCEEDED_MAX
+
+  """Value is outside allowed range."""
+  VALUE_OUTSIDE_RANGE
 
   """Cannot have both minimum subtotal and quantity present."""
   MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
@@ -14273,6 +14385,33 @@ type Mutation {
     """The query to be executed in bulk."""
     query: String!
   ): BulkOperationRunQueryPayload
+
+  """
+  Rejects an open capture session.
+  After the `captureSessionReject` mutation completes on a given capture session, any
+  `captureSessionResolve` mutation attempts will fail. Subsequent `captureSessionReject`
+  mutation attempts will succeed, but the `RejectionReasonInput` argument will be ignored.
+  
+  """
+  captureSessionReject(
+    """The capture session ID."""
+    id: ID!
+
+    """The rejection reason."""
+    reason: CaptureSessionRejectionReasonInput!
+  ): CaptureSessionRejectPayload
+
+  """
+  Resolves an open capture session.
+  After the `captureSessionResolve` mutation completes on a given capture session, any
+  `captureSessionReject` mutation attempts will fail. Subsequent `captureSessionResolve`
+  mutation attempts will succeed, but the `Details` argument will be ignored.
+  
+  """
+  captureSessionResolve(
+    """The capture session ID."""
+    id: ID!
+  ): CaptureSessionResolvePayload
 
   """Adds products to a collection."""
   collectionAddProducts(
