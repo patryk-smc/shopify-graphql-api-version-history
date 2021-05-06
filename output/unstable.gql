@@ -7854,6 +7854,29 @@ input DiscountCustomerBuysValueInput {
   amount: Decimal
 }
 
+"""A list of customer conditions required to use this discount."""
+type DiscountCustomerConditions {
+  """The codes for the countries where the discount can be used."""
+  countries: [CountryCode!]!
+}
+
+"""
+Specifies a list of countries to add or remove from the discount eligibility.
+"""
+input DiscountCustomerConditionsCountriesInput {
+  """The country codes to add to the list of eligible countries."""
+  add: [CountryCode!]
+
+  """The country codes to remove from the list of eligible countries."""
+  remove: [CountryCode!]
+}
+
+"""Specifies the customer conditions required to use this discount."""
+input DiscountCustomerConditionsInput {
+  """The customer has an address in one of the specified countries."""
+  countries: DiscountCustomerConditionsCountriesInput
+}
+
 """
 The qualifying items in an order, the quantity of each one, and the total value of the discount.
 """
@@ -7933,7 +7956,7 @@ input DiscountCustomerSavedSearchesInput {
 }
 
 """The selection of customers who can use this discount."""
-union DiscountCustomerSelection = DiscountCustomerAll | DiscountCustomerSavedSearches | DiscountCustomers
+union DiscountCustomerSelection = DiscountCustomerAll | DiscountCustomerConditions | DiscountCustomerSavedSearches | DiscountCustomers
 
 """Specifies the customers who can use this discount."""
 input DiscountCustomerSelectionInput {
@@ -7947,6 +7970,9 @@ input DiscountCustomerSelectionInput {
   The list of customer saved search IDs to add or remove from the list of customer saved searches.
   """
   customerSavedSearches: DiscountCustomerSavedSearchesInput
+
+  """The customer conditions required to be eligible for the discount."""
+  customerConditions: DiscountCustomerConditionsInput
 }
 
 """A list of customers to whom the discount applies."""
