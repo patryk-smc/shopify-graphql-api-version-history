@@ -7858,6 +7858,11 @@ input DiscountCustomerBuysValueInput {
 type DiscountCustomerConditions {
   """The codes for the countries where the discount can be used."""
   countries: [CountryCode!]!
+
+  """
+  The email address marketing state required to be eligible for the discount.
+  """
+  emailAddressMarketingState: DiscountCustomerConditionsEmailAddressMarketingState
 }
 
 """
@@ -7871,10 +7876,23 @@ input DiscountCustomerConditionsCountriesInput {
   remove: [CountryCode!]
 }
 
+"""
+The email address marketing state required to be eligible for the discount.
+"""
+enum DiscountCustomerConditionsEmailAddressMarketingState {
+  """The customer is currently subscribed to email marketing."""
+  SUBSCRIBED
+}
+
 """Specifies the customer conditions required to use this discount."""
 input DiscountCustomerConditionsInput {
   """The customer has an address in one of the specified countries."""
   countries: DiscountCustomerConditionsCountriesInput
+
+  """
+  The email address marketing state required to be eligible for the discount.
+  """
+  emailAddressMarketingState: DiscountCustomerConditionsEmailAddressMarketingState
 }
 
 """
@@ -9514,6 +9532,12 @@ type ExternalVideo implements Node & Media {
   """The URL."""
   embeddedUrl: URL!
 
+  """Any errors which have occurred on the file."""
+  fileErrors: [FileError!]!
+
+  """The current status of the file."""
+  fileStatus: FileStatus!
+
   """The host of the external video."""
   host: MediaHost!
 
@@ -9545,6 +9569,371 @@ type FailedRequirement {
   encounters when trying to make use of their Shop and its resources.
   
   """
+  message: String!
+}
+
+"""Represents a file interface."""
+interface File {
+  """A word or phrase to describe the contents or the function of a file."""
+  alt: String
+
+  """
+  The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the product was created.
+  
+  """
+  createdAt: DateTime!
+
+  """Any errors which have occurred on the file."""
+  fileErrors: [FileError!]!
+}
+
+"""Batch status for a file create or delete mutation."""
+type FileBatchStatus {
+  """Total files completed."""
+  completed: Int!
+
+  """Total files that failed."""
+  failed: Int!
+
+  """Batch ID."""
+  id: ID!
+
+  """Total files submitted."""
+  submitted: Int
+}
+
+"""
+An auto-generated type for paginating through multiple Files.
+
+"""
+type FileConnection {
+  """A list of edges."""
+  edges: [FileEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+}
+
+"""The possible content types for a file object."""
+enum FileContentType {
+  """A Shopify hosted image."""
+  IMAGE
+
+  """A Shopify hosted generic file."""
+  FILE
+}
+
+"""Specifies the input fields required to create a file object."""
+input FileCreateInput {
+  """
+  The original source of the file object. 
+  The original source might be an external URL or a signed upload URL.
+  
+  """
+  originalSource: String!
+
+  """The file content type."""
+  contentType: FileContentType
+
+  """The alt text associated with the file."""
+  alt: String
+}
+
+"""Return type for `fileCreate` mutation."""
+type FileCreatePayload {
+  """The status for the uploaded batch."""
+  batchStatus: FileBatchStatus
+
+  """The newly created files."""
+  files: [File!]
+
+  """List of errors that occurred executing the mutation."""
+  userErrors: [FilesUserError!]!
+}
+
+"""Return type for `fileDelete` mutation."""
+type FileDeletePayload {
+  """The IDs of the deleted files."""
+  deletedFileIds: [ID!]
+
+  """List of errors that occurred executing the mutation."""
+  userErrors: [FilesUserError!]!
+}
+
+"""
+An auto-generated type which holds one File and a cursor during pagination.
+
+"""
+type FileEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of FileEdge."""
+  node: File!
+}
+
+"""
+Represents a file error.
+
+"""
+type FileError {
+  """Code representing the type of error."""
+  code: FileErrorCode!
+
+  """Additional details regarding the error."""
+  details: String
+
+  """Translated error message."""
+  message: String!
+}
+
+"""Error types for file."""
+enum FileErrorCode {
+  """File error has occurred for unknown reason."""
+  UNKNOWN
+
+  """File could not be processed because the signed url was invalid."""
+  INVALID_SIGNED_URL
+
+  """File could not be processed because the image could not be downloaded."""
+  IMAGE_DOWNLOAD_FAILURE
+
+  """File could not be processed because the image could not be processed."""
+  IMAGE_PROCESSING_FAILURE
+
+  """
+  File timed out because it is currently being modified by another operation.
+  """
+  MEDIA_TIMEOUT_ERROR
+
+  """
+  File could not be created because the external video could not be found.
+  """
+  EXTERNAL_VIDEO_NOT_FOUND
+
+  """
+  File could not be created because the external video is not listed or is private.
+  """
+  EXTERNAL_VIDEO_UNLISTED
+
+  """
+  File could not be created because the external video has an invalid aspect ratio.
+  """
+  EXTERNAL_VIDEO_INVALID_ASPECT_RATIO
+
+  """
+  File could not be created because embed permissions are disabled for this video.
+  """
+  EXTERNAL_VIDEO_EMBED_DISABLED
+
+  """
+  File could not be created because video is either not found or still transcoding.
+  """
+  EXTERNAL_VIDEO_EMBED_NOT_FOUND_OR_TRANSCODING
+
+  """
+  File could not be processed because the source could not be downloaded.
+  """
+  GENERIC_FILE_DOWNLOAD_FAILURE
+
+  """File could not be created because the size is too large."""
+  GENERIC_FILE_INVALID_SIZE
+
+  """File could not be created because the metadata could not be read."""
+  VIDEO_METADATA_READ_ERROR
+
+  """File could not be created because it has an invalid file type."""
+  VIDEO_INVALID_FILETYPE_ERROR
+
+  """
+  File could not be created because it does not meet the minimum width requirement.
+  """
+  VIDEO_MIN_WIDTH_ERROR
+
+  """
+  File could not be created because it does not meet the maximum width requirement.
+  """
+  VIDEO_MAX_WIDTH_ERROR
+
+  """
+  File could not be created because it does not meet the minimum height requirement.
+  """
+  VIDEO_MIN_HEIGHT_ERROR
+
+  """
+  File could not be created because it does not meet the maximum height requirement.
+  """
+  VIDEO_MAX_HEIGHT_ERROR
+
+  """
+  File could not be created because it does not meet the minimum duration requirement.
+  """
+  VIDEO_MIN_DURATION_ERROR
+
+  """
+  File could not be created because it does not meet the maximum duration requirement.
+  """
+  VIDEO_MAX_DURATION_ERROR
+
+  """Video failed validation."""
+  VIDEO_VALIDATION_ERROR
+
+  """Model failed validation."""
+  MODEL3D_VALIDATION_ERROR
+
+  """
+  File could not be created because the model's thumbnail generation failed.
+  """
+  MODEL3D_THUMBNAIL_GENERATION_ERROR
+
+  """
+  File could not be created because the model can't be converted to USDZ format.
+  """
+  MODEL3D_GLB_TO_USDZ_CONVERSION_ERROR
+
+  """File could not be created because the model file failed processing."""
+  MODEL3D_GLB_OUTPUT_CREATION_ERROR
+
+  """
+  File could not be created because the image is an unsupported file type.
+  """
+  UNSUPPORTED_IMAGE_FILE_TYPE
+
+  """File could not be created because the image size is too large."""
+  INVALID_IMAGE_FILE_SIZE
+
+  """
+  File could not be created because the image has an invalid aspect ratio.
+  """
+  INVALID_IMAGE_ASPECT_RATIO
+
+  """
+  File could not be created because the image's resolution exceeds the max limit.
+  """
+  INVALID_IMAGE_RESOLUTION
+
+  """
+  File could not be created because the cumulative file storage limit would be exceeded.
+  """
+  FILE_STORAGE_LIMIT_EXCEEDED
+}
+
+"""The status of the Files API operations queue."""
+type FileQueueStatus {
+  """The total enqueued operations."""
+  totalPendingOperations: Int!
+}
+
+"""The set of valid sort keys for the File query."""
+enum FileSortKeys {
+  """Sort by the `filename` value."""
+  FILENAME
+
+  """Sort by the `original_upload_size` value."""
+  ORIGINAL_UPLOAD_SIZE
+
+  """Sort by the `created_at` value."""
+  CREATED_AT
+
+  """Sort by the `id` value."""
+  ID
+
+  """
+  During a search (i.e. when the `query` parameter has been specified on the connection) this sorts the
+  results by relevance to the search term(s). When no search query is specified, this sort key is not
+  deterministic and should not be used.
+  
+  """
+  RELEVANCE
+}
+
+"""The possible statuses for a file object."""
+enum FileStatus {
+  """File has been uploaded but not yet processed."""
+  UPLOADED
+
+  """File is being processed."""
+  PROCESSING
+
+  """File is ready to be displayed."""
+  READY
+
+  """File processing has failed."""
+  FAILED
+}
+
+"""Specifies the input fields required to update a file object."""
+input FileUpdateInput {
+  """Specifies the file to update."""
+  id: ID!
+
+  """The alt text associated to the file."""
+  alt: String
+}
+
+"""Return type for `fileUpdate` mutation."""
+type FileUpdatePayload {
+  """The status for the updated batch."""
+  batchStatus: FileBatchStatus
+
+  """The list of updated files."""
+  files: [File!]
+
+  """List of errors that occurred executing the mutation."""
+  userErrors: [FilesUserError!]!
+}
+
+"""Possible error codes that could be returned by FilesUserError."""
+enum FilesErrorCode {
+  """Input value is invalid."""
+  INVALID
+
+  """File does not exist."""
+  FILE_DOES_NOT_EXIST
+
+  """File has a pending operation."""
+  FILE_LOCKED
+
+  """Specify one argument: search, IDs, or deleteAll."""
+  TOO_MANY_ARGUMENTS
+
+  """The search term must not be blank."""
+  BLANK_SEARCH
+
+  """At least one argument is required."""
+  MISSING_ARGUMENTS
+
+  """Search query isn't supported."""
+  INVALID_QUERY
+
+  """
+  The file is not supported on trial accounts which have not validated their email. Either select a plan or verify the shop owner email to upload this file.
+  """
+  UNACCEPTABLE_UNVERIFIED_TRIAL_ASSET
+
+  """The file type is not supported."""
+  UNACCEPTABLE_ASSET
+
+  """
+  The file is not supported on trial accounts. Select a plan to upload this file.
+  """
+  UNACCEPTABLE_TRIAL_ASSET
+
+  """The alt value exceeds the maximum limit of 512 characters."""
+  ALT_VALUE_LIMIT_EXCEEDED
+}
+
+"""
+Represents an error that happens during execution of a Files Api query or mutation.
+"""
+type FilesUserError implements DisplayableError {
+  """Error code to uniquely identify the error."""
+  code: FilesErrorCode
+
+  """Path to the input field which caused the error."""
+  field: [String!]
+
+  """The error message."""
   message: String!
 }
 
@@ -10923,6 +11312,30 @@ input FulfillmentV2Input {
   
   """
   lineItemsByFulfillmentOrder: [FulfillmentOrderLineItemsInput!]!
+}
+
+"""Represents a generic file."""
+type GenericFile implements Node & File {
+  """A word or phrase to describe the contents or the function of a file."""
+  alt: String
+
+  """
+  The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the product was created.
+  
+  """
+  createdAt: DateTime!
+
+  """Any errors which have occurred on the file."""
+  fileErrors: [FileError!]!
+
+  """The current status of the file."""
+  fileStatus: FileStatus!
+
+  """Globally unique identifier."""
+  id: ID!
+
+  """The URL of the file."""
+  url: URL
 }
 
 """Represents a gift card."""
@@ -13565,6 +13978,12 @@ interface Media {
   """A word or phrase to share the nature or contents of a media."""
   alt: String
 
+  """Any errors which have occurred on the file."""
+  fileErrors: [FileError!]!
+
+  """The current status of the file."""
+  fileStatus: FileStatus!
+
   """The media content type."""
   mediaContentType: MediaContentType!
 
@@ -13678,6 +14097,14 @@ enum MediaErrorCode {
   """
   EXTERNAL_VIDEO_EMBED_NOT_FOUND_OR_TRANSCODING
 
+  """
+  File could not be processed because the source could not be downloaded.
+  """
+  GENERIC_FILE_DOWNLOAD_FAILURE
+
+  """File could not be created because the size is too large."""
+  GENERIC_FILE_INVALID_SIZE
+
   """Media could not be created because the metadata could not be read."""
   VIDEO_METADATA_READ_ERROR
 
@@ -13740,6 +14167,21 @@ enum MediaErrorCode {
 
   """Media could not be created because the image size is too large."""
   INVALID_IMAGE_FILE_SIZE
+
+  """
+  Media could not be created because the image has an invalid aspect ratio.
+  """
+  INVALID_IMAGE_ASPECT_RATIO
+
+  """
+  Media could not be created because the image's resolution exceeds the max limit.
+  """
+  INVALID_IMAGE_RESOLUTION
+
+  """
+  Media could not be created because the cumulative file storage limit would be exceeded.
+  """
+  FILE_STORAGE_LIMIT_EXCEEDED
 }
 
 """Host for a Media Resource."""
@@ -13755,9 +14197,21 @@ enum MediaHost {
 Represents a Shopify hosted image.
 
 """
-type MediaImage implements Node & Media {
+type MediaImage implements Node & File & Media {
   """A word or phrase to share the nature or contents of a media."""
   alt: String
+
+  """
+  The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the product was created.
+  
+  """
+  createdAt: DateTime!
+
+  """Any errors which have occurred on the file."""
+  fileErrors: [FileError!]!
+
+  """The current status of the file."""
+  fileStatus: FileStatus!
 
   """Globally unique identifier."""
   id: ID!
@@ -14160,6 +14614,12 @@ Represents a Shopify hosted 3D model.
 type Model3d implements Node & Media {
   """A word or phrase to share the nature or contents of a media."""
   alt: String
+
+  """Any errors which have occurred on the file."""
+  fileErrors: [FileError!]!
+
+  """The current status of the file."""
+  fileStatus: FileStatus!
 
   """The filename of the 3d model."""
   filename: String!
@@ -14946,6 +15406,26 @@ type Mutation {
     """Specifies the input fields for an EventBridge webhook subscription."""
     webhookSubscription: EventBridgeWebhookSubscriptionInput!
   ): EventBridgeWebhookSubscriptionUpdatePayload
+
+  """
+  Creates file assets for files previously uploaded using the stagedUploadsCreate mutation.
+  """
+  fileCreate(
+    """List of new files to be created."""
+    files: [FileCreateInput!]!
+  ): FileCreatePayload
+
+  """Deletes file assets."""
+  fileDelete(
+    """The IDs of the files to be deleted."""
+    fileIds: [ID!]!
+  ): FileDeletePayload
+
+  """Updates a file asset."""
+  fileUpdate(
+    """List of files to be updated."""
+    files: [FileUpdateInput!]!
+  ): FileUpdatePayload
 
   """
   Triggers a workflow defined by the merchant in Shopify Flow. To learn more, see [_Create Shopify Flow triggers_](https://help.shopify.com/api/embedded-apps/app-extensions/flow/create-triggers).
@@ -23291,6 +23771,75 @@ type QueryRoot {
     query: String
   ): DraftOrderConnection!
 
+  """The status of a Files API create or delete batch by its ID."""
+  fileBatchStatus(
+    """The ID of the batch to query."""
+    id: ID!
+  ): FileBatchStatus
+
+  """The status of the Files API operations queue."""
+  fileQueueStatus: FileQueueStatus!
+
+  """A list of the shop's file saved searches."""
+  fileSavedSearches(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): SavedSearchConnection!
+
+  """A list of files."""
+  files(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: FileSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `created_at`
+     - `filename`
+     - `media_type`
+     - `original_upload_size`
+     - `status`
+    
+    See the detailed [search syntax](https://help.shopify.com/api/getting-started/search-syntax)
+    for more information about using filters.
+    
+    """
+    query: String
+
+    """
+    ID of an existing saved search.
+    The search’s query string is used as the query argument.
+    
+    """
+    savedSearchId: ID
+  ): FileConnection!
+
   """Returns a Fulfillment resource by ID."""
   fulfillment(
     """The ID of the Fulfillment to return."""
@@ -24116,6 +24665,7 @@ type QueryRoot {
      - `percentage_off`
      - `name`
      - `created_at`
+     - `app_id [CURRENT|ALL|App ID number]` default: `CURRENT`
     
     See the detailed [search syntax](https://help.shopify.com/api/getting-started/search-syntax).
     
@@ -25293,6 +25843,9 @@ enum SearchResultType {
 
   """A code discount redeem code."""
   DISCOUNT_REDEEM_CODE
+
+  """A file."""
+  FILE
 
   """A URL redirect."""
   URL_REDIRECT
@@ -28635,6 +29188,9 @@ enum StagedUploadTargetGenerateUploadResource {
   """RedirectImport resource representation."""
   URL_REDIRECT_IMPORT
 
+  """Merchandising::GenericFile resource representation."""
+  FILE
+
   """Merchandising::Image resource representation."""
   IMAGE
 
@@ -31350,6 +31906,12 @@ Represents a Shopify hosted video.
 type Video implements Node & Media {
   """A word or phrase to share the nature or contents of a media."""
   alt: String
+
+  """Any errors which have occurred on the file."""
+  fileErrors: [FileError!]!
+
+  """The current status of the file."""
+  fileStatus: FileStatus!
 
   """The filename of the video."""
   filename: String!
