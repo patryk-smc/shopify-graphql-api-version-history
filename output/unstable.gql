@@ -7856,6 +7856,12 @@ input DiscountCustomerBuysValueInput {
 
 """A list of customer conditions required to use this discount."""
 type DiscountCustomerConditions {
+  """
+  Specifies that customer has abandoned a checkout within the defined time range (last day, 7 days, 30 days, or 90 days).
+  
+  """
+  abandonedCheckout: DiscountCustomerConditionsAbandonedCheckout
+
   """The codes for the countries where the discount can be used."""
   countries: [CountryCode!]!
 
@@ -7863,6 +7869,23 @@ type DiscountCustomerConditions {
   The email address marketing state required to be eligible for the discount.
   """
   emailAddressMarketingState: DiscountCustomerConditionsEmailAddressMarketingState
+}
+
+"""
+The last abandoned checkout date required to be eligible for the discount.
+"""
+enum DiscountCustomerConditionsAbandonedCheckout {
+  """The customer has abandoned a checkout within the last day."""
+  LAST_DAY
+
+  """The customer has abandoned a checkout within the last 7 days."""
+  LAST_7_DAYS
+
+  """The customer has abandoned a checkout within the last 30 days."""
+  LAST_30_DAYS
+
+  """The customer has abandoned a checkout within the last 90 days."""
+  LAST_90_DAYS
 }
 
 """
@@ -7893,6 +7916,12 @@ input DiscountCustomerConditionsInput {
   The email address marketing state required to be eligible for the discount.
   """
   emailAddressMarketingState: DiscountCustomerConditionsEmailAddressMarketingState
+
+  """
+  Specifies that customer has abandoned a checkout within the defined time range (last day, 7 days, 30 days, or 90 days).
+  
+  """
+  abandonedCheckout: DiscountCustomerConditionsAbandonedCheckout
 }
 
 """
@@ -9587,21 +9616,6 @@ interface File {
   fileErrors: [FileError!]!
 }
 
-"""Batch status for a file create or delete mutation."""
-type FileBatchStatus {
-  """Total files completed."""
-  completed: Int!
-
-  """Total files that failed."""
-  failed: Int!
-
-  """Batch ID."""
-  id: ID!
-
-  """Total files submitted."""
-  submitted: Int
-}
-
 """
 An auto-generated type for paginating through multiple Files.
 
@@ -9641,9 +9655,6 @@ input FileCreateInput {
 
 """Return type for `fileCreate` mutation."""
 type FileCreatePayload {
-  """The status for the uploaded batch."""
-  batchStatus: FileBatchStatus
-
   """The newly created files."""
   files: [File!]
 
@@ -9818,12 +9829,6 @@ enum FileErrorCode {
   FILE_STORAGE_LIMIT_EXCEEDED
 }
 
-"""The status of the Files API operations queue."""
-type FileQueueStatus {
-  """The total enqueued operations."""
-  totalPendingOperations: Int!
-}
-
 """The set of valid sort keys for the File query."""
 enum FileSortKeys {
   """Sort by the `filename` value."""
@@ -9873,9 +9878,6 @@ input FileUpdateInput {
 
 """Return type for `fileUpdate` mutation."""
 type FileUpdatePayload {
-  """The status for the updated batch."""
-  batchStatus: FileBatchStatus
-
   """The list of updated files."""
   files: [File!]
 
@@ -23770,15 +23772,6 @@ type QueryRoot {
     """
     query: String
   ): DraftOrderConnection!
-
-  """The status of a Files API create or delete batch by its ID."""
-  fileBatchStatus(
-    """The ID of the batch to query."""
-    id: ID!
-  ): FileBatchStatus
-
-  """The status of the Files API operations queue."""
-  fileQueueStatus: FileQueueStatus!
 
   """A list of the shop's file saved searches."""
   fileSavedSearches(
