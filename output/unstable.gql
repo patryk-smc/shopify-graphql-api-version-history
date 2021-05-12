@@ -5193,7 +5193,44 @@ type CustomerMomentEdge {
 }
 
 """All possible instruments for CustomerPaymentMethods."""
-union CustomerPaymentInstrument = CustomerCreditCard
+union CustomerPaymentInstrument = CustomerCreditCard | CustomerPaypalBillingAgreement
+
+"""The billing address of a payment instrument."""
+type CustomerPaymentInstrumentBillingAddress {
+  """
+  The first line of the address. Typically the street address or PO Box number.
+  """
+  address1: String
+
+  """The name of the city, district, village, or town."""
+  city: String
+
+  """The name of the country."""
+  country: String
+
+  """
+  The two-letter code for the country of the address.
+  For example, US.
+  
+  """
+  countryCode: CountryCode
+
+  """The name of the buyer of the address."""
+  name: String
+
+  """The region of the address, such as the province, state, or district."""
+  province: String
+
+  """
+  The two-letter code for the region.
+  For example, ON.
+  
+  """
+  provinceCode: String
+
+  """The zip or postal code of the address."""
+  zip: String
+}
 
 """A customer's payment method."""
 type CustomerPaymentMethod implements Node {
@@ -5271,6 +5308,28 @@ type CustomerPaymentMethodEdge {
 }
 
 """
+Return type for `customerPaymentMethodPaypalBillingAgreementCreate` mutation.
+"""
+type CustomerPaymentMethodPaypalBillingAgreementCreatePayload {
+  """The customer payment method."""
+  customerPaymentMethod: CustomerPaymentMethod
+
+  """List of errors that occurred executing the mutation."""
+  userErrors: [CustomerPaymentMethodUserError!]!
+}
+
+"""
+Return type for `customerPaymentMethodPaypalBillingAgreementUpdate` mutation.
+"""
+type CustomerPaymentMethodPaypalBillingAgreementUpdatePayload {
+  """The customer payment method."""
+  customerPaymentMethod: CustomerPaymentMethod
+
+  """List of errors that occurred executing the mutation."""
+  userErrors: [CustomerPaymentMethodUserError!]!
+}
+
+"""
 Return type for `customerPaymentMethodRemoteCreditCardCreate` mutation.
 """
 type CustomerPaymentMethodRemoteCreditCardCreatePayload {
@@ -5323,6 +5382,23 @@ enum CustomerPaymentMethodUserErrorCode {
 
   """Input value is already taken."""
   TAKEN
+}
+
+"""Represents a PayPal instrument for customer payment method."""
+type CustomerPaypalBillingAgreement {
+  """The billing address of this payment method."""
+  billingAddress: CustomerPaymentInstrumentBillingAddress
+
+  """Whether the PayPal billing agreement is inactive."""
+  inactive: Boolean!
+
+  """
+  Whether the payment method can be revoked.The payment method can be revoked if there are no active subscription contracts.
+  """
+  isRevocable: Boolean!
+
+  """The customers's PayPal account email address."""
+  paypalAccountEmail: String
 }
 
 """
@@ -15054,6 +15130,33 @@ type Mutation {
     sessionId: String!
   ): CustomerPaymentMethodCreditCardUpdatePayload
 
+  """Creates a PayPal billing agreement for a customer."""
+  customerPaymentMethodPaypalBillingAgreementCreate(
+    """The ID of the customer."""
+    customerId: ID!
+
+    """The billing address."""
+    billingAddress: MailingAddressInput
+
+    """The billing agreement ID from PayPal."""
+    billingAgreementId: String!
+
+    """Whether the PayPal billing agreement is inactive."""
+    inactive: Boolean = false
+  ): CustomerPaymentMethodPaypalBillingAgreementCreatePayload
+
+  """Updates a PayPal billing agreement for a customer."""
+  customerPaymentMethodPaypalBillingAgreementUpdate(
+    """The ID of the customer payment method."""
+    id: ID!
+
+    """The billing address."""
+    billingAddress: MailingAddressInput!
+
+    """The billing agreement ID from PayPal."""
+    billingAgreementId: String!
+  ): CustomerPaymentMethodPaypalBillingAgreementUpdatePayload
+
   """Create a payment method from a credit card stored by Stripe."""
   customerPaymentMethodRemoteCreditCardCreate(
     """The ID of the customer."""
@@ -16434,21 +16537,25 @@ type Mutation {
     productId: ID!
   ): ProductVariantsBulkUpdatePayload
 
-  """Creates a new Google Pub/Sub webhook subscription."""
+  """Creates a new Google Cloud Pub/Sub webhook subscription."""
   pubSubWebhookSubscriptionCreate(
     """The type of event that triggers the webhook."""
     topic: WebhookSubscriptionTopic!
 
-    """Specifies the input fields for a Pub/Sub webhook subscription."""
+    """
+    Specifies the input fields for a Google Cloud Pub/Sub webhook subscription.
+    """
     webhookSubscription: PubSubWebhookSubscriptionInput!
   ): PubSubWebhookSubscriptionCreatePayload
 
-  """Updates a Google Pub/Sub webhook subscription."""
+  """Updates a Google Cloud Pub/Sub webhook subscription."""
   pubSubWebhookSubscriptionUpdate(
     """The ID of the webhook subscription to update."""
     id: ID!
 
-    """Specifies the input fields for a Pub/Sub webhook subscription."""
+    """
+    Specifies the input fields for a Google Cloud Pub/Sub webhook subscription.
+    """
     webhookSubscription: PubSubWebhookSubscriptionInput
   ): PubSubWebhookSubscriptionUpdatePayload
 
@@ -19008,6 +19115,18 @@ type PaymentsAppConfigurePayload {
 
   """List of errors that occurred executing the mutation."""
   userErrors: [UserError!]!
+}
+
+"""Represents a valid PayPal Express subscriptions gateway status."""
+enum PaypalExpressSubscriptionsGatewayStatus {
+  """The status is enabled."""
+  ENABLED
+
+  """The status is disabled."""
+  DISABLED
+
+  """The status is pending."""
+  PENDING
 }
 
 """
@@ -28167,6 +28286,11 @@ type ShopFeatures {
   """Whether a shop has access to the onboarding visual."""
   onboardingVisual: Boolean!
 
+  """
+  Whether a shop is configured to sell subscriptions with PayPal Express.
+  """
+  paypalExpressSubscriptionGatewayStatus: PaypalExpressSubscriptionsGatewayStatus!
+
   """Whether a shop has access to all reporting features."""
   reports: Boolean!
 
@@ -29497,6 +29621,9 @@ enum SubscriptionBillingAttemptErrorCode {
   
   """
   TEST_MODE
+
+  """Payment method was canceled by buyer."""
+  BUYER_CANCELED_PAYMENT_METHOD
 }
 
 """
@@ -32000,12 +32127,12 @@ type WebhookHttpEndpoint {
   callbackUrl: URL!
 }
 
-"""Google Pub/Sub event source."""
+"""Google Cloud Pub/Sub event source."""
 type WebhookPubSubEndpoint {
-  """The Pub/Sub project ID."""
+  """The Google Cloud Pub/Sub project ID."""
   pubSubProject: String!
 
-  """The Pub/Sub topic name."""
+  """The Google Cloud Pub/Sub topic name."""
   pubSubTopic: String!
 }
 
