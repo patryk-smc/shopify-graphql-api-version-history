@@ -7933,7 +7933,7 @@ input DiscountCustomerBuysValueInput {
 """A list of customer conditions required to use this discount."""
 type DiscountCustomerConditions {
   """
-  Specifies that customer has abandoned a checkout within the defined time range (last day, 7 days, 30 days, or 90 days).
+  Specifies that the customer has abandoned a checkout within the defined time range (last day, 7 days, 30 days, or 90 days).
   
   """
   abandonedCheckout: DiscountCustomerConditionsAbandonedCheckout
@@ -8002,7 +8002,7 @@ input DiscountCustomerConditionsInput {
   emailAddressMarketingState: DiscountCustomerConditionsEmailAddressMarketingState
 
   """
-  Specifies that customer has abandoned a checkout within the defined time range (last day, 7 days, 30 days, or 90 days).
+  Specifies that the customer has abandoned a checkout within the defined time range (last day, 7 days, 30 days, or 90 days).
   
   """
   abandonedCheckout: DiscountCustomerConditionsAbandonedCheckout
@@ -17087,6 +17087,33 @@ type Mutation {
   ): UrlRedirectUpdatePayload
 
   """
+  Rejects an open void session.
+  After the `voidSessionReject` mutation completes on a given void session, any
+  `voidSessionResolve` mutation attempts will fail. Subsequent `voidSessionReject`
+  mutation attempts will succeed, but the `RejectionReasonInput` argument will be ignored.
+  
+  """
+  voidSessionReject(
+    """The void session ID."""
+    id: ID!
+
+    """The rejection reason."""
+    reason: VoidSessionRejectionReasonInput!
+  ): VoidSessionRejectPayload
+
+  """
+  Resolves an open void session.
+  After the `voidSessionResolve` mutation completes on a given void session, any
+  `voidSessionReject` mutation attempts will fail. Subsequent `voidSessionResolve`
+  mutation attempts will succeed, but the `Details` argument will be ignored.
+  
+  """
+  voidSessionResolve(
+    """The void session ID."""
+    id: ID!
+  ): VoidSessionResolvePayload
+
+  """
   Creates a new webhook subscription.
   
   """
@@ -25681,7 +25708,7 @@ type SavedSearchConnection {
 
 """Specifies the fields required to create a saved search."""
 input SavedSearchCreateInput {
-  """The type of resouce this saved search is searching in."""
+  """The type of resource this saved search is searching in."""
   resourceType: SearchResultType!
 
   """A descriptive name of the saved search."""
@@ -32110,6 +32137,115 @@ type VideoSource {
 
   """The width of the video."""
   width: Int!
+}
+
+"""Represents a void session."""
+type VoidSession {
+  """A globally unique identifier."""
+  id: ID!
+
+  """The void status."""
+  status: VoidSessionStatus!
+}
+
+"""Return type for `voidSessionReject` mutation."""
+type VoidSessionRejectPayload {
+  """List of errors that occurred executing the mutation."""
+  userErrors: [VoidSessionRejectUserError!]!
+
+  """The updated void session."""
+  voidSession: VoidSession
+}
+
+"""An error that occurs during the execution of VoidSessionReject."""
+type VoidSessionRejectUserError implements DisplayableError {
+  """Error code to uniquely identify the error."""
+  code: VoidSessionRejectUserErrorCode
+
+  """Path to the input field which caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by VoidSessionRejectUserError.
+"""
+enum VoidSessionRejectUserErrorCode {
+  """Void session not found."""
+  VOID_SESSION_NOT_FOUND
+}
+
+"""Reason of the void status."""
+input VoidSessionRejectionReasonInput {
+  """The reason code."""
+  code: VoidSessionStatusReasonRejectionCode!
+
+  """A custom, localized message for the merchant."""
+  merchantMessage: String
+}
+
+"""Return type for `voidSessionResolve` mutation."""
+type VoidSessionResolvePayload {
+  """List of errors that occurred executing the mutation."""
+  userErrors: [VoidSessionResolveUserError!]!
+
+  """The updated void session."""
+  voidSession: VoidSession
+}
+
+"""An error that occurs during the execution of VoidSessionResolve."""
+type VoidSessionResolveUserError implements DisplayableError {
+  """Error code to uniquely identify the error."""
+  code: VoidSessionResolveUserErrorCode
+
+  """Path to the input field which caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by VoidSessionResolveUserError.
+"""
+enum VoidSessionResolveUserErrorCode {
+  """Void session not found."""
+  VOID_SESSION_NOT_FOUND
+}
+
+"""Represents a void status."""
+type VoidSessionStatus {
+  """The void status code."""
+  code: VoidSessionStatusCode!
+
+  """The void status reason (if applicable)."""
+  reason: VoidSessionStatusReason
+}
+
+"""Void status codes."""
+enum VoidSessionStatusCode {
+  """Void rejected."""
+  REJECTED
+
+  """Void resolved."""
+  RESOLVED
+}
+
+"""Void status reason."""
+type VoidSessionStatusReason {
+  """The reason code."""
+  code: VoidSessionStatusReasonRejectionCode!
+
+  """The custom, localized message for the merchant."""
+  merchantMessage: String
+}
+
+"""Void rejection reason codes."""
+enum VoidSessionStatusReasonRejectionCode {
+  """Void processing failure."""
+  PROCESSING_ERROR
 }
 
 """Amazon EventBridge event source."""
