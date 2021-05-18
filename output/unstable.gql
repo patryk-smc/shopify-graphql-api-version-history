@@ -9718,6 +9718,9 @@ interface File {
   """Any errors which have occurred on the file."""
   fileErrors: [FileError!]!
 
+  """The current status of the file."""
+  fileStatus: FileStatus!
+
   """The preview image for the media."""
   preview: MediaPreviewImage
 }
