@@ -14970,6 +14970,9 @@ type Mutation {
 
     """The staged upload path of the file containing mutation variables."""
     stagedUploadPath: String!
+
+    """An optional identifier which may be used for querying."""
+    clientIdentifier: String
   ): BulkOperationRunMutationPayload
 
   """
