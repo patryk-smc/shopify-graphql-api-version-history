@@ -9670,9 +9670,6 @@ type ExternalVideo implements Node & Media {
   """The URL."""
   embeddedUrl: URL!
 
-  """The current status of the file."""
-  fileStatus: FileStatus!
-
   """The host of the external video."""
   host: MediaHost!
 
@@ -14105,9 +14102,6 @@ interface Media {
   """A word or phrase to share the nature or contents of a media."""
   alt: String
 
-  """The current status of the file."""
-  fileStatus: FileStatus!
-
   """The media content type."""
   mediaContentType: MediaContentType!
 
@@ -14738,9 +14732,6 @@ Represents a Shopify hosted 3D model.
 type Model3d implements Node & Media {
   """A word or phrase to share the nature or contents of a media."""
   alt: String
-
-  """The current status of the file."""
-  fileStatus: FileStatus!
 
   """The filename of the 3d model."""
   filename: String!
@@ -32109,9 +32100,6 @@ Represents a Shopify hosted video.
 type Video implements Node & Media {
   """A word or phrase to share the nature or contents of a media."""
   alt: String
-
-  """The current status of the file."""
-  fileStatus: FileStatus!
 
   """The filename of the video."""
   filename: String!
