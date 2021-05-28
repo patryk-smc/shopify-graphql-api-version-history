@@ -11215,40 +11215,6 @@ type FulfillmentOrderSupportedAction {
   externalUrl: URL
 }
 
-"""The input fields used to release hold on fulfillment orders."""
-input FulfillmentOrdersReleaseHoldInput {
-  """The ID of the order for which the fulfillment hold should be released."""
-  orderId: ID!
-}
-
-"""Return type for `fulfillmentOrdersReleaseHold` mutation."""
-type FulfillmentOrdersReleaseHoldPayload {
-  """List of errors that occurred executing the mutation."""
-  userErrors: [FulfillmentOrdersReleaseHoldUserError!]!
-}
-
-"""
-An error that occurs during the execution of FulfillmentOrdersReleaseHold.
-"""
-type FulfillmentOrdersReleaseHoldUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
-  code: FulfillmentOrdersReleaseHoldUserErrorCode
-
-  """Path to the input field which caused the error."""
-  field: [String!]
-
-  """The error message."""
-  message: String!
-}
-
-"""
-Possible error codes that could be returned by FulfillmentOrdersReleaseHoldUserError.
-"""
-enum FulfillmentOrdersReleaseHoldUserErrorCode {
-  """The order could not be found."""
-  ORDER_NOT_FOUND
-}
-
 """
 Represents a fulfillment service. A fulfillment service is a third-party service that prepares and ships orders on behalf of the store owner.
 
@@ -15733,12 +15699,6 @@ type Mutation {
     """
     shippingMethod: String
   ): FulfillmentOrderSubmitFulfillmentRequestPayload
-
-  """Releases the hold on all fulfillmentOrders for an order."""
-  fulfillmentOrdersReleaseHold(
-    """The input fields used to release hold on fulfillment orders."""
-    input: FulfillmentOrdersReleaseHoldInput!
-  ): FulfillmentOrdersReleaseHoldPayload
 
   """Creates a fulfillment service."""
   fulfillmentServiceCreate(
