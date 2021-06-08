@@ -8210,14 +8210,14 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
-  """Cannot have both minimum subtotal and quantity present."""
-  MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
-
   """Exceeded maximum allowed value."""
   EXCEEDED_MAX
 
   """Value is outside allowed range."""
   VALUE_OUTSIDE_RANGE
+
+  """Cannot have both minimum subtotal and quantity present."""
+  MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
 
   """
   Active period overlaps with other automatic discounts. At any given time, only one automatic discount can be active.
@@ -16134,6 +16134,11 @@ type Mutation {
   paymentSessionResolve(
     """The payment session ID."""
     id: ID!
+
+    """
+    The date and time when a payment session of kind 'authorization' expires.
+    """
+    authorizationExpiresAt: DateTime
   ): PaymentSessionResolvePayload
 
   """Configure the partner managed gateway onto the merchant's store."""
@@ -19023,6 +19028,11 @@ enum PaymentMethods {
 
 """Represents a payment session."""
 type PaymentSession {
+  """
+  The date and time when a payment session of kind 'authorization' expires.
+  """
+  authorizationExpiresAt: DateTime
+
   """A globally unique identifier."""
   id: ID!
 
