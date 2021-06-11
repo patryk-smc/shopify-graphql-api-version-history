@@ -24,6 +24,36 @@ type AccessScope {
   handle: String!
 }
 
+"""A sale associated with an order price adjustment."""
+type AdjustmentSale implements Sale {
+  """The type of order action that the sale represents."""
+  actionType: SaleActionType!
+
+  """The unique identifier for the sale."""
+  id: ID!
+
+  """The line type assocated with the sale."""
+  lineType: SaleLineType!
+
+  """The number of units either ordered or intended to be returned."""
+  quantity: Int
+
+  """All individual taxes associated with the sale."""
+  taxes: [SaleTax!]!
+
+  """The total sale amount after taxes and discounts."""
+  totalAmount: MoneyBag!
+
+  """The total discounts allocated to the line item after taxes."""
+  totalDiscountAmountAfterTaxes: MoneyBag!
+
+  """The total discounts allocated to the line item before taxes."""
+  totalDiscountAmountBeforeTaxes: MoneyBag!
+
+  """The total amount of taxes for the sale."""
+  totalTaxAmount: MoneyBag!
+}
+
 """Whether all items in the cart are entitled to the discount."""
 type AllDiscountItems {
   """Whether all items are selected. The value is hardcoded to `true`."""
@@ -8113,11 +8143,11 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
-  """Exceeded maximum allowed value."""
-  EXCEEDED_MAX
-
   """Value is outside allowed range."""
   VALUE_OUTSIDE_RANGE
+
+  """Exceeded maximum allowed value."""
+  EXCEEDED_MAX
 
   """Cannot have both minimum subtotal and quantity present."""
   MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
@@ -9424,6 +9454,39 @@ type Duty implements Node {
 
   """The TaxLine objects connected to the duty for the line item."""
   taxLines: [TaxLine!]!
+}
+
+"""A sale associated with a duty charge."""
+type DutySale implements Sale {
+  """The type of order action that the sale represents."""
+  actionType: SaleActionType!
+
+  """The duty for the line item."""
+  duty: Duty!
+
+  """The unique identifier for the sale."""
+  id: ID!
+
+  """The line type assocated with the sale."""
+  lineType: SaleLineType!
+
+  """The number of units either ordered or intended to be returned."""
+  quantity: Int
+
+  """All individual taxes associated with the sale."""
+  taxes: [SaleTax!]!
+
+  """The total sale amount after taxes and discounts."""
+  totalAmount: MoneyBag!
+
+  """The total discounts allocated to the line item after taxes."""
+  totalDiscountAmountAfterTaxes: MoneyBag!
+
+  """The total discounts allocated to the line item before taxes."""
+  totalDiscountAmountBeforeTaxes: MoneyBag!
+
+  """The total amount of taxes for the sale."""
+  totalTaxAmount: MoneyBag!
 }
 
 """The attribute editable information."""
@@ -11491,6 +11554,39 @@ enum GiftCardErrorCode {
 
   """Input value should be greater than minimum allowed value."""
   GREATER_THAN
+}
+
+"""A sale associated with a gift card."""
+type GiftCardSale implements Sale {
+  """The type of order action that the sale represents."""
+  actionType: SaleActionType!
+
+  """The unique identifier for the sale."""
+  id: ID!
+
+  """The line item for the associated sale."""
+  lineItem: LineItem!
+
+  """The line type assocated with the sale."""
+  lineType: SaleLineType!
+
+  """The number of units either ordered or intended to be returned."""
+  quantity: Int
+
+  """All individual taxes associated with the sale."""
+  taxes: [SaleTax!]!
+
+  """The total sale amount after taxes and discounts."""
+  totalAmount: MoneyBag!
+
+  """The total discounts allocated to the line item after taxes."""
+  totalDiscountAmountAfterTaxes: MoneyBag!
+
+  """The total discounts allocated to the line item before taxes."""
+  totalDiscountAmountBeforeTaxes: MoneyBag!
+
+  """The total amount of taxes for the sale."""
+  totalTaxAmount: MoneyBag!
 }
 
 """The set of valid sort keys for the GiftCard query."""
@@ -17167,6 +17263,34 @@ Learn more about [editing an existing order with the Admin API](https://shopify.
 
 """
 type Order implements Node & CommentEventSubject & HasMetafields & LegacyInteroperability & HasEvents & HasLocalizationExtensions {
+  """Paginated list of sale agreements associated with an order."""
+  agreements(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """
+    Supported filter parameters:
+     - `happened_at`
+    
+    See the detailed [search syntax](https://help.shopify.com/api/getting-started/search-syntax)
+    for more information about using filters.
+    
+    """
+    query: String
+  ): SalesAgreementConnection!
+
   """
   Generated messages that appear at the top of an order page in the Shopify admin.
   For example, _this is a test order_.
@@ -17976,6 +18100,23 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   updatedAt: DateTime!
 }
 
+"""The possible order action types for a sales agreement."""
+enum OrderActionType {
+  """A purchase or charge."""
+  ORDER
+
+  """An edit to the order."""
+  ORDER_EDIT
+
+  """A refund on the order."""
+  REFUND
+
+  """
+  An unknown agreement action. Represents new actions that may be added in future versions.
+  """
+  UNKNOWN
+}
+
 """
 An order adjustment accounts for refunded shipping costs or the difference between calculated and actual refund
 amount.
@@ -18034,6 +18175,42 @@ enum OrderAdjustmentKind {
   
   """
   REFUND_DISCREPANCY
+}
+
+"""An agreement associated with an order placement."""
+type OrderAgreement implements SalesAgreement {
+  """The app that created the agreement."""
+  app: App
+
+  """The date and time at which the agreement occured."""
+  happenedAt: DateTime!
+
+  """The unique identifier for the agreement."""
+  id: ID!
+
+  """The order associated with the agreement."""
+  order: Order!
+
+  """The reason the agremeent was created."""
+  reason: OrderActionType!
+
+  """All individual sales associated with the agreement."""
+  sales(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): SaleConnection!
 }
 
 """
@@ -18138,9 +18315,7 @@ enum OrderDisplayFinancialStatus {
   EXPIRED
 }
 
-"""
-Represents the order's current fulfillment status. Valid values are: unfulfilled, partial, fulfilled, restocked.
-"""
+"""Represents the order's current fulfillment status."""
 enum OrderDisplayFulfillmentStatus {
   """Displayed as **Unfulfilled**."""
   UNFULFILLED
@@ -18231,6 +18406,39 @@ type OrderEditAddVariantPayload {
 
   """List of errors that occurred executing the mutation."""
   userErrors: [UserError!]!
+}
+
+"""An agreement associated with an edit to the order."""
+type OrderEditAgreement implements SalesAgreement {
+  """The app that created the agreement."""
+  app: App
+
+  """The date and time at which the agreement occured."""
+  happenedAt: DateTime!
+
+  """The unique identifier for the agreement."""
+  id: ID!
+
+  """The reason the agremeent was created."""
+  reason: OrderActionType!
+
+  """All individual sales associated with the agreement."""
+  sales(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): SaleConnection!
 }
 
 """The input fields used to add a discount during an order edit."""
@@ -21821,6 +22029,39 @@ type ProductReorderMediaPayload {
   userErrors: [UserError!]! @deprecated(reason: "Use `mediaUserErrors` instead")
 }
 
+"""A sale associated with a product."""
+type ProductSale implements Sale {
+  """The type of order action that the sale represents."""
+  actionType: SaleActionType!
+
+  """The unique identifier for the sale."""
+  id: ID!
+
+  """The line item for the associated sale."""
+  lineItem: LineItem!
+
+  """The line type assocated with the sale."""
+  lineType: SaleLineType!
+
+  """The number of units either ordered or intended to be returned."""
+  quantity: Int
+
+  """All individual taxes associated with the sale."""
+  taxes: [SaleTax!]!
+
+  """The total sale amount after taxes and discounts."""
+  totalAmount: MoneyBag!
+
+  """The total discounts allocated to the line item after taxes."""
+  totalDiscountAmountAfterTaxes: MoneyBag!
+
+  """The total discounts allocated to the line item before taxes."""
+  totalDiscountAmountBeforeTaxes: MoneyBag!
+
+  """The total amount of taxes for the sale."""
+  totalTaxAmount: MoneyBag!
+}
+
 """The set of valid sort keys for the Product query."""
 enum ProductSortKeys {
   """Sort by the `title` value."""
@@ -25090,6 +25331,42 @@ type Refund implements Node & LegacyInteroperability {
   updatedAt: DateTime!
 }
 
+"""An agreement associated with an order refund."""
+type RefundAgreement implements SalesAgreement {
+  """The app that created the agreement."""
+  app: App
+
+  """The date and time at which the agreement occured."""
+  happenedAt: DateTime!
+
+  """The unique identifier for the agreement."""
+  id: ID!
+
+  """The reason the agremeent was created."""
+  reason: OrderActionType!
+
+  """The refund associated with the agreement."""
+  refund: Refund!
+
+  """All individual sales associated with the agreement."""
+  sales(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): SaleConnection!
+}
+
 """Return type for `refundCreate` mutation."""
 type RefundCreatePayload {
   """The order associated with the created refund."""
@@ -25601,6 +25878,174 @@ input SEOInput {
 
   """SEO description of the product."""
   description: String
+}
+
+"""An individual sale record associated with a sales agreement."""
+interface Sale {
+  """The type of order action that the sale represents."""
+  actionType: SaleActionType!
+
+  """The unique identifier for the sale."""
+  id: ID!
+
+  """The line type assocated with the sale."""
+  lineType: SaleLineType!
+
+  """The number of units either ordered or intended to be returned."""
+  quantity: Int
+
+  """All individual taxes associated with the sale."""
+  taxes: [SaleTax!]!
+
+  """The total sale amount after taxes and discounts."""
+  totalAmount: MoneyBag!
+
+  """The total discounts allocated to the line item after taxes."""
+  totalDiscountAmountAfterTaxes: MoneyBag!
+
+  """The total discounts allocated to the line item before taxes."""
+  totalDiscountAmountBeforeTaxes: MoneyBag!
+
+  """The total amount of taxes for the sale."""
+  totalTaxAmount: MoneyBag!
+}
+
+"""The possible order action types for a sale."""
+enum SaleActionType {
+  """A purchase or charge."""
+  ORDER
+
+  """A removal or return."""
+  RETURN
+
+  """A change to the price, taxes, or discounts for a prior purchase."""
+  UPDATE
+
+  """
+  An unknown order action. Represents new actions that may be added in future versions.
+  """
+  UNKNOWN
+}
+
+"""
+An auto-generated type for paginating through multiple Sales.
+
+"""
+type SaleConnection {
+  """A list of edges."""
+  edges: [SaleEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+}
+
+"""
+An auto-generated type which holds one Sale and a cursor during pagination.
+
+"""
+type SaleEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of SaleEdge."""
+  node: Sale!
+}
+
+"""The possible line types for a sale record."""
+enum SaleLineType {
+  """A product purchased, returned or exchanged."""
+  PRODUCT
+
+  """A tip added by the customer."""
+  TIP
+
+  """A gift card."""
+  GIFT_CARD
+
+  """A shipping cost."""
+  SHIPPING
+
+  """A duty charge."""
+  DUTY
+
+  """
+  An unknown sale line. Represents new types that may be added in future versions.
+  """
+  UNKNOWN
+
+  """A sale adjustment."""
+  ADJUSTMENT
+}
+
+"""The tax associated with a sale record."""
+type SaleTax {
+  """The total tax amount charged on the related sale."""
+  amount: MoneyBag!
+
+  """The unique identifier for the tax on the related sale."""
+  id: ID!
+
+  """The tax line associated with the sale."""
+  taxLine: TaxLine!
+}
+
+"""
+An addition, removal, modification, or other sale commitment associated with an order.
+"""
+interface SalesAgreement {
+  """The app that created the agreement."""
+  app: App
+
+  """The date and time at which the agreement occured."""
+  happenedAt: DateTime!
+
+  """The unique identifier for the agreement."""
+  id: ID!
+
+  """The reason the agremeent was created."""
+  reason: OrderActionType!
+
+  """All individual sales associated with the agreement."""
+  sales(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): SaleConnection!
+}
+
+"""
+An auto-generated type for paginating through multiple SalesAgreements.
+
+"""
+type SalesAgreementConnection {
+  """A list of edges."""
+  edges: [SalesAgreementEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+}
+
+"""
+An auto-generated type which holds one SalesAgreement and a cursor during pagination.
+
+"""
+type SalesAgreementEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of SalesAgreementEdge."""
+  node: SalesAgreement!
 }
 
 """
@@ -26981,6 +27426,41 @@ input ShippingLineInput {
 
   """Title of the shipping rate."""
   title: String
+}
+
+"""A sale associated with a shipping charge."""
+type ShippingLineSale implements Sale {
+  """The type of order action that the sale represents."""
+  actionType: SaleActionType!
+
+  """The unique identifier for the sale."""
+  id: ID!
+
+  """The line type assocated with the sale."""
+  lineType: SaleLineType!
+
+  """The number of units either ordered or intended to be returned."""
+  quantity: Int
+
+  """
+  The shipping line item for the associated sale. `shippingLine` is not available if the `SaleActionType` is a return.
+  """
+  shippingLine: ShippingLine
+
+  """All individual taxes associated with the sale."""
+  taxes: [SaleTax!]!
+
+  """The total sale amount after taxes and discounts."""
+  totalAmount: MoneyBag!
+
+  """The total discounts allocated to the line item after taxes."""
+  totalDiscountAmountAfterTaxes: MoneyBag!
+
+  """The total discounts allocated to the line item before taxes."""
+  totalDiscountAmountBeforeTaxes: MoneyBag!
+
+  """The total amount of taxes for the sale."""
+  totalTaxAmount: MoneyBag!
 }
 
 """The shipping method for the delivery."""
@@ -31345,6 +31825,39 @@ type TenderTransactionEdge {
 
   """The item at the end of TenderTransactionEdge."""
   node: TenderTransaction!
+}
+
+"""A sale associated with a tip."""
+type TipSale implements Sale {
+  """The type of order action that the sale represents."""
+  actionType: SaleActionType!
+
+  """The unique identifier for the sale."""
+  id: ID!
+
+  """The line item for the associated sale."""
+  lineItem: LineItem!
+
+  """The line type assocated with the sale."""
+  lineType: SaleLineType!
+
+  """The number of units either ordered or intended to be returned."""
+  quantity: Int
+
+  """All individual taxes associated with the sale."""
+  taxes: [SaleTax!]!
+
+  """The total sale amount after taxes and discounts."""
+  totalAmount: MoneyBag!
+
+  """The total discounts allocated to the line item after taxes."""
+  totalDiscountAmountAfterTaxes: MoneyBag!
+
+  """The total discounts allocated to the line item before taxes."""
+  totalDiscountAmountBeforeTaxes: MoneyBag!
+
+  """The total amount of taxes for the sale."""
+  totalTaxAmount: MoneyBag!
 }
 
 """Specifies the fields for tracking information."""
