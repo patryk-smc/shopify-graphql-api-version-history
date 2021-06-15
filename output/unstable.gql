@@ -5362,6 +5362,15 @@ type CustomerPaymentMethodPaypalBillingAgreementUpdatePayload {
   userErrors: [CustomerPaymentMethodUserError!]!
 }
 
+"""Return type for `customerPaymentMethodRemoteCreate` mutation."""
+type CustomerPaymentMethodRemoteCreatePayload {
+  """The customer payment method."""
+  customerPaymentMethod: CustomerPaymentMethod
+
+  """List of errors that occurred executing the mutation."""
+  userErrors: [CustomerPaymentMethodRemoteUserError!]!
+}
+
 """
 Return type for `customerPaymentMethodRemoteCreditCardCreate` mutation.
 """
@@ -5371,6 +5380,56 @@ type CustomerPaymentMethodRemoteCreditCardCreatePayload {
 
   """List of errors that occurred executing the mutation."""
   userErrors: [CustomerPaymentMethodUserError!]!
+}
+
+"""
+Input for a remote gateway payment method, only one remote reference permitted.
+
+"""
+input CustomerPaymentMethodRemoteInput {
+  """
+  Input containing the fields for a remote stripe payment method.
+  
+  """
+  stripePaymentMethod: RemoteStripePaymentMethodInput
+
+  """
+  Input containing the fields for a remote authorize net customer profile.
+  
+  """
+  authorizeNetCustomerPaymentProfile: RemoteAuthorizeNetCustomerPaymentProfileInput
+}
+
+"""Represents an error in the input of a mutation."""
+type CustomerPaymentMethodRemoteUserError implements DisplayableError {
+  """Error code to uniquely identify the error."""
+  code: CustomerPaymentMethodRemoteUserErrorCode
+
+  """Path to the input field which caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by CustomerPaymentMethodRemoteUserError.
+"""
+enum CustomerPaymentMethodRemoteUserErrorCode {
+  """Input value is invalid."""
+  INVALID
+
+  """Input value must be blank."""
+  PRESENT
+
+  """Input value is already taken."""
+  TAKEN
+
+  """Exactly one remote reference is required."""
+  EXACTLY_ONE_REMOTE_REFERENCE_REQUIRED
+
+  """Authorize.net is not enabled for subscriptions."""
+  AUTHORIZE_NET_NOT_ENABLED_FOR_SUBSCRIPTIONS
 }
 
 """Return type for `customerPaymentMethodRevoke` mutation."""
@@ -5410,7 +5469,7 @@ enum CustomerPaymentMethodUserErrorCode {
   """Input value is invalid."""
   INVALID
 
-  """Input value is not present."""
+  """Input value must be blank."""
   PRESENT
 
   """Input value is already taken."""
@@ -8100,7 +8159,7 @@ enum DiscountErrorCode {
   """Input value is blank."""
   BLANK
 
-  """Input value is not present."""
+  """Input value must be blank."""
   PRESENT
 
   """Input value should be equal to allowed value."""
@@ -8139,11 +8198,11 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
-  """Value is outside allowed range."""
-  VALUE_OUTSIDE_RANGE
-
   """Cannot have both minimum subtotal and quantity present."""
   MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
+
+  """Value is outside allowed range."""
+  VALUE_OUTSIDE_RANGE
 
   """Exceeded maximum allowed value."""
   EXCEEDED_MAX
@@ -15142,6 +15201,15 @@ type Mutation {
     billingAddress: MailingAddressInput!
   ): CustomerPaymentMethodPaypalBillingAgreementUpdatePayload
 
+  """Create a payment method from remote gateway identifiers."""
+  customerPaymentMethodRemoteCreate(
+    """The ID of the customer."""
+    customerId: ID!
+
+    """Remote gateway payment method details."""
+    remoteReference: CustomerPaymentMethodRemoteInput!
+  ): CustomerPaymentMethodRemoteCreatePayload
+
   """Create a payment method from a credit card stored by Stripe."""
   customerPaymentMethodRemoteCreditCardCreate(
     """The ID of the customer."""
@@ -15152,7 +15220,7 @@ type Mutation {
 
     """The Stripe Payment Method ID."""
     stripePaymentMethodId: String
-  ): CustomerPaymentMethodRemoteCreditCardCreatePayload
+  ): CustomerPaymentMethodRemoteCreditCardCreatePayload @deprecated(reason: "Use `customerPaymentMethodRemoteCreate` instead")
 
   """Revokes a customer's payment method."""
   customerPaymentMethodRevoke(
@@ -24473,12 +24541,6 @@ type QueryRoot {
     query: String
   ): MarketingEventConnection!
 
-  """Returns a metafield by ID."""
-  metafield(
-    """The ID of the Metafield to return."""
-    id: ID!
-  ): Metafield
-
   """List of metafield namespaces and keys visible to the Storefront API."""
   metafieldStorefrontVisibilities(
     """Filter the metafields storefront whitelist by namespace."""
@@ -25646,6 +25708,42 @@ type RefundSessionStatusReason {
 enum RefundSessionStatusReasonRejectionCode {
   """Refund processing failure."""
   PROCESSING_ERROR
+}
+
+"""
+Input for a remote Authorize.net customer payment profile.
+
+"""
+input RemoteAuthorizeNetCustomerPaymentProfileInput {
+  """
+  The customerProfileId value from the Authorize.net API.
+  
+  """
+  customerProfileId: String!
+
+  """
+  The customerPaymentProfileId value from the Authorize.net API.
+  
+  """
+  customerPaymentProfileId: String
+}
+
+"""
+Input for a remote stripe payment method.
+
+"""
+input RemoteStripePaymentMethodInput {
+  """
+  The customer_id value from the Stripe API.
+  
+  """
+  customerId: String!
+
+  """
+  The payment_method_id value from the Stripe API.
+  
+  """
+  paymentMethodId: String
 }
 
 """
@@ -26918,7 +27016,7 @@ type SellingPlanGroupUserError implements DisplayableError {
 Possible error codes that could be returned by SellingPlanGroupUserError.
 """
 enum SellingPlanGroupUserErrorCode {
-  """Input value is not present."""
+  """Input value must be blank."""
   PRESENT
 
   """Input value is blank."""
@@ -33074,9 +33172,6 @@ enum WebhookSubscriptionTopic {
 
   """The webhook topic for `inventory_levels/disconnect` events."""
   INVENTORY_LEVELS_DISCONNECT
-
-  """The webhook topic for `attribution/risk` events."""
-  ATTRIBUTION_RISK
 
   """The webhook topic for `inventory_items/create` events."""
   INVENTORY_ITEMS_CREATE
