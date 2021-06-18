@@ -8198,14 +8198,14 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
+  """Exceeded maximum allowed value."""
+  EXCEEDED_MAX
+
   """Value is outside allowed range."""
   VALUE_OUTSIDE_RANGE
 
   """Cannot have both minimum subtotal and quantity present."""
   MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
-
-  """Exceeded maximum allowed value."""
-  EXCEEDED_MAX
 
   """
   Active period overlaps with other automatic discounts. At any given time, only one automatic discount can be active.
@@ -17360,6 +17360,9 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   """
   alerts: [ResourceAlert!]!
 
+  """The application that created the order."""
+  app: OrderApp
+
   """
   Mailing address provided by the customer.
   Not all orders have mailing addresses.
@@ -17384,8 +17387,8 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   cancelReason: OrderCancelReason
 
   """
-  Date and time when the order was canceled.
-  Returns null if the order wasn't canceled.
+  The date and time when the order was canceled.
+  Returns `null` if the order wasn't canceled.
   
   """
   cancelledAt: DateTime
@@ -17403,7 +17406,7 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   cartDiscountAmount: Money @deprecated(reason: "Use `cartDiscountAmountSet` instead")
 
   """
-  Amount of the order-level discount (does not contain any line item discounts).
+  The amount of the order-level discount, which doesn't contain any line item discounts.
   """
   cartDiscountAmountSet: MoneyBag
 
@@ -17442,7 +17445,7 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   currentCartDiscountAmountSet: MoneyBag!
 
   """
-  The sum of the quantities for the line items that contribute to the order's subtotal. Does not include returned quantities.
+  The sum of the quantities for the line items that contribute to the order's subtotal. This doesn't include returned quantities.
   """
   currentSubtotalLineItemsQuantity: Int!
 
@@ -17507,7 +17510,7 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   customerJourney: CustomerJourney @deprecated(reason: "Use `customerJourneySummary` instead")
 
   """
-  Description of the customer's experience with the store leading up to the order.
+  A description of the customer's experience with the store leading up to the order.
   
   """
   customerJourneySummary: CustomerJourneySummary
@@ -17557,7 +17560,7 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   """
   displayFulfillmentStatus: OrderDisplayFulfillmentStatus!
 
-  """Summary of each dispute associated with the order."""
+  """A summary of each dispute associated with the order."""
   disputes: [OrderDisputeSummary!]!
 
   """
@@ -17569,7 +17572,7 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   """Whether the order has had any edits applied."""
   edited: Boolean!
 
-  """Email address associated with the customer."""
+  """The email address associated with the customer."""
   email: String
 
   """
@@ -17616,7 +17619,7 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
 
   """
   Whether there are items that can be fulfilled.
-  This field returns false after an order is completely fulfilled (or completely refunded without any fulfillments).
+  This field returns `false` after an order is completely fulfilled, or completely refunded without any fulfillments.
   
   """
   fulfillable: Boolean!
@@ -17801,7 +17804,7 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   netPayment: Money! @deprecated(reason: "Use `netPaymentSet` instead")
 
   """
-  Net payment for the order, based on the total amount received minus the total amount refunded.
+  The net payment for the order, based on the total amount received minus the total amount refunded.
   """
   netPaymentSet: MoneyBag!
 
@@ -17839,7 +17842,7 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   """
   originalTotalDutiesSet: MoneyBag
 
-  """Total price of the order at the time of order creation."""
+  """The total price of the order at the time of order creation."""
   originalTotalPriceSet: MoneyBag!
 
   """
@@ -17854,11 +17857,11 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   """
   paymentGatewayNames: [String!]!
 
-  """Phone number associated with the customer."""
+  """The phone number associated with the customer."""
   phone: String
 
   """
-  If the order was processed using Shopify POS, then this is the location.
+  If the order was processed using Shopify POS, then this returns the location.
   
   """
   physicalLocation: Location
@@ -17969,13 +17972,13 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
     first: Int
   ): [OrderRisk!]!
 
-  """Mailing address for shipping items on the order."""
+  """The mailing address for shipping items on the order."""
   shippingAddress: MailingAddress
 
   """A summary of shipping costs on the order."""
   shippingLine: ShippingLine
 
-  """List of line items that contain the shipping costs."""
+  """A list of line items that contain the shipping costs."""
   shippingLines(
     """Returns up to the first `n` elements from the list."""
     first: Int
@@ -18004,14 +18007,14 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   subtotalLineItemsQuantity: Int!
 
   """
-  The subtotal of line items and their discounts (does not contain shipping costs and shipping discounts). 
+  The subtotal of line items and their discounts, which doesn't contain shipping costs and shipping discounts.
   If `taxesIncluded` is `true`, then this subtotal amount includes the tax.
   
   """
   subtotalPrice: Money @deprecated(reason: "Use `subtotalPriceSet` instead")
 
   """
-  Subtotal of the line items and their discounts (does not contain shipping costs and shipping discounts).
+  The subtotal of the line items and their discounts, which doesn't contain shipping costs and shipping discounts.
   """
   subtotalPriceSet: MoneyBag
 
@@ -18049,7 +18052,7 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   """
   tags: [String!]!
 
-  """Taxes charged for the line items on the order."""
+  """The taxes charged for the line items on the order."""
   taxLines: [TaxLine!]!
 
   """Whether taxes are included in the subtotal price of the order."""
@@ -18064,7 +18067,7 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   test: Boolean!
 
   """
-  Amount authorized for the order, that is uncaptured or undercaptured. The total is not adjusted for returns or removals.
+  The amount authorized for the order that is uncaptured or undercaptured. The total isn't adjusted for returns or removals.
   """
   totalCapturable: Money! @deprecated(reason: "Use `totalCapturableSet` instead")
 
@@ -18077,7 +18080,7 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   totalDiscounts: Money @deprecated(reason: "Use `totalDiscountsSet` instead")
 
   """
-  Total amount discounted from the order (includes order-level and line item discounts). The total is not adjusted for returns or removals. For the total with returns or removals, use `currentTotalDiscountsSet`.
+  The total amount discounted from the order. This includes order-level and line item discounts. The total is not adjusted for returns or removals. For the total with returns or removals, use `currentTotalDiscountsSet`.
   """
   totalDiscountsSet: MoneyBag
 
@@ -18098,7 +18101,7 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   totalReceived: Money! @deprecated(reason: "Use `totalReceivedSet` instead")
 
   """
-  Total amount received by the customer for the order. The total is not adjusted for returns or removals.
+  The total amount received by the customer for the order. The total isn't adjusted for returns or removals.
   
   """
   totalReceivedSet: MoneyBag!
@@ -18106,17 +18109,17 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   """Total amount refunded for the order."""
   totalRefunded: Money! @deprecated(reason: "Use `totalRefundedSet` instead")
 
-  """Total amount refunded for the order."""
+  """The total amount refunded for the order."""
   totalRefundedSet: MoneyBag!
 
-  """Total amount refunded for shipping."""
+  """The total amount refunded for shipping."""
   totalRefundedShippingSet: MoneyBag!
 
   """Total amount charged for shipping the order."""
   totalShippingPrice: Money! @deprecated(reason: "Use `totalShippingPriceSet` instead")
 
   """
-  Total amount charged for shipping the order. The total is not adjusted for returns or removals.
+  The total amount charged for shipping the order. The total isn't adjusted for returns or removals.
   """
   totalShippingPriceSet: MoneyBag!
 
@@ -18124,18 +18127,18 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   totalTax: Money @deprecated(reason: "Use `totalTaxSet` instead")
 
   """
-  Total of all taxes applied to the order. The total is not adjusted for returns or removals. For the total with returns or removals, use `currentTotalTaxSet`.
+  The total of all taxes applied to the order. The total isn't adjusted for returns or removals. For the total with returns or removals, use `currentTotalTaxSet`.
   """
   totalTaxSet: MoneyBag
 
   """Total tip amount received for the order."""
   totalTipReceived: MoneyV2! @deprecated(reason: "Use `totalTipReceivedSet` instead")
 
-  """Total tip received for the order."""
+  """The total tip received for the order."""
   totalTipReceivedSet: MoneyBag!
 
   """
-  Total weight (grams) of the order. The total is not adjusted for returns or removals. For the total with returns or removals, use `currentTotalWeightSet`.
+  The total weight of the order in grams. The total isn't adjusted for returns or removals. For the total with returns or removals, use `currentTotalWeightSet`.
   """
   totalWeight: UnsignedInt64
 
@@ -18281,6 +18284,18 @@ type OrderAgreement implements SalesAgreement {
     """Reverse the order of the underlying list."""
     reverse: Boolean = false
   ): SaleConnection!
+}
+
+"""
+The application that created the order.
+
+"""
+type OrderApp {
+  """The app icon."""
+  icon: Image
+
+  """The name of the app."""
+  name: String!
 }
 
 """
