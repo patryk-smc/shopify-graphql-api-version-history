@@ -28685,47 +28685,6 @@ type Shop implements Node & HasPublishedTranslations & HasMetafields {
   """The shop's unit system."""
   unitSystem: UnitSystem!
 
-  """All images uploaded to the shop."""
-  uploadedImages(
-    """Returns up to the first `n` elements from the list."""
-    first: Int
-
-    """Returns the elements that come after the specified cursor."""
-    after: String
-
-    """Returns up to the last `n` elements from the list."""
-    last: Int
-
-    """Returns the elements that come before the specified cursor."""
-    before: String
-
-    """Reverse the order of the underlying list."""
-    reverse: Boolean = false
-
-    """Sort the underlying list by the given key."""
-    sortKey: ShopImageSortKeys = CREATED_AT
-
-    """
-    Image width in pixels between 1 and 2048. This argument is deprecated: Use `maxWidth` on `Image.transformedSrc` instead.
-    """
-    maxWidth: Int
-
-    """
-    Image height in pixels between 1 and 2048. This argument is deprecated: Use `maxHeight` on `Image.transformedSrc` instead.
-    """
-    maxHeight: Int
-
-    """
-    Crops the image according to the specified region. This argument is deprecated: Use `crop` on `Image.transformedSrc` instead.
-    """
-    crop: CropRegion
-
-    """
-    Image size multiplier for high-resolution retina displays. Must be between 1 and 3. This argument is deprecated: Use `scale` on `Image.transformedSrc` instead.
-    """
-    scale: Int = 1
-  ): ImageConnection!
-
   """Fetch list of images uploaded to shop by ids."""
   uploadedImagesByIds(
     """The ids of uploaded images."""
@@ -28874,23 +28833,6 @@ type ShopFeatures {
 
   """Whether a shop is using Shopify Balance."""
   usingShopifyBalance: Boolean!
-}
-
-"""The set of valid sort keys for the ShopImage query."""
-enum ShopImageSortKeys {
-  """Sort by the `created_at` value."""
-  CREATED_AT
-
-  """Sort by the `id` value."""
-  ID
-
-  """
-  During a search (i.e. when the `query` parameter has been specified on the connection) this sorts the
-  results by relevance to the search term(s). When no search query is specified, this sort key is not
-  deterministic and should not be used.
-  
-  """
-  RELEVANCE
 }
 
 """Available locale for a shop."""
