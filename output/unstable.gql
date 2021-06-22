@@ -2006,6 +2006,9 @@ Possible error codes that could be returned by CaptureSessionRejectUserError.
 enum CaptureSessionRejectUserErrorCode {
   """Capture session not found."""
   CAPTURE_SESSION_NOT_FOUND
+
+  """Capture session has already been resolved."""
+  CAPTURE_SESSION_INVALID_STATE
 }
 
 """Reason of the capture status."""
@@ -2044,6 +2047,9 @@ Possible error codes that could be returned by CaptureSessionResolveUserError.
 enum CaptureSessionResolveUserErrorCode {
   """Capture session not found."""
   CAPTURE_SESSION_NOT_FOUND
+
+  """Capture session has already been rejected."""
+  CAPTURE_SESSION_INVALID_STATE
 }
 
 """Represents a capture status."""
@@ -25660,6 +25666,9 @@ Possible error codes that could be returned by RefundSessionRejectUserError.
 enum RefundSessionRejectUserErrorCode {
   """Refund session not found."""
   REFUND_SESSION_NOT_FOUND
+
+  """Refund session has already been resolved."""
+  REFUND_SESSION_INVALID_STATE
 }
 
 """Reason of the refund status."""
@@ -25698,6 +25707,9 @@ Possible error codes that could be returned by RefundSessionResolveUserError.
 enum RefundSessionResolveUserErrorCode {
   """Refund session not found."""
   REFUND_SESSION_NOT_FOUND
+
+  """Refund session has already been rejected."""
+  REFUND_SESSION_INVALID_STATE
 }
 
 """Represents a refund status."""
@@ -32692,6 +32704,9 @@ Possible error codes that could be returned by VoidSessionRejectUserError.
 enum VoidSessionRejectUserErrorCode {
   """Void session not found."""
   VOID_SESSION_NOT_FOUND
+
+  """Void session has already been resolved."""
+  VOID_SESSION_INVALID_STATE
 }
 
 """Reason of the void status."""
@@ -32730,6 +32745,9 @@ Possible error codes that could be returned by VoidSessionResolveUserError.
 enum VoidSessionResolveUserErrorCode {
   """Void session not found."""
   VOID_SESSION_NOT_FOUND
+
+  """Void session has already been rejected."""
+  VOID_SESSION_INVALID_STATE
 }
 
 """Represents a void status."""
