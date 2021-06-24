@@ -11464,6 +11464,9 @@ type GenericFile implements Node & File {
   """Globally unique identifier."""
   id: ID!
 
+  """The mime type of the file."""
+  mimeType: String
+
   """The preview image for the media."""
   preview: MediaPreviewImage
 
