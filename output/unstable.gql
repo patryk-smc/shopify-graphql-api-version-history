@@ -6723,6 +6723,15 @@ enum DigitalWallet {
   SHOPIFY_PAY
 }
 
+"""Represents a dimension."""
+type Dimension {
+  """Unit of measurement for `value`."""
+  unit: LengthUnit!
+
+  """The dimension using the unit system specified with `unit`."""
+  value: Float!
+}
+
 """
 An amount discounting the line that has been allocated by an associated discount application.
 
@@ -8204,14 +8213,14 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
-  """Cannot have both minimum subtotal and quantity present."""
-  MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
-
   """Exceeded maximum allowed value."""
   EXCEEDED_MAX
 
   """Value is outside allowed range."""
   VALUE_OUTSIDE_RANGE
+
+  """Cannot have both minimum subtotal and quantity present."""
+  MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
 
   """
   Active period overlaps with other automatic discounts. At any given time, only one automatic discount can be active.
@@ -11837,6 +11846,48 @@ interface HasLocalizationExtensionsForDraftOrders {
   ): LocalizationExtensionConnection!
 }
 
+"""Resources that metafield definitions can be applied to."""
+interface HasMetafieldDefinitions {
+  """List of metafield definitions."""
+  metafieldDefinitions(
+    """Filter metafield definitions by namespace."""
+    namespace: String
+
+    """Filter by the definition's pinned status."""
+    pinnedStatus: MetafieldDefinitionPinnedStatus = ANY
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: MetafieldDefinitionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `key`
+     - `namespace`
+     - `owner_type`
+    
+    See the detailed [search syntax](https://help.shopify.com/api/getting-started/search-syntax)
+    for more information about using filters.
+    
+    """
+    query: String
+  ): MetafieldDefinitionConnection!
+}
+
 """
 Represents information about the metafields associated to the specified resource.
 """
@@ -12445,6 +12496,27 @@ interface LegacyInteroperability {
   legacyResourceId: UnsignedInt64!
 }
 
+"""Units of measurement for length."""
+enum LengthUnit {
+  """1000 millimeters equals 1 meter."""
+  MILLIMETERS
+
+  """100 centimeters equals 1 meter."""
+  CENTIMETERS
+
+  """Metric system unit of length."""
+  METERS
+
+  """12 inches equals 1 foot."""
+  INCHES
+
+  """Imperial system unit of length."""
+  FEET
+
+  """1 yard equals 3 feet."""
+  YARDS
+}
+
 """
 The total number of pending orders on a shop if less then a maximum, or that maximum.
 The atMax field indicates when this maximum has been reached.
@@ -12998,7 +13070,7 @@ enum LocalizationExtensionPurpose {
 Represents the location where the physical good resides.
 
 """
-type Location implements Node & LegacyInteroperability {
+type Location implements HasMetafieldDefinitions & Node & LegacyInteroperability {
   """Whether this location can be reactivated."""
   activatable: Boolean!
 
@@ -13083,6 +13155,45 @@ type Location implements Node & LegacyInteroperability {
 
   """The ID of the corresponding resource in the REST Admin API."""
   legacyResourceId: UnsignedInt64!
+
+  """List of metafield definitions."""
+  metafieldDefinitions(
+    """Filter metafield definitions by namespace."""
+    namespace: String
+
+    """Filter by the definition's pinned status."""
+    pinnedStatus: MetafieldDefinitionPinnedStatus = ANY
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: MetafieldDefinitionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `key`
+     - `namespace`
+     - `owner_type`
+    
+    See the detailed [search syntax](https://help.shopify.com/api/getting-started/search-syntax)
+    for more information about using filters.
+    
+    """
+    query: String
+  ): MetafieldDefinitionConnection!
 
   """The name of the location."""
   name: String!
@@ -14537,6 +14648,9 @@ type Metafield implements Node & LegacyInteroperability {
   """The date and time when the metafield was created."""
   createdAt: DateTime!
 
+  """A definition that corresponds to this metafield's namespace/key pair."""
+  definition: MetafieldDefinition
+
   """The description of a metafield."""
   description: String
 
@@ -14552,8 +14666,24 @@ type Metafield implements Node & LegacyInteroperability {
   """The namespace for a metafield."""
   namespace: String!
 
+  """The owner object of this metafield."""
+  owner: HasMetafields!
+
   """Owner type of a metafield visible to the Storefront API."""
   ownerType: MetafieldOwnerType!
+
+  """
+  The presentation options that corresponds to this metafield's definition if present.
+  """
+  presentation: JSON!
+
+  """
+  Returns a reference object if the metafield definition's type is a resource reference.
+  """
+  reference: MetafieldReference
+
+  """The type of the metafield."""
+  type: String!
 
   """The date and time when the metafield was updated."""
   updatedAt: DateTime!
@@ -14562,7 +14692,7 @@ type Metafield implements Node & LegacyInteroperability {
   value: String!
 
   """Represents the metafield value type."""
-  valueType: MetafieldValueType!
+  valueType: MetafieldValueType! @deprecated(reason: "`valueType` is deprecated and replaced by `type` in API version 2021-07.")
 }
 
 """
@@ -14575,6 +14705,582 @@ type MetafieldConnection {
 
   """Information to aid in pagination."""
   pageInfo: PageInfo!
+}
+
+"""
+Metafield definitions allow merchants to configure a set of metafields that
+are surfaced and managed from admin resource pages.
+
+"""
+type MetafieldDefinition implements Node {
+  """The description of a metafield definition."""
+  description: String
+
+  """Globally unique identifier."""
+  id: ID!
+
+  """The key name for a metafield definition."""
+  key: String!
+
+  """List of a definition's associated metafields."""
+  metafields(
+    """Filter by a metafield's validation status."""
+    validationStatus: MetafieldValidationStatus = ANY
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): MetafieldConnection!
+
+  """The count of metafields under a metafield definition."""
+  metafieldsCount(
+    """Metafield validation status."""
+    validationStatus: MetafieldValidationStatus
+  ): Int!
+
+  """The name of a metafield definition."""
+  name: String!
+
+  """The namespace for a metafield definition."""
+  namespace: String!
+
+  """The configured options for the metafield definition."""
+  options: [MetafieldDefinitionOption!]!
+
+  """The resource type that the definition applies to."""
+  ownerType: MetafieldOwnerType!
+
+  """The position of the definition in the pinned list."""
+  pinnedPosition: Int
+
+  """The presentation options associated with a definition."""
+  presentation: JSON!
+
+  """
+  The standard metafield definition template associated with a definition, if available.
+  """
+  standardTemplate: StandardMetafieldDefinitionTemplate
+
+  """The associated metafield definition type."""
+  type: MetafieldDefinitionType!
+
+  """The validation status of the metafield definition."""
+  validationStatus: MetafieldDefinitionValidationStatus!
+}
+
+"""
+An auto-generated type for paginating through multiple MetafieldDefinitions.
+
+"""
+type MetafieldDefinitionConnection {
+  """A list of edges."""
+  edges: [MetafieldDefinitionEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+}
+
+"""Return type for `metafieldDefinitionCreate` mutation."""
+type MetafieldDefinitionCreatePayload {
+  """The metafield definition that was created."""
+  createdDefinition: MetafieldDefinition
+
+  """List of errors that occurred executing the mutation."""
+  userErrors: [MetafieldDefinitionCreateUserError!]!
+}
+
+"""
+An error that occurs during the execution of MetafieldDefinitionCreate.
+"""
+type MetafieldDefinitionCreateUserError implements DisplayableError {
+  """Error code to uniquely identify the error."""
+  code: MetafieldDefinitionCreateUserErrorCode
+
+  """Path to the input field which caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by MetafieldDefinitionCreateUserError.
+"""
+enum MetafieldDefinitionCreateUserErrorCode {
+  """Input value is invalid."""
+  INVALID
+
+  """Input value is not included in the list."""
+  INCLUSION
+
+  """Input value must be blank."""
+  PRESENT
+
+  """Input value is already taken."""
+  TAKEN
+
+  """Input value is too long."""
+  TOO_LONG
+
+  """Input value is too short."""
+  TOO_SHORT
+
+  """Definition limit per owner type exceeded."""
+  RESOURCE_TYPE_LIMIT_EXCEEDED
+
+  """Maximum limit of definitions per owner type exceeded."""
+  LIMIT_EXCEEDED
+
+  """Invalid option."""
+  INVALID_OPTION
+
+  """Duplicate option."""
+  DUPLICATE_OPTION
+
+  """Namespace & key is reserved for standard definitions."""
+  RESERVED_NAMESPACE_KEY
+
+  """Pinned limit reached for owner type."""
+  PINNED_LIMIT_REACHED
+
+  """Namespace and key is already in use for a set of your metafields."""
+  UNSTRUCTURED_ALREADY_EXISTS
+}
+
+"""Return type for `metafieldDefinitionDelete` mutation."""
+type MetafieldDefinitionDeletePayload {
+  """The id of the deleted metafield definition."""
+  deletedDefinitionId: ID
+
+  """List of errors that occurred executing the mutation."""
+  userErrors: [MetafieldDefinitionDeleteUserError!]!
+}
+
+"""
+An error that occurs during the execution of MetafieldDefinitionDelete.
+"""
+type MetafieldDefinitionDeleteUserError implements DisplayableError {
+  """Error code to uniquely identify the error."""
+  code: MetafieldDefinitionDeleteUserErrorCode
+
+  """Path to the input field which caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by MetafieldDefinitionDeleteUserError.
+"""
+enum MetafieldDefinitionDeleteUserErrorCode {
+  """Input value must be blank."""
+  PRESENT
+
+  """Definition not found."""
+  NOT_FOUND
+
+  """An internal error occurred."""
+  INTERNAL_ERROR
+}
+
+"""
+An auto-generated type which holds one MetafieldDefinition and a cursor during pagination.
+
+"""
+type MetafieldDefinitionEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of MetafieldDefinitionEdge."""
+  node: MetafieldDefinition!
+}
+
+"""
+Specifies the input fields for a metafield definition.
+
+"""
+input MetafieldDefinitionInput {
+  """The namespace for the metafield definition."""
+  namespace: String!
+
+  """The key for the metafield definition."""
+  key: String!
+
+  """The name for the metafield definition."""
+  name: String!
+
+  """The description for the metafield definition."""
+  description: String
+
+  """The resource type that the metafield definition is scoped to."""
+  ownerType: MetafieldOwnerType!
+
+  """The associated metafield definition type."""
+  type: String!
+
+  """The custom validations for the metafield definition."""
+  options: [MetafieldDefinitionOptionInput!]
+
+  """Whether to pin the metafield definition."""
+  pin: Boolean = false
+}
+
+"""A configured metafield definition option."""
+type MetafieldDefinitionOption {
+  """The option name."""
+  name: String!
+
+  """The option value."""
+  optionValue: MetafieldDefinitionOptionValue
+
+  """The option type."""
+  type: MetafieldDefinitionOptionType!
+}
+
+"""The values of the allowed domains option for a metafield definition."""
+type MetafieldDefinitionOptionAllowedDomains {
+  """The list of allowed domains."""
+  value: [String!]!
+}
+
+"""The file type options configuration value for a metafield schema."""
+type MetafieldDefinitionOptionFileTypeOptions {
+  """The file type options value."""
+  value: [String!]!
+}
+
+"""The type and value for a metafield definition option."""
+input MetafieldDefinitionOptionInput {
+  """The type for the metafield definition option."""
+  type: MetafieldDefinitionOptionType!
+
+  """The value for the metafield definition option."""
+  value: JSON!
+}
+
+"""The maximum date option value for a metafield definition."""
+type MetafieldDefinitionOptionMaxDate {
+  """The maximum date value."""
+  value: Date!
+}
+
+"""The maximum date and time option value for a metafield definition."""
+type MetafieldDefinitionOptionMaxDateTime {
+  """The maximum date and time value."""
+  value: DateTime!
+}
+
+"""The maximum value for a decimal metafield definition."""
+type MetafieldDefinitionOptionMaxDecimal {
+  """The maximum value for a decimal value."""
+  value: Decimal!
+}
+
+"""The maximum value for a dimension metafield definition."""
+type MetafieldDefinitionOptionMaxDimension {
+  """The maximum value for a dimension value."""
+  value: Dimension!
+}
+
+"""The maximum value for a integer metafield definition."""
+type MetafieldDefinitionOptionMaxInteger {
+  """The maximum value for a integer value."""
+  value: Int!
+}
+
+"""The maximum length option value for a metafield definition."""
+type MetafieldDefinitionOptionMaxLength {
+  """The maximum length value."""
+  value: Int!
+}
+
+"""The max precision configuration value for a metafield schema."""
+type MetafieldDefinitionOptionMaxPrecision {
+  """The maximum precision value."""
+  value: Int!
+}
+
+"""The maximum volume option value for a metafield definition."""
+type MetafieldDefinitionOptionMaxVolume {
+  """The maximum volume value."""
+  value: Volume!
+}
+
+"""The maximum weight option value for a metafield definition."""
+type MetafieldDefinitionOptionMaxWeight {
+  """The maximum weight value."""
+  value: Weight!
+}
+
+"""The minimum date option value for a metafield definition."""
+type MetafieldDefinitionOptionMinDate {
+  """The minimum date value."""
+  value: Date!
+}
+
+"""The minimum date and time option value for a metafield definition."""
+type MetafieldDefinitionOptionMinDateTime {
+  """The minimum date and time value."""
+  value: DateTime!
+}
+
+"""The minimum value for a decimal metafield definition."""
+type MetafieldDefinitionOptionMinDecimal {
+  """The minimum value for a decimal value."""
+  value: Decimal!
+}
+
+"""The minimum value for a dimensions metafield definition."""
+type MetafieldDefinitionOptionMinDimension {
+  """The minimum value for a dimension value."""
+  value: Dimension!
+}
+
+"""The minimum value for a integer metafield definition."""
+type MetafieldDefinitionOptionMinInteger {
+  """The minimum value for a integer value."""
+  value: Int!
+}
+
+"""The minimum length option value for a metafield definition."""
+type MetafieldDefinitionOptionMinLength {
+  """The minimum length value."""
+  value: Int!
+}
+
+"""The minimum volume option value for a metafield definition."""
+type MetafieldDefinitionOptionMinVolume {
+  """The minimum volume value."""
+  value: Volume!
+}
+
+"""The minimum weight option value for a metafield definition."""
+type MetafieldDefinitionOptionMinWeight {
+  """The minimum weight value."""
+  value: Weight!
+}
+
+"""The regex configuration value for a metafield schema."""
+type MetafieldDefinitionOptionRegex {
+  """The regex value."""
+  value: String!
+}
+
+"""Metafield definition option type."""
+enum MetafieldDefinitionOptionType {
+  """An option for setting the minimum length."""
+  MIN_LENGTH
+
+  """An option for setting the maximum length."""
+  MAX_LENGTH
+
+  """An option for setting the regex."""
+  REGEX
+
+  """A list of allowed domains."""
+  ALLOWED_DOMAINS
+
+  """A list of file type options."""
+  FILE_TYPE_OPTIONS
+
+  """An option for setting the maximum precision of a decimal number."""
+  MAX_PRECISION
+
+  """An option for setting the minimum date."""
+  MIN_DATE
+
+  """An option for setting the maximum date."""
+  MAX_DATE
+
+  """An option for setting the minimum date and time."""
+  MIN_DATE_TIME
+
+  """An option for setting the maximum date and time."""
+  MAX_DATE_TIME
+
+  """An option for setting the minimum weight."""
+  MIN_WEIGHT
+
+  """An option for setting the maximum weight."""
+  MAX_WEIGHT
+
+  """An option for setting the minimum volume."""
+  MIN_VOLUME
+
+  """An option for setting the maximum volume."""
+  MAX_VOLUME
+
+  """An option for setting the minimum dimension."""
+  MIN_DIMENSION
+
+  """An option for setting the maximum dimension."""
+  MAX_DIMENSION
+
+  """An option for setting the minimum integer number."""
+  MIN_INTEGER
+
+  """An option for setting the maximum integer number."""
+  MAX_INTEGER
+
+  """An option for setting the minimum decimal number."""
+  MIN_DECIMAL
+
+  """An option for setting the maximum decimal number."""
+  MAX_DECIMAL
+}
+
+"""The type and value for a metafield definition configuration."""
+union MetafieldDefinitionOptionValue = MetafieldDefinitionOptionAllowedDomains | MetafieldDefinitionOptionFileTypeOptions | MetafieldDefinitionOptionMaxDate | MetafieldDefinitionOptionMaxDateTime | MetafieldDefinitionOptionMaxDecimal | MetafieldDefinitionOptionMaxDimension | MetafieldDefinitionOptionMaxInteger | MetafieldDefinitionOptionMaxLength | MetafieldDefinitionOptionMaxPrecision | MetafieldDefinitionOptionMaxVolume | MetafieldDefinitionOptionMaxWeight | MetafieldDefinitionOptionMinDate | MetafieldDefinitionOptionMinDateTime | MetafieldDefinitionOptionMinDecimal | MetafieldDefinitionOptionMinDimension | MetafieldDefinitionOptionMinInteger | MetafieldDefinitionOptionMinLength | MetafieldDefinitionOptionMinVolume | MetafieldDefinitionOptionMinWeight | MetafieldDefinitionOptionRegex
+
+"""Possible metafield definition pinned statuses."""
+enum MetafieldDefinitionPinnedStatus {
+  """All metafield definitions."""
+  ANY
+
+  """Only metafield definitions that are pinned."""
+  PINNED
+
+  """Only metafield definitions that are not pinned."""
+  UNPINNED
+}
+
+"""The set of valid sort keys for the MetafieldDefinition query."""
+enum MetafieldDefinitionSortKeys {
+  """Sort by the `id` value."""
+  ID
+
+  """Sort by the `name` value."""
+  NAME
+
+  """Sort by the `pinned_position` value."""
+  PINNED_POSITION
+
+  """
+  During a search (i.e. when the `query` parameter has been specified on the connection) this sorts the
+  results by relevance to the search term(s). When no search query is specified, this sort key is not
+  deterministic and should not be used.
+  
+  """
+  RELEVANCE
+}
+
+"""
+Metafield definition types provide basic foundation and validation for a metafield.
+
+"""
+type MetafieldDefinitionType {
+  """The category associated with the metafield definition type."""
+  category: String!
+
+  """The name for a metafield definition type."""
+  name: String!
+
+  """The supported options for a metafield definition type."""
+  supportedOptions: [MetafieldDefinitionOptionType!]!
+
+  """
+  Whether metafields without a definition can be migrated to a definition of this type.
+  """
+  supportsDefinitionMigrations: Boolean!
+
+  """The value type for a metafield created with this definition type."""
+  valueType: MetafieldValueType!
+}
+
+"""
+Specifies the input fields for a metafield definition update mutation.
+
+"""
+input MetafieldDefinitionUpdateInput {
+  """The namespace for the metafield definition."""
+  namespace: String!
+
+  """The key for the metafield definition."""
+  key: String!
+
+  """The updated value for the metafield definition's name."""
+  name: String
+
+  """The updated value for the metafield definition's description."""
+  description: String
+
+  """The resource type that the metafield definition is scoped to."""
+  ownerType: MetafieldOwnerType!
+
+  """Sets whether the metafield definition should be pinned or unpinned."""
+  pin: Boolean
+}
+
+"""Return type for `metafieldDefinitionUpdate` mutation."""
+type MetafieldDefinitionUpdatePayload {
+  """The metafield definition that was created."""
+  updatedDefinition: MetafieldDefinition
+
+  """List of errors that occurred executing the mutation."""
+  userErrors: [MetafieldDefinitionUpdateUserError!]!
+}
+
+"""
+An error that occurs during the execution of MetafieldDefinitionUpdate.
+"""
+type MetafieldDefinitionUpdateUserError implements DisplayableError {
+  """Error code to uniquely identify the error."""
+  code: MetafieldDefinitionUpdateUserErrorCode
+
+  """Path to the input field which caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by MetafieldDefinitionUpdateUserError.
+"""
+enum MetafieldDefinitionUpdateUserErrorCode {
+  """Input value must be blank."""
+  PRESENT
+
+  """Input value is too long."""
+  TOO_LONG
+
+  """Definition not found."""
+  NOT_FOUND
+
+  """Invalid input."""
+  INVALID_INPUT
+
+  """Pinned limit reached for owner type."""
+  PINNED_LIMIT_REACHED
+
+  """An internal error occurred."""
+  INTERNAL_ERROR
+}
+
+"""Possible metafield definition validation statuses."""
+enum MetafieldDefinitionValidationStatus {
+  """All of this definition's metafields are valid."""
+  ALL_VALID
+
+  """
+  Asynchronous validation of this definition's metafields is in progress.
+  """
+  IN_PROGRESS
+
+  """Some of this definition's metafields are invalid."""
+  SOME_INVALID
 }
 
 """Specifies the input fields to delete a metafield."""
@@ -14621,8 +15327,8 @@ input MetafieldInput {
   """The value of a metafield."""
   value: String
 
-  """The value type of a metafield."""
-  valueType: MetafieldValueType
+  """The type of a metafield."""
+  type: String
 }
 
 """Possible types of a metafield's owner resource."""
@@ -14660,6 +15366,12 @@ enum MetafieldOwnerType {
   """The Shop metafield owner type."""
   SHOP
 }
+
+"""
+Returns the resource which is being referred to by a metafield.
+
+"""
+union MetafieldReference = GenericFile | MediaImage | OnlineStorePage | Product | ProductVariant
 
 """
 Represents an allowlist record that enables a metafield to be visible to the storefront.
@@ -14743,6 +15455,18 @@ input MetafieldStorefrontVisibilityInput {
 
   """The core resource ( e.g.: Product ) that owns this metafield."""
   ownerType: MetafieldOwnerType!
+}
+
+"""Possible metafield validation statuses."""
+enum MetafieldValidationStatus {
+  """Any validation status (valid or invalid)."""
+  ANY
+
+  """Valid (according to definition)."""
+  VALID
+
+  """Invalid (according to definition)."""
+  INVALID
 }
 
 """Metafield value types."""
@@ -15990,6 +16714,37 @@ type Mutation {
     marketingEngagement: MarketingEngagementInput!
   ): MarketingEngagementCreatePayload
 
+  """
+  Creates a metafield definition.
+  
+  """
+  metafieldDefinitionCreate(
+    """Specifies the input fields for the metafield definition."""
+    definition: MetafieldDefinitionInput!
+  ): MetafieldDefinitionCreatePayload
+
+  """
+  Delete a metafield definition.
+  Optionally deletes all associated metafields asynchronously when specified.
+  
+  """
+  metafieldDefinitionDelete(
+    """The id of the metafield definition to delete."""
+    id: ID!
+
+    """Whether to delete all associated metafields."""
+    deleteAllAssociatedMetafields: Boolean = false
+  ): MetafieldDefinitionDeletePayload
+
+  """
+  Updates a metafield definition.
+  
+  """
+  metafieldDefinitionUpdate(
+    """Specifies the input fields for the metafield definition update."""
+    definition: MetafieldDefinitionUpdateInput!
+  ): MetafieldDefinitionUpdatePayload
+
   """Deletes a metafield."""
   metafieldDelete(input: MetafieldDeleteInput!): MetafieldDeletePayload
 
@@ -16890,6 +17645,18 @@ type Mutation {
     """
     input: [StagedUploadInput!]!
   ): StagedUploadsCreatePayload
+
+  """Enables the specified standard metafield definition."""
+  standardMetafieldDefinitionEnable(
+    """The ID of the standard metafield definition template to enable."""
+    id: ID!
+
+    """The resource type that the metafield definition is scoped to."""
+    ownerType: MetafieldOwnerType!
+
+    """Whether to pin the metafield definition."""
+    pin: Boolean! = false
+  ): StandardMetafieldDefinitionEnablePayload
 
   """Creates a storefront access token."""
   storefrontAccessTokenCreate(
@@ -21050,7 +21817,7 @@ enum PrivateMetafieldValueType {
 """
 The Product resource lets you manage products in a merchant’s store. You can use [ProductVariants](https://shopify.dev/docs/admin-api/graphql/reference/products-and-collections/productvariant) to create or update different versions of the same product. You can also add or update product [Media](https://shopify.dev/docs/admin-api/graphql/reference/products-and-collections/media). Products can be organized by grouping them into a [Collection](https://shopify.dev/docs/admin-api/graphql/reference/products-and-collections/collection).
 """
-type Product implements Node & Navigable & HasMetafields & HasPublishedTranslations & Publishable & OnlineStorePreviewable & LegacyInteroperability {
+type Product implements Node & Navigable & HasMetafields & HasMetafieldDefinitions & HasPublishedTranslations & Publishable & OnlineStorePreviewable & LegacyInteroperability {
   """
   The number of publications a resource is published to without feedback errors.
   """
@@ -21239,6 +22006,45 @@ type Product implements Node & Navigable & HasMetafields & HasPublishedTranslati
     """The key for the metafield."""
     key: String!
   ): Metafield
+
+  """List of metafield definitions."""
+  metafieldDefinitions(
+    """Filter metafield definitions by namespace."""
+    namespace: String
+
+    """Filter by the definition's pinned status."""
+    pinnedStatus: MetafieldDefinitionPinnedStatus = ANY
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: MetafieldDefinitionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `key`
+     - `namespace`
+     - `owner_type`
+    
+    See the detailed [search syntax](https://help.shopify.com/api/getting-started/search-syntax)
+    for more information about using filters.
+    
+    """
+    query: String
+  ): MetafieldDefinitionConnection!
 
   """List of metafields that belong to the resource."""
   metafields(
@@ -22257,7 +23063,7 @@ type ProductUpdatePayload {
 }
 
 """Represents a product variant."""
-type ProductVariant implements Node & HasMetafields & HasPublishedTranslations & Navigable & LegacyInteroperability {
+type ProductVariant implements Node & HasMetafields & HasMetafieldDefinitions & HasPublishedTranslations & Navigable & LegacyInteroperability {
   """Whether the product variant is available for sale."""
   availableForSale: Boolean!
 
@@ -22366,6 +23172,45 @@ type ProductVariant implements Node & HasMetafields & HasPublishedTranslations &
     """The key for the metafield."""
     key: String!
   ): Metafield
+
+  """List of metafield definitions."""
+  metafieldDefinitions(
+    """Filter metafield definitions by namespace."""
+    namespace: String
+
+    """Filter by the definition's pinned status."""
+    pinnedStatus: MetafieldDefinitionPinnedStatus = ANY
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: MetafieldDefinitionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `key`
+     - `namespace`
+     - `owner_type`
+    
+    See the detailed [search syntax](https://help.shopify.com/api/getting-started/search-syntax)
+    for more information about using filters.
+    
+    """
+    query: String
+  ): MetafieldDefinitionConnection!
 
   """List of metafields that belong to the resource."""
   metafields(
@@ -24573,6 +25418,60 @@ type QueryRoot {
     query: String
   ): MarketingEventConnection!
 
+  """Returns a metafield definition by ID."""
+  metafieldDefinition(
+    """The ID of the MetafieldDefinition to return."""
+    id: ID!
+  ): MetafieldDefinition
+
+  """All available metafield definition types."""
+  metafieldDefinitionTypes: [MetafieldDefinitionType!]!
+
+  """List of metafield definitions."""
+  metafieldDefinitions(
+    """Filter metafield definition by key."""
+    key: String
+
+    """Filter metafield definition by namespace."""
+    namespace: String
+
+    """Retrieve the metafield definition of a certain owner type."""
+    ownerType: MetafieldOwnerType!
+
+    """Filter by the definition's pinned status."""
+    pinnedStatus: MetafieldDefinitionPinnedStatus = ANY
+
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+
+    """Sort the underlying list by the given key."""
+    sortKey: MetafieldDefinitionSortKeys = ID
+
+    """
+    Supported filter parameters:
+     - `key`
+     - `namespace`
+     - `owner_type`
+    
+    See the detailed [search syntax](https://help.shopify.com/api/getting-started/search-syntax)
+    for more information about using filters.
+    
+    """
+    query: String
+  ): MetafieldDefinitionConnection!
+
   """List of metafield namespaces and keys visible to the Storefront API."""
   metafieldStorefrontVisibilities(
     """Filter the metafields storefront whitelist by namespace."""
@@ -25121,6 +26020,24 @@ type QueryRoot {
 
   """Shopify Payments account information, including balances and payouts."""
   shopifyPaymentsAccount: ShopifyPaymentsAccount
+
+  """All available standard metafield definition templates."""
+  standardMetafieldDefinitionTemplates(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): StandardMetafieldDefinitionTemplateConnection!
 
   """Returns a SubscriptionBillingAttempt by ID."""
   subscriptionBillingAttempt(
@@ -29910,6 +30827,102 @@ type StagedUploadsCreatePayload {
   userErrors: [UserError!]!
 }
 
+"""Return type for `standardMetafieldDefinitionEnable` mutation."""
+type StandardMetafieldDefinitionEnablePayload {
+  """The metafield definition that was created."""
+  createdDefinition: MetafieldDefinition
+
+  """List of errors that occurred executing the mutation."""
+  userErrors: [StandardMetafieldDefinitionEnableUserError!]!
+}
+
+"""
+An error that occurs during the execution of StandardMetafieldDefinitionEnable.
+"""
+type StandardMetafieldDefinitionEnableUserError implements DisplayableError {
+  """Error code to uniquely identify the error."""
+  code: StandardMetafieldDefinitionEnableUserErrorCode
+
+  """Path to the input field which caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by StandardMetafieldDefinitionEnableUserError.
+"""
+enum StandardMetafieldDefinitionEnableUserErrorCode {
+  """Input value is invalid."""
+  INVALID
+
+  """Input value is already taken."""
+  TAKEN
+
+  """Template not found."""
+  TEMPLATE_NOT_FOUND
+
+  """Maximum limit of definitions per owner type exceeded."""
+  LIMIT_EXCEEDED
+}
+
+"""
+Standard metafield definition templates provide preset configuration for metafield definitions.
+
+"""
+type StandardMetafieldDefinitionTemplate implements Node {
+  """The description of the standard metafield definition template."""
+  description: String
+
+  """Globally unique identifier."""
+  id: ID!
+
+  """The key name for the standard metafield definition template."""
+  key: String!
+
+  """The name of the standard metafield definition template."""
+  name: String!
+
+  """The namespace for the standard metafield definition template."""
+  namespace: String!
+
+  """The configured options for the standard metafield definition template."""
+  options: [MetafieldDefinitionOption!]!
+
+  """
+  A list of resource types that the standard definition template can be applied to.
+  """
+  ownerTypes: [MetafieldOwnerType!]!
+
+  """The associated metafield definition type."""
+  type: MetafieldDefinitionType!
+}
+
+"""
+An auto-generated type for paginating through multiple StandardMetafieldDefinitionTemplates.
+
+"""
+type StandardMetafieldDefinitionTemplateConnection {
+  """A list of edges."""
+  edges: [StandardMetafieldDefinitionTemplateEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+}
+
+"""
+An auto-generated type which holds one StandardMetafieldDefinitionTemplate and a cursor during pagination.
+
+"""
+type StandardMetafieldDefinitionTemplateEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of StandardMetafieldDefinitionTemplateEdge."""
+  node: StandardMetafieldDefinitionTemplate!
+}
+
 """
 Token used to delegate unauthenticated access scopes to clients that need to access the unautheticated Storefront API.
 
@@ -32801,6 +33814,54 @@ type VoidSessionStatusReason {
 enum VoidSessionStatusReasonRejectionCode {
   """Void processing failure."""
   PROCESSING_ERROR
+}
+
+"""Represents volume unit and value."""
+type Volume {
+  """Unit of measurement for `value`."""
+  unit: VolumeUnit!
+
+  """The volume using the unit system specified with `unit`."""
+  value: Float!
+}
+
+"""Units of measurement for volume."""
+enum VolumeUnit {
+  """1000 milliliters equals 1 liter."""
+  MILLILITERS
+
+  """100 centiliters equals 1 liter."""
+  CENTILITERS
+
+  """Metric system unit of volume."""
+  LITERS
+
+  """1 cubic meter equals 1000 liters."""
+  CUBIC_METERS
+
+  """US system unit of volume."""
+  FLUID_OUNCES
+
+  """1 pint equals 16 US fluid ounces."""
+  PINTS
+
+  """1 quart equals 32 US fluid ounces."""
+  QUARTS
+
+  """1 gallon equals 128 US fluid ounces."""
+  GALLONS
+
+  """Imperial system unit of volume."""
+  IMPERIAL_FLUID_OUNCES
+
+  """1 pint equals 20 Imperial fluid ounces."""
+  IMPERIAL_PINTS
+
+  """1 quart equals 40 Imperial fluid ounces."""
+  IMPERIAL_QUARTS
+
+  """1 gallon equals 160 Imperial fluid ounces."""
+  IMPERIAL_GALLONS
 }
 
 """Amazon EventBridge event source."""
