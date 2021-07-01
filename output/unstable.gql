@@ -8213,11 +8213,11 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
-  """Exceeded maximum allowed value."""
-  EXCEEDED_MAX
-
   """Value is outside allowed range."""
   VALUE_OUTSIDE_RANGE
+
+  """Exceeded maximum allowed value."""
+  EXCEEDED_MAX
 
   """Cannot have both minimum subtotal and quantity present."""
   MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
@@ -33109,6 +33109,9 @@ enum TranslatableResourceType {
 
   """Represents a collection of products."""
   COLLECTION
+
+  """Represents a category of links."""
+  ONLINE_STORE_MENU
 
   """Represents a link to direct users to."""
   LINK
