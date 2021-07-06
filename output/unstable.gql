@@ -2871,7 +2871,7 @@ enum CollectionRuleColumn {
   VARIANT_PRICE
 
   """
-  The `is_price_reduced` attribute, a boolean attribute evaluated as `true` if a product has a `compare_at_price` set on any of its variants.
+  The `is_price_reduced` attribute, which is a Boolean type evaluated as `true` if a product has a `compare_at_price` set on any of its variants.
   """
   IS_PRICE_REDUCED
 
@@ -11119,7 +11119,7 @@ type FulfillmentOrderRejectFulfillmentRequestPayload {
 """The request status of a fulfillment order."""
 enum FulfillmentOrderRequestStatus {
   """
-  The initial request status for the newly created fulfillment orders. This is the only valid
+  The initial request status for the newly-created fulfillment orders. This is the only valid
   request status for fulfillment orders that aren't assigned to a fulfillment service.
   
   """
@@ -13726,7 +13726,7 @@ enum MarketingActivityExtensionAppErrorCode {
   """The app has returned validation errors."""
   VALIDATION_ERROR
 
-  """The app is not responding or returning unexpected data."""
+  """The app is either not responding or returning unexpected data."""
   API_ERROR
 
   """The app has returned an error when invoking the platform."""
@@ -13735,13 +13735,13 @@ enum MarketingActivityExtensionAppErrorCode {
   """The app needs to be installed."""
   INSTALL_REQUIRED_ERROR
 
-  """The app has returned an error with info severity level."""
+  """The app has returned an error with an info severity level."""
   PLATFORM_ERROR_INFO
 
-  """The app has returned an error with warning severity level."""
+  """The app has returned an error with a warning severity level."""
   PLATFORM_ERROR_WARNING
 
-  """The app has returned an error with critical severity level."""
+  """The app has returned an error with a critical severity level."""
   PLATFORM_ERROR_CRITICAL
 }
 
@@ -14247,7 +14247,7 @@ enum MarketingTactic {
   """A direct visit to the online store."""
   DIRECT
 
-  """Popup on merchant's store."""
+  """A popup on the online store."""
   STOREFRONT_APP
 
   """A display ad."""
@@ -23732,10 +23732,10 @@ enum ProductVariantsBulkCreateUserErrorCode {
   """On create, this key cannot be used."""
   NO_KEY_ON_CREATE
 
-  """The variant already exists."""
+  """Variant already exists."""
   VARIANT_ALREADY_EXISTS
 
-  """The price of the variant must be greater than or equal to zero."""
+  """Variant price must be greater than or equal to zero."""
   GREATER_THAN_OR_EQUAL_TO
 
   """Variant options are not enough."""
@@ -23750,7 +23750,7 @@ enum ProductVariantsBulkCreateUserErrorCode {
   """You reached the limit of available SKUs in your current plan."""
   SUBSCRIPTION_VIOLATION
 
-  """Variant options already exist. Please change variant option(s)."""
+  """Variant options already exist. Please change the variant option(s)."""
   VARIANT_ALREADY_EXISTS_CHANGE_OPTION_VALUE
 
   """Quantity could not be set. The location was not found."""
@@ -33168,7 +33168,7 @@ enum TranslationErrorCode {
   """Resource does not exist."""
   RESOURCE_NOT_FOUND
 
-  """Too many translation keys for resource."""
+  """Too many translation keys for the resource."""
   TOO_MANY_KEYS_FOR_RESOURCE
 
   """Translation key is invalid."""
