@@ -142,6 +142,9 @@ type App implements Node {
   """
   navigationItems: [NavigationItem!]! @deprecated(reason: "Use AppInstallation.navigationItems instead")
 
+  """Whether the app was previously installed on the current shop."""
+  previouslyInstalled: Boolean!
+
   """Detailed information about the app pricing."""
   pricingDetails: String
 
@@ -8213,11 +8216,11 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
-  """Exceeded maximum allowed value."""
-  EXCEEDED_MAX
-
   """Value is outside allowed range."""
   VALUE_OUTSIDE_RANGE
+
+  """Exceeded maximum allowed value."""
+  EXCEEDED_MAX
 
   """Cannot have both minimum subtotal and quantity present."""
   MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
@@ -15487,6 +15490,69 @@ enum MetafieldValueType {
   BOOLEAN
 }
 
+"""Specifies the input fields for a metafield value to set."""
+input MetafieldsSetInput {
+  """The ID of the owner resource."""
+  ownerId: ID!
+
+  """The namespace of the metafield."""
+  namespace: String!
+
+  """The key name of the metafield."""
+  key: String!
+
+  """The value of the metafield."""
+  value: String!
+
+  """The type of the metafield."""
+  type: String!
+}
+
+"""Return type for `metafieldsSet` mutation."""
+type MetafieldsSetPayload {
+  """List of metafields that were set."""
+  metafields: [Metafield!]
+
+  """List of errors that occurred executing the mutation."""
+  userErrors: [MetafieldsSetUserError!]!
+}
+
+"""An error that occurs during the execution of MetafieldsSet."""
+type MetafieldsSetUserError implements DisplayableError {
+  """Error code to uniquely identify the error."""
+  code: MetafieldsSetUserErrorCode
+
+  """Path to the input field which caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""Possible error codes that could be returned by MetafieldsSetUserError."""
+enum MetafieldsSetUserErrorCode {
+  """Input value is blank."""
+  BLANK
+
+  """Input value should be less or equal to maximum allowed value."""
+  LESS_THAN_OR_EQUAL_TO
+
+  """Input value must be blank."""
+  PRESENT
+
+  """Input value is too short."""
+  TOO_SHORT
+
+  """Input value is too long."""
+  TOO_LONG
+
+  """Value is invalid for metafield type or definition options."""
+  INVALID_VALUE
+
+  """Type is invalid."""
+  INVALID_TYPE
+}
+
 """The set of valid sort keys for the MethodDefinition query."""
 enum MethodDefinitionSortKeys {
   """Sort by the `rate_provider_type` value."""
@@ -16765,6 +16831,17 @@ type Mutation {
     """The ID of the metafield storefront visibility to delete."""
     id: ID!
   ): MetafieldStorefrontVisibilityDeletePayload
+
+  """
+  Sets metafield values. Metafield values will be set regardless if they were previously created or not.
+  
+  Allows up to a max of 25 metafields to be set at a time.
+  
+  """
+  metafieldsSet(
+    """The list of metafield values to set. Max of 25."""
+    metafields: [MetafieldsSetInput!]!
+  ): MetafieldsSetPayload
 
   """Captures payment for an authorized transaction on an order."""
   orderCapture(
