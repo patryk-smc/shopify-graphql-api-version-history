@@ -229,7 +229,7 @@ type AppCreditCreatePayload {
   """The newly created app credit."""
   appCredit: AppCredit
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -570,7 +570,7 @@ type AppPurchaseOneTimeCreatePayload {
   """
   confirmationUrl: URL
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -676,7 +676,7 @@ type AppRevenueAttributionRecordCreatePayload {
   """The created app revenue attribution record."""
   appRevenueAttributionRecord: AppRevenueAttributionRecord
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [AppRevenueAttributionRecordCreateUserError!]!
 }
 
@@ -684,10 +684,10 @@ type AppRevenueAttributionRecordCreatePayload {
 An error that occurs during the execution of AppRevenueAttributionRecordCreate.
 """
 type AppRevenueAttributionRecordCreateUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: AppRevenueAttributionRecordCreateUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -710,7 +710,7 @@ type AppRevenueAttributionRecordDeletePayload {
   """The revenue attribution that was deleted, if one was."""
   deletedId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [AppRevenueAttributionRecordDeleteUserError!]!
 }
 
@@ -718,10 +718,10 @@ type AppRevenueAttributionRecordDeletePayload {
 An error that occurs during the execution of AppRevenueAttributionRecordDelete.
 """
 type AppRevenueAttributionRecordDeleteUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: AppRevenueAttributionRecordDeleteUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -845,7 +845,7 @@ type AppSubscriptionCancelPayload {
   """The cancelled app subscription."""
   appSubscription: AppSubscription
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -869,7 +869,7 @@ type AppSubscriptionCreatePayload {
   """The URL where the merchant approves or declines an app subscription."""
   confirmationUrl: URL
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -931,7 +931,7 @@ type AppSubscriptionLineItemUpdatePayload {
   """
   confirmationUrl: URL
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -1060,7 +1060,7 @@ type AppUsageRecordCreatePayload {
   """The newly created app usage record."""
   appUsageRecord: AppUsageRecord
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -1190,10 +1190,10 @@ type BasicEvent implements Node & Event {
 Represents an error that happens during the execution of a billing attempt mutation.
 """
 type BillingAttemptUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: BillingAttemptUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -1222,10 +1222,10 @@ enum BulkMutationErrorCode {
 
 """Represents an error that happens during execution of a bulk mutation."""
 type BulkMutationUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: BulkMutationErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -1300,7 +1300,7 @@ type BulkOperationCancelPayload {
   """The bulk operation to be canceled."""
   bulkOperation: BulkOperation
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -1333,7 +1333,7 @@ type BulkOperationRunMutationPayload {
   """The newly created bulk operation."""
   bulkOperation: BulkOperation
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [BulkMutationUserError!]!
 }
 
@@ -1342,7 +1342,7 @@ type BulkOperationRunQueryPayload {
   """The newly created bulk operation."""
   bulkOperation: BulkOperation
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -1987,16 +1987,16 @@ type CaptureSessionRejectPayload {
   """The updated capture session."""
   captureSession: CaptureSession
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [CaptureSessionRejectUserError!]!
 }
 
 """An error that occurs during the execution of CaptureSessionReject."""
 type CaptureSessionRejectUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: CaptureSessionRejectUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -2028,16 +2028,16 @@ type CaptureSessionResolvePayload {
   """The updated capture session."""
   captureSession: CaptureSession
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [CaptureSessionResolveUserError!]!
 }
 
 """An error that occurs during the execution of CaptureSessionResolve."""
 type CaptureSessionResolveUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: CaptureSessionResolveUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -2621,7 +2621,7 @@ type CollectionAddProductsPayload {
   """The updated collection."""
   collection: Collection
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -2642,7 +2642,7 @@ type CollectionCreatePayload {
   """The collection that has been created."""
   collection: Collection
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -2660,7 +2660,7 @@ type CollectionDeletePayload {
   """The shop associated with the collection."""
   shop: Shop!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -2815,7 +2815,7 @@ type CollectionPublishPayload {
   """The shop associated with the collection."""
   shop: Shop!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -2824,7 +2824,7 @@ type CollectionRemoveProductsPayload {
   """The asynchronous job removing the products."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -2833,7 +2833,7 @@ type CollectionReorderProductsPayload {
   """The asynchronous job reordering the products."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -3051,7 +3051,7 @@ type CollectionUnpublishPayload {
   """The shop associated with the collection."""
   shop: Shop!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -3063,7 +3063,7 @@ type CollectionUpdatePayload {
   """The asynchronous job updating the products based on the new rule set."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -4903,7 +4903,7 @@ type CustomerAddTaxExemptionsPayload {
   """The updated customer."""
   customer: Customer
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -4924,7 +4924,7 @@ type CustomerCreatePayload {
   """The created customer."""
   customer: Customer
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -5011,7 +5011,7 @@ type CustomerDeletePayload {
   """Shop of the deleted customer."""
   shop: Shop!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -5032,7 +5032,7 @@ type CustomerGenerateAccountActivationUrlPayload {
   """The newly generated account activation URL."""
   accountActivationUrl: URL
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -5324,7 +5324,7 @@ type CustomerPaymentMethodCreditCardCreatePayload {
   """The customer payment method."""
   customerPaymentMethod: CustomerPaymentMethod
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -5333,7 +5333,7 @@ type CustomerPaymentMethodCreditCardUpdatePayload {
   """The customer payment method."""
   customerPaymentMethod: CustomerPaymentMethod
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -5356,7 +5356,7 @@ type CustomerPaymentMethodPaypalBillingAgreementCreatePayload {
   """The customer payment method."""
   customerPaymentMethod: CustomerPaymentMethod
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [CustomerPaymentMethodUserError!]!
 }
 
@@ -5367,7 +5367,7 @@ type CustomerPaymentMethodPaypalBillingAgreementUpdatePayload {
   """The customer payment method."""
   customerPaymentMethod: CustomerPaymentMethod
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [CustomerPaymentMethodUserError!]!
 }
 
@@ -5376,7 +5376,7 @@ type CustomerPaymentMethodRemoteCreatePayload {
   """The customer payment method."""
   customerPaymentMethod: CustomerPaymentMethod
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [CustomerPaymentMethodRemoteUserError!]!
 }
 
@@ -5387,7 +5387,7 @@ type CustomerPaymentMethodRemoteCreditCardCreatePayload {
   """The customer payment method."""
   customerPaymentMethod: CustomerPaymentMethod
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [CustomerPaymentMethodUserError!]!
 }
 
@@ -5411,10 +5411,10 @@ input CustomerPaymentMethodRemoteInput {
 
 """Represents an error in the input of a mutation."""
 type CustomerPaymentMethodRemoteUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: CustomerPaymentMethodRemoteUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -5446,7 +5446,7 @@ type CustomerPaymentMethodRevokePayload {
   """The ID of the revoked customer payment method."""
   revokedCustomerPaymentMethodId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -5455,16 +5455,16 @@ type CustomerPaymentMethodSendUpdateEmailPayload {
   """The customer to whom an update payment method email was sent."""
   customer: Customer
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
 """Represents an error in the input of a mutation."""
 type CustomerPaymentMethodUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: CustomerPaymentMethodUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -5553,7 +5553,7 @@ type CustomerRemoveTaxExemptionsPayload {
   """The updated customer."""
   customer: Customer
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -5562,7 +5562,7 @@ type CustomerReplaceTaxExemptionsPayload {
   """The updated customer."""
   customer: Customer
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -5637,7 +5637,7 @@ type CustomerUpdateDefaultAddressPayload {
   """The customer whose address was updated."""
   customer: Customer
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -5646,7 +5646,7 @@ type CustomerUpdatePayload {
   """The updated customer."""
   customer: Customer
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -6658,13 +6658,13 @@ type DeliverySettingUpdatePayload {
   """The updated delivery shop level settings."""
   setting: DeliverySetting
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
 """Return type for `deliveryShippingOriginAssign` mutation."""
 type DeliveryShippingOriginAssignPayload {
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -6895,7 +6895,7 @@ type DiscountAutomaticActivatePayload {
   """The activated automatic discount."""
   automaticDiscountNode: DiscountAutomaticNode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -6948,7 +6948,7 @@ type DiscountAutomaticBasicCreatePayload {
   """The created automatic discount."""
   automaticDiscountNode: DiscountAutomaticNode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -6981,7 +6981,7 @@ type DiscountAutomaticBasicUpdatePayload {
   """The updated automatic discount."""
   automaticDiscountNode: DiscountAutomaticNode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -6990,7 +6990,7 @@ type DiscountAutomaticBulkDeletePayload {
   """The asynchronous job removing the automatic discounts."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7082,7 +7082,7 @@ type DiscountAutomaticBxgyCreatePayload {
   """The created automatic discount."""
   automaticDiscountNode: DiscountAutomaticNode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7120,7 +7120,7 @@ type DiscountAutomaticBxgyUpdatePayload {
   """The updated automatic discount."""
   automaticDiscountNode: DiscountAutomaticNode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7141,7 +7141,7 @@ type DiscountAutomaticDeactivatePayload {
   """The deactivated automatic discount."""
   automaticDiscountNode: DiscountAutomaticNode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7150,7 +7150,7 @@ type DiscountAutomaticDeletePayload {
   """The deleted automatic discount ID."""
   deletedAutomaticDiscountId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7241,7 +7241,7 @@ type DiscountCodeActivatePayload {
   """The activated code discount."""
   codeDiscountNode: DiscountCodeNode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7387,7 +7387,7 @@ type DiscountCodeBasicCreatePayload {
   """The created code discount."""
   codeDiscountNode: DiscountCodeNode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7439,7 +7439,7 @@ type DiscountCodeBasicUpdatePayload {
   """The updated code discount."""
   codeDiscountNode: DiscountCodeNode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7448,7 +7448,7 @@ type DiscountCodeBulkActivatePayload {
   """The asynchronous job that activates the code discounts."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7457,7 +7457,7 @@ type DiscountCodeBulkDeactivatePayload {
   """The asynchronous job that deactivates the code discounts."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7466,7 +7466,7 @@ type DiscountCodeBulkDeletePayload {
   """The asynchronous job that deletes the code discounts."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7579,7 +7579,7 @@ type DiscountCodeBxgyCreatePayload {
   """The created code discount."""
   codeDiscountNode: DiscountCodeNode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7631,7 +7631,7 @@ type DiscountCodeBxgyUpdatePayload {
   """The updated code discount."""
   codeDiscountNode: DiscountCodeNode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7640,7 +7640,7 @@ type DiscountCodeDeactivatePayload {
   """The deactivated code discount."""
   codeDiscountNode: DiscountCodeNode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7649,7 +7649,7 @@ type DiscountCodeDeletePayload {
   """The deleted code discount ID."""
   deletedCodeDiscountId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7773,7 +7773,7 @@ type DiscountCodeFreeShippingCreatePayload {
   """The created code discount."""
   codeDiscountNode: DiscountCodeNode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7832,7 +7832,7 @@ type DiscountCodeFreeShippingUpdatePayload {
   """The updated code discount."""
   codeDiscountNode: DiscountCodeNode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -7908,7 +7908,7 @@ type DiscountCodeRedeemCodeBulkDeletePayload {
   """The asynchronous job that deletes the discount redeem codes."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -8425,7 +8425,7 @@ type DiscountRedeemCodeBulkAddPayload {
   """Tracks the progress of the bulk code creation."""
   bulkCreation: DiscountRedeemCodeBulkCreation
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [DiscountUserError!]!
 }
 
@@ -8619,13 +8619,13 @@ enum DiscountType {
 
 """An error that occurs during the execution of a discount mutation."""
 type DiscountUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: DiscountErrorCode
 
   """Extra information about this error."""
   extraInfo: String
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -8634,7 +8634,7 @@ type DiscountUserError implements DisplayableError {
 
 """Represents an error in the input of a mutation."""
 interface DisplayableError {
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -9062,7 +9062,7 @@ type DraftOrderCalculatePayload {
   """The calculated properties for a draft order."""
   calculatedDraftOrder: CalculatedDraftOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -9071,7 +9071,7 @@ type DraftOrderCompletePayload {
   """The completed draft order."""
   draftOrder: DraftOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -9095,7 +9095,7 @@ type DraftOrderCreatePayload {
   """
   draftOrder: DraftOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -9116,7 +9116,7 @@ type DraftOrderDeletePayload {
   """
   deletedId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -9230,7 +9230,7 @@ type DraftOrderInvoicePreviewPayload {
   """HTML to preview the draft order invoice email."""
   previewHtml: HTML
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -9239,7 +9239,7 @@ type DraftOrderInvoiceSendPayload {
   """The draft order an invoice email is sent for."""
   draftOrder: DraftOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -9507,7 +9507,7 @@ type DraftOrderUpdatePayload {
   """The updated draft order."""
   draftOrder: DraftOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -9648,7 +9648,7 @@ interface Event {
 
 """Return type for `eventBridgeWebhookSubscriptionCreate` mutation."""
 type EventBridgeWebhookSubscriptionCreatePayload {
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 
   """The webhook subscription that was created."""
@@ -9677,7 +9677,7 @@ input EventBridgeWebhookSubscriptionInput {
 
 """Return type for `eventBridgeWebhookSubscriptionUpdate` mutation."""
 type EventBridgeWebhookSubscriptionUpdatePayload {
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 
   """The webhook subscription that was updated."""
@@ -9832,7 +9832,7 @@ type FileCreatePayload {
   """The newly created files."""
   files: [File!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [FilesUserError!]!
 }
 
@@ -9841,7 +9841,7 @@ type FileDeletePayload {
   """The IDs of the deleted files."""
   deletedFileIds: [ID!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [FilesUserError!]!
 }
 
@@ -10055,7 +10055,7 @@ type FileUpdatePayload {
   """The list of updated files."""
   files: [File!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [FilesUserError!]!
 }
 
@@ -10103,10 +10103,10 @@ enum FilesErrorCode {
 An error that happens during the execution of a Files API query or mutation.
 """
 type FilesUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: FilesErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -10124,7 +10124,7 @@ type FilterOption {
 
 """Return type for `flowTriggerReceive` mutation."""
 type FlowTriggerReceivePayload {
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -10270,7 +10270,7 @@ type FulfillmentCancelPayload {
   """The canceled fulfillment."""
   fulfillment: Fulfillment
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -10294,7 +10294,7 @@ type FulfillmentCreatePayload {
   """The order for which the fulfillment is created."""
   order: Order
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -10303,7 +10303,7 @@ type FulfillmentCreateV2Payload {
   """The created fulfillment."""
   fulfillment: Fulfillment
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -10677,7 +10677,7 @@ type FulfillmentOrderAcceptCancellationRequestPayload {
   """The fulfillment order whose cancellation request was accepted."""
   fulfillmentOrder: FulfillmentOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -10686,7 +10686,7 @@ type FulfillmentOrderAcceptFulfillmentRequestPayload {
   """The fulfillment order whose fulfillment request was accepted."""
   fulfillmentOrder: FulfillmentOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -10799,7 +10799,7 @@ type FulfillmentOrderCancelPayload {
   """
   replacementFulfillmentOrder: FulfillmentOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -10808,7 +10808,7 @@ type FulfillmentOrderClosePayload {
   """The fulfillment order that was marked as incomplete."""
   fulfillmentOrder: FulfillmentOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -11088,7 +11088,7 @@ type FulfillmentOrderMovePayload {
   """
   remainingFulfillmentOrder: FulfillmentOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -11097,7 +11097,7 @@ type FulfillmentOrderOpenPayload {
   """The fulfillment order that was marked as open."""
   fulfillmentOrder: FulfillmentOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -11106,7 +11106,7 @@ type FulfillmentOrderRejectCancellationRequestPayload {
   """The fulfillment order whose cancellation request was rejected."""
   fulfillmentOrder: FulfillmentOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -11115,7 +11115,7 @@ type FulfillmentOrderRejectFulfillmentRequestPayload {
   """The fulfillment order whose fulfillment request was rejected."""
   fulfillmentOrder: FulfillmentOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -11166,7 +11166,7 @@ type FulfillmentOrderReschedulePayload {
   """The fulfillment order that was updated to the new fulfill at date."""
   fulfillmentOrder: FulfillmentOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [FulfillmentOrderRescheduleUserError!]!
 }
 
@@ -11174,10 +11174,10 @@ type FulfillmentOrderReschedulePayload {
 An error that occurs during the execution of FulfillmentOrderReschedule.
 """
 type FulfillmentOrderRescheduleUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: FulfillmentOrderRescheduleUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -11235,7 +11235,7 @@ type FulfillmentOrderSubmitCancellationRequestPayload {
   """The fulfillment order whose cancellation was requested."""
   fulfillmentOrder: FulfillmentOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -11262,7 +11262,7 @@ type FulfillmentOrderSubmitFulfillmentRequestPayload {
   """
   unsubmittedFulfillmentOrder: FulfillmentOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -11325,7 +11325,7 @@ type FulfillmentServiceCreatePayload {
   """The created fulfillment service."""
   fulfillmentService: FulfillmentService
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -11334,7 +11334,7 @@ type FulfillmentServiceDeletePayload {
   """The ID of the deleted fulfillment service."""
   deletedId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -11355,7 +11355,7 @@ type FulfillmentServiceUpdatePayload {
   """The updated fulfillment service."""
   fulfillmentService: FulfillmentService
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -11403,7 +11403,7 @@ type FulfillmentTrackingInfoUpdatePayload {
   """The updated fulfillment with tracking information."""
   fulfillment: Fulfillment
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -11412,7 +11412,7 @@ type FulfillmentTrackingInfoUpdateV2Payload {
   """The updated fulfillment with tracking information."""
   fulfillment: Fulfillment
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -11581,7 +11581,7 @@ type GiftCardCreatePayload {
   """The gift card code which is used to make payments."""
   giftCardCode: String
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [GiftCardUserError!]!
 }
 
@@ -11590,7 +11590,7 @@ type GiftCardDisablePayload {
   """The disabled gift card."""
   giftCard: GiftCard
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -11729,7 +11729,7 @@ type GiftCardUpdatePayload {
   """The updated gift card."""
   giftCard: GiftCard
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -11737,10 +11737,10 @@ type GiftCardUpdatePayload {
 Represents an error that happens during the execution of a gift card mutation.
 """
 type GiftCardUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: GiftCardErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -12149,7 +12149,7 @@ type InventoryActivatePayload {
   """The newly activated inventory level."""
   inventoryLevel: InventoryLevel
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -12178,7 +12178,7 @@ type InventoryAdjustQuantityPayload {
   """
   inventoryLevel: InventoryLevel
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -12187,13 +12187,13 @@ type InventoryBulkAdjustQuantityAtLocationPayload {
   """The updated inventory quantities."""
   inventoryLevels: [InventoryLevel!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
 """Return type for `inventoryDeactivate` mutation."""
 type InventoryDeactivatePayload {
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -12374,7 +12374,7 @@ type InventoryItemUpdatePayload {
   """The updated inventory item."""
   inventoryItem: InventoryItem
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -12485,7 +12485,7 @@ type KitSkillTriggerRequestPayload {
   """
   conversationUid: String
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -13703,7 +13703,7 @@ type MarketingActivityCreatePayload {
   """The path to return back to shopify admin from embedded editor."""
   redirectPath: String
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -13921,7 +13921,7 @@ type MarketingActivityUpdatePayload {
   """The path to return back to shopify admin from embedded editor."""
   redirectPath: String
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -14037,7 +14037,7 @@ type MarketingEngagementCreatePayload {
   """The marketing engagement that was created."""
   marketingEngagement: MarketingEngagement
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -14565,10 +14565,10 @@ enum MediaStatus {
 Represents an error that happens during execution of a Media query or mutation.
 """
 type MediaUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: MediaUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -14685,7 +14685,11 @@ type Metafield implements Node & LegacyInteroperability {
   """
   reference: MetafieldReference
 
-  """The type of the metafield."""
+  """
+  The type name of the metafield.
+  See the list of [supported types](https://shopify.dev/apps/metafields/definitions/types).
+  
+  """
   type: String!
 
   """The date and time when the metafield was updated."""
@@ -14799,7 +14803,7 @@ type MetafieldDefinitionCreatePayload {
   """The metafield definition that was created."""
   createdDefinition: MetafieldDefinition
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [MetafieldDefinitionCreateUserError!]!
 }
 
@@ -14807,10 +14811,10 @@ type MetafieldDefinitionCreatePayload {
 An error that occurs during the execution of MetafieldDefinitionCreate.
 """
 type MetafieldDefinitionCreateUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: MetafieldDefinitionCreateUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -14866,7 +14870,7 @@ type MetafieldDefinitionDeletePayload {
   """The id of the deleted metafield definition."""
   deletedDefinitionId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [MetafieldDefinitionDeleteUserError!]!
 }
 
@@ -14874,10 +14878,10 @@ type MetafieldDefinitionDeletePayload {
 An error that occurs during the execution of MetafieldDefinitionDelete.
 """
 type MetafieldDefinitionDeleteUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: MetafieldDefinitionDeleteUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -15231,7 +15235,7 @@ type MetafieldDefinitionUpdatePayload {
   """The metafield definition that was created."""
   updatedDefinition: MetafieldDefinition
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [MetafieldDefinitionUpdateUserError!]!
 }
 
@@ -15239,10 +15243,10 @@ type MetafieldDefinitionUpdatePayload {
 An error that occurs during the execution of MetafieldDefinitionUpdate.
 """
 type MetafieldDefinitionUpdateUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: MetafieldDefinitionUpdateUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -15297,7 +15301,7 @@ type MetafieldDeletePayload {
   """The ID of the deleted metafield."""
   deletedId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -15330,7 +15334,11 @@ input MetafieldInput {
   """The value of a metafield."""
   value: String
 
-  """The type of a metafield."""
+  """
+  The type name of the metafield.
+  Must be a [supported type](https://shopify.dev/apps/metafields/definitions/types).
+  
+  """
   type: String
 }
 
@@ -15420,7 +15428,7 @@ type MetafieldStorefrontVisibilityCreatePayload {
   """The metafield storefront visibility that was created."""
   metafieldStorefrontVisibility: MetafieldStorefrontVisibility
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -15429,7 +15437,7 @@ type MetafieldStorefrontVisibilityDeletePayload {
   """The ID of the deleted metafield storefront visibility."""
   deletedMetafieldStorefrontVisibilityId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -15504,25 +15512,29 @@ input MetafieldsSetInput {
   """The value of the metafield."""
   value: String!
 
-  """The type of the metafield."""
+  """
+  The type name of the metafield.
+  Must be a [supported type](https://shopify.dev/apps/metafields/definitions/types).
+  
+  """
   type: String!
 }
 
 """Return type for `metafieldsSet` mutation."""
 type MetafieldsSetPayload {
-  """List of metafields that were set."""
+  """The list of metafields that were set."""
   metafields: [Metafield!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [MetafieldsSetUserError!]!
 }
 
 """An error that occurs during the execution of MetafieldsSet."""
 type MetafieldsSetUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: MetafieldsSetUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -16835,11 +16847,11 @@ type Mutation {
   """
   Sets metafield values. Metafield values will be set regardless if they were previously created or not.
   
-  Allows up to a max of 25 metafields to be set at a time.
+  Allows a maximum of 25 metafields to be set at a time.
   
   """
   metafieldsSet(
-    """The list of metafield values to set. Max of 25."""
+    """The list of metafield values to set. Maximum of 25."""
     metafields: [MetafieldsSetInput!]!
   ): MetafieldsSetPayload
 
@@ -19195,7 +19207,7 @@ type OrderCapturePayload {
   """The transaction of the capture."""
   transaction: OrderTransaction
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -19210,7 +19222,7 @@ type OrderClosePayload {
   """The closed order."""
   order: Order
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -19315,7 +19327,7 @@ type OrderEditAddCustomItemPayload {
   """An order with the edits calculated."""
   calculatedOrder: CalculatedOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -19330,7 +19342,7 @@ type OrderEditAddLineItemDiscountPayload {
   """An order with the edits calculated."""
   calculatedOrder: CalculatedOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -19342,7 +19354,7 @@ type OrderEditAddVariantPayload {
   """An order with the edits calculated."""
   calculatedOrder: CalculatedOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -19396,7 +19408,7 @@ type OrderEditBeginPayload {
   """The order that will be edited."""
   calculatedOrder: CalculatedOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -19405,7 +19417,7 @@ type OrderEditCommitPayload {
   """The order with changes applied."""
   order: Order
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -19417,7 +19429,7 @@ type OrderEditRemoveLineItemDiscountPayload {
   """An order with the edits calculated."""
   calculatedOrder: CalculatedOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -19429,7 +19441,7 @@ type OrderEditSetQuantityPayload {
   """An order with the edits calculated."""
   calculatedOrder: CalculatedOrder
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -19480,7 +19492,7 @@ type OrderMarkAsPaidPayload {
   """The order marked as paid."""
   order: Order
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -19495,7 +19507,7 @@ type OrderOpenPayload {
   """The opened order."""
   order: Order
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -20045,7 +20057,7 @@ type OrderUpdatePayload {
   """The updated order."""
   order: Order
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -20120,7 +20132,7 @@ type PaymentSessionRejectPayload {
   """The updated payment session."""
   paymentSession: PaymentSession
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -20138,7 +20150,7 @@ type PaymentSessionResolvePayload {
   """The updated payment session."""
   paymentSession: PaymentSession
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -20198,7 +20210,7 @@ type PaymentsAppConfigurePayload {
   """The production configuration of the payments app."""
   paymentsAppConfiguration: PaymentsAppConfiguration
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -20368,7 +20380,7 @@ type PriceListCreatePayload {
   """The newly created price list."""
   priceList: PriceList
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [PriceListUserError!]!
 }
 
@@ -20377,7 +20389,7 @@ type PriceListDeletePayload {
   """The ID of the deleted price list."""
   deletedId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [PriceListUserError!]!
 }
 
@@ -20398,7 +20410,7 @@ type PriceListFixedPricesAddPayload {
   """The prices that were added to the price list."""
   prices: [PriceListPrice!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [PriceListPriceUserError!]!
 }
 
@@ -20407,7 +20419,7 @@ type PriceListFixedPricesDeletePayload {
   """A list of deleted variant IDs for prices."""
   deletedFixedPriceVariantIds: [ID!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [PriceListPriceUserError!]!
 }
 
@@ -20516,10 +20528,10 @@ enum PriceListPriceOriginType {
 
 """Error codes for failed price list price operations."""
 type PriceListPriceUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: PriceListPriceUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -20589,16 +20601,16 @@ type PriceListUpdatePayload {
   """The updated price list."""
   priceList: PriceList
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [PriceListUserError!]!
 }
 
 """Error codes for failed contextual pricing operations."""
 type PriceListUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: PriceListUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -20836,10 +20848,10 @@ type PriceRuleActivatePayload {
   """The activated price rule."""
   priceRule: PriceRule
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   priceRuleUserErrors: [PriceRuleUserError!]!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]! @deprecated(reason: "Use `priceRuleUserErrors` instead")
 }
 
@@ -20874,10 +20886,10 @@ type PriceRuleCreatePayload {
   """The newly created discount code."""
   priceRuleDiscountCode: PriceRuleDiscountCode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   priceRuleUserErrors: [PriceRuleUserError!]!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]! @deprecated(reason: "Use `priceRuleUserErrors` instead")
 }
 
@@ -20967,10 +20979,10 @@ type PriceRuleDeactivatePayload {
   """The deactivated price rule."""
   priceRule: PriceRule
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   priceRuleUserErrors: [PriceRuleUserError!]!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]! @deprecated(reason: "Use `priceRuleUserErrors` instead")
 }
 
@@ -20979,13 +20991,13 @@ type PriceRuleDeletePayload {
   """The id price of the deleted price rule."""
   deletedPriceRuleId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   priceRuleUserErrors: [PriceRuleUserError!]!
 
   """The shop of the deleted price rule."""
   shop: Shop!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]! @deprecated(reason: "Use `priceRuleUserErrors` instead")
 }
 
@@ -21026,10 +21038,10 @@ type PriceRuleDiscountCodeCreatePayload {
   """The newly created discount code."""
   priceRuleDiscountCode: PriceRuleDiscountCode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   priceRuleUserErrors: [PriceRuleUserError!]!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]! @deprecated(reason: "Use `priceRuleUserErrors` instead")
 }
 
@@ -21059,10 +21071,10 @@ type PriceRuleDiscountCodeUpdatePayload {
   """The updated discount code."""
   priceRuleDiscountCode: PriceRuleDiscountCode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   priceRuleUserErrors: [PriceRuleUserError!]!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]! @deprecated(reason: "Use `priceRuleUserErrors` instead")
 }
 
@@ -21694,10 +21706,10 @@ type PriceRuleUpdatePayload {
   """The updated discount code."""
   priceRuleDiscountCode: PriceRuleDiscountCode
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   priceRuleUserErrors: [PriceRuleUserError!]!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]! @deprecated(reason: "Use `priceRuleUserErrors` instead")
 }
 
@@ -21708,7 +21720,7 @@ type PriceRuleUserError implements DisplayableError {
   """Error code to uniquely identify the error."""
   code: PriceRuleErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -21816,7 +21828,7 @@ type PrivateMetafieldDeletePayload {
   """The ID of private metafield that was deleted."""
   deletedPrivateMetafieldId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -21857,7 +21869,7 @@ type PrivateMetafieldUpsertPayload {
   """The private metafield that was created or updated."""
   privateMetafield: PrivateMetafield
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -22484,7 +22496,7 @@ type ProductAppendImagesPayload {
   """The product object."""
   product: Product
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -22493,16 +22505,16 @@ type ProductChangeStatusPayload {
   """The product object."""
   product: Product
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [ProductChangeStatusUserError!]!
 }
 
 """An error that occurs during the execution of ProductChangeStatus."""
 type ProductChangeStatusUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: ProductChangeStatusUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -22566,13 +22578,13 @@ type ProductCreateMediaPayload {
   """The newly created media."""
   media: [Media!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   mediaUserErrors: [MediaUserError!]!
 
   """The product associated with the media."""
   product: Product
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]! @deprecated(reason: "Use `mediaUserErrors` instead")
 }
 
@@ -22584,7 +22596,7 @@ type ProductCreatePayload {
   """The shop associated with the product."""
   shop: Shop!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -22596,7 +22608,7 @@ type ProductDeleteImagesPayload {
   """This is the product object."""
   product: Product
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -22614,13 +22626,13 @@ type ProductDeleteMediaPayload {
   """List of product image IDs which were deleted."""
   deletedProductImageIds: [ID!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   mediaUserErrors: [MediaUserError!]!
 
   """The product which media was deleted from."""
   product: Product
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]! @deprecated(reason: "Use `mediaUserErrors` instead")
 }
 
@@ -22632,7 +22644,7 @@ type ProductDeletePayload {
   """The shop associated with the product."""
   shop: Shop!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -22647,7 +22659,7 @@ type ProductDuplicatePayload {
   """The user's shop."""
   shop: Shop!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -22708,7 +22720,7 @@ type ProductImageUpdatePayload {
     scale: Int = 1
   ): Image
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -22829,7 +22841,7 @@ type ProductJoinSellingPlanGroupsPayload {
   """The product object."""
   product: Product
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SellingPlanGroupUserError!]!
 }
 
@@ -22838,7 +22850,7 @@ type ProductLeaveSellingPlanGroupsPayload {
   """The product object."""
   product: Product
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SellingPlanGroupUserError!]!
 }
 
@@ -22981,7 +22993,7 @@ type ProductPublishPayload {
   """The user's shop."""
   shop: Shop!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -22990,7 +23002,7 @@ type ProductReorderImagesPayload {
   """The asynchronous job reordering the images."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -22999,10 +23011,10 @@ type ProductReorderMediaPayload {
   """The asynchronous job reordering the media."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   mediaUserErrors: [MediaUserError!]!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]! @deprecated(reason: "Use `mediaUserErrors` instead")
 }
 
@@ -23111,7 +23123,7 @@ type ProductUnpublishPayload {
   """The user's shop."""
   shop: Shop!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -23120,13 +23132,13 @@ type ProductUpdateMediaPayload {
   """The updated media."""
   media: [Media!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   mediaUserErrors: [MediaUserError!]!
 
   """The product which media was updated on."""
   product: Product
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]! @deprecated(reason: "Use `mediaUserErrors` instead")
 }
 
@@ -23135,7 +23147,7 @@ type ProductUpdatePayload {
   """The updated product."""
   product: Product
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -23450,7 +23462,7 @@ type ProductVariantAppendMediaPayload {
   """The product variants that were updated."""
   productVariants: [ProductVariant!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [MediaUserError!]!
 }
 
@@ -23474,7 +23486,7 @@ type ProductVariantCreatePayload {
   """The successfully created variant."""
   productVariant: ProductVariant
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -23486,7 +23498,7 @@ type ProductVariantDeletePayload {
   """Product of the deleted product variant."""
   product: Product
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -23509,7 +23521,7 @@ type ProductVariantDetachMediaPayload {
   """The product variants that were updated."""
   productVariants: [ProductVariant!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [MediaUserError!]!
 }
 
@@ -23659,7 +23671,7 @@ type ProductVariantJoinSellingPlanGroupsPayload {
   """The product variant object."""
   productVariant: ProductVariant
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SellingPlanGroupUserError!]!
 }
 
@@ -23668,7 +23680,7 @@ type ProductVariantLeaveSellingPlanGroupsPayload {
   """The product variant object."""
   productVariant: ProductVariant
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SellingPlanGroupUserError!]!
 }
 
@@ -23771,7 +23783,7 @@ type ProductVariantUpdatePayload {
   """The updated variant."""
   productVariant: ProductVariant
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -23783,16 +23795,16 @@ type ProductVariantsBulkCreatePayload {
   """The newly created variants."""
   productVariants: [ProductVariant!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [ProductVariantsBulkCreateUserError!]!
 }
 
 """Error codes for failed product variant bulk create mutations."""
 type ProductVariantsBulkCreateUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: ProductVariantsBulkCreateUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -23851,16 +23863,16 @@ type ProductVariantsBulkDeletePayload {
   """The updated product object."""
   product: Product
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [ProductVariantsBulkDeleteUserError!]!
 }
 
 """Error codes for failed bulk variant delete mutations."""
 type ProductVariantsBulkDeleteUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: ProductVariantsBulkDeleteUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -23965,16 +23977,16 @@ type ProductVariantsBulkReorderPayload {
   """The updated product."""
   product: Product
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [ProductVariantsBulkReorderUserError!]!
 }
 
 """Error codes for failed bulk product variants reorder operation."""
 type ProductVariantsBulkReorderUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: ProductVariantsBulkReorderUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -24006,16 +24018,16 @@ type ProductVariantsBulkUpdatePayload {
   """The updated variants."""
   productVariants: [ProductVariant!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [ProductVariantsBulkUpdateUserError!]!
 }
 
 """Error codes for failed variant bulk update mutations."""
 type ProductVariantsBulkUpdateUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: ProductVariantsBulkUpdateUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -24062,7 +24074,7 @@ enum ProductVariantsBulkUpdateUserErrorCode {
 
 """Return type for `pubSubWebhookSubscriptionCreate` mutation."""
 type PubSubWebhookSubscriptionCreatePayload {
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [PubSubWebhookSubscriptionCreateUserError!]!
 
   """The webhook subscription that was created."""
@@ -24073,10 +24085,10 @@ type PubSubWebhookSubscriptionCreatePayload {
 An error that occurs during the execution of PubSubWebhookSubscriptionCreate.
 """
 type PubSubWebhookSubscriptionCreateUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: PubSubWebhookSubscriptionCreateUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -24116,7 +24128,7 @@ input PubSubWebhookSubscriptionInput {
 
 """Return type for `pubSubWebhookSubscriptionUpdate` mutation."""
 type PubSubWebhookSubscriptionUpdatePayload {
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [PubSubWebhookSubscriptionUpdateUserError!]!
 
   """The webhook subscription that was updated."""
@@ -24127,10 +24139,10 @@ type PubSubWebhookSubscriptionUpdatePayload {
 An error that occurs during the execution of PubSubWebhookSubscriptionUpdate.
 """
 type PubSubWebhookSubscriptionUpdateUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: PubSubWebhookSubscriptionUpdateUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -24423,7 +24435,7 @@ type PublishablePublishPayload {
   """The user's shop."""
   shop: Shop!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -24435,7 +24447,7 @@ type PublishablePublishToCurrentChannelPayload {
   """The user's shop."""
   shop: Shop!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -24447,7 +24459,7 @@ type PublishableUnpublishPayload {
   """The user's shop."""
   shop: Shop!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -24459,7 +24471,7 @@ type PublishableUnpublishToCurrentChannelPayload {
   """The user's shop."""
   shop: Shop!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -26457,7 +26469,7 @@ type RefundCreatePayload {
   """The created refund."""
   refund: Refund
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -26641,16 +26653,16 @@ type RefundSessionRejectPayload {
   """The updated refund session."""
   refundSession: RefundSession
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [RefundSessionRejectUserError!]!
 }
 
 """An error that occurs during the execution of RefundSessionReject."""
 type RefundSessionRejectUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: RefundSessionRejectUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -26682,16 +26694,16 @@ type RefundSessionResolvePayload {
   """The updated refund session."""
   refundSession: RefundSession
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [RefundSessionResolveUserError!]!
 }
 
 """An error that occurs during the execution of RefundSessionResolve."""
 type RefundSessionResolveUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: RefundSessionResolveUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -27231,7 +27243,7 @@ type SavedSearchCreatePayload {
   """The saved search that was created."""
   savedSearch: SavedSearch
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -27249,7 +27261,7 @@ type SavedSearchDeletePayload {
   """The shop of the saved search that was deleted."""
   shop: Shop!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -27284,7 +27296,7 @@ type SavedSearchUpdatePayload {
   """The saved search that was updated."""
   savedSearch: SavedSearch
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -27374,7 +27386,7 @@ type ScriptTagCreatePayload {
   """The script tag that was created."""
   scriptTag: ScriptTag
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -27383,7 +27395,7 @@ type ScriptTagDeletePayload {
   """The ID of the deleted script tag."""
   deletedScriptTagId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -27444,7 +27456,7 @@ type ScriptTagUpdatePayload {
   """The script tag that was updated."""
   scriptTag: ScriptTag
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -27876,7 +27888,7 @@ type SellingPlanGroupAddProductVariantsPayload {
   """The updated selling plan group."""
   sellingPlanGroup: SellingPlanGroup
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SellingPlanGroupUserError!]!
 }
 
@@ -27885,7 +27897,7 @@ type SellingPlanGroupAddProductsPayload {
   """The updated selling plan group."""
   sellingPlanGroup: SellingPlanGroup
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SellingPlanGroupUserError!]!
 }
 
@@ -27906,7 +27918,7 @@ type SellingPlanGroupCreatePayload {
   """The created selling plan group object."""
   sellingPlanGroup: SellingPlanGroup
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SellingPlanGroupUserError!]!
 }
 
@@ -27915,7 +27927,7 @@ type SellingPlanGroupDeletePayload {
   """The id of the deleted selling plan group object."""
   deletedSellingPlanGroupId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SellingPlanGroupUserError!]!
 }
 
@@ -27972,7 +27984,7 @@ type SellingPlanGroupRemoveProductVariantsPayload {
   """The removed product variant ids."""
   removedProductVariantIds: [ID!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SellingPlanGroupUserError!]!
 }
 
@@ -27981,7 +27993,7 @@ type SellingPlanGroupRemoveProductsPayload {
   """The removed product ids."""
   removedProductIds: [ID!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SellingPlanGroupUserError!]!
 }
 
@@ -28025,7 +28037,7 @@ type SellingPlanGroupUpdatePayload {
   """The updated Selling Plan Group."""
   sellingPlanGroup: SellingPlanGroup
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SellingPlanGroupUserError!]!
 }
 
@@ -28034,10 +28046,10 @@ Represents a selling plan group custom error.
 
 """
 type SellingPlanGroupUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: SellingPlanGroupUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -28605,19 +28617,19 @@ type ShippingPackageDeletePayload {
   """The ID of the deleted shipping package."""
   deletedId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
 """Return type for `shippingPackageMakeDefault` mutation."""
 type ShippingPackageMakeDefaultPayload {
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
 """Return type for `shippingPackageUpdate` mutation."""
 type ShippingPackageUpdatePayload {
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -29864,7 +29876,7 @@ type ShopLocaleDisablePayload {
   """The locale identifier that was disabled."""
   locale: String
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -29873,7 +29885,7 @@ type ShopLocaleEnablePayload {
   """The locale that was enabled."""
   shopLocale: ShopLocale
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -29891,7 +29903,7 @@ type ShopLocaleUpdatePayload {
   """The locale that was updated."""
   shopLocale: ShopLocale
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -29977,16 +29989,16 @@ type ShopPolicyUpdatePayload {
   """The shop policy that has been updated."""
   shopPolicy: ShopPolicy
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [ShopPolicyUserError!]!
 }
 
 """An error that occurs during the execution of a shop policy mutation."""
 type ShopPolicyUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: ShopPolicyErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -30849,7 +30861,7 @@ type StagedUploadTargetGeneratePayload {
   """The signed URL where the asset can be uploaded."""
   url: String!
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -30891,7 +30903,7 @@ type StagedUploadTargetsGeneratePayload {
   """The staged upload targets that were generated."""
   urls: [StagedUploadTarget!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -30900,7 +30912,7 @@ type StagedUploadsCreatePayload {
   """The staged upload targets that were generated."""
   stagedTargets: [StagedMediaUploadTarget!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -30909,7 +30921,7 @@ type StandardMetafieldDefinitionEnablePayload {
   """The metafield definition that was created."""
   createdDefinition: MetafieldDefinition
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [StandardMetafieldDefinitionEnableUserError!]!
 }
 
@@ -30917,10 +30929,10 @@ type StandardMetafieldDefinitionEnablePayload {
 An error that occurs during the execution of StandardMetafieldDefinitionEnable.
 """
 type StandardMetafieldDefinitionEnableUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: StandardMetafieldDefinitionEnableUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -31046,7 +31058,7 @@ type StorefrontAccessTokenCreatePayload {
   """The storefront access token."""
   storefrontAccessToken: StorefrontAccessToken
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -31061,7 +31073,7 @@ type StorefrontAccessTokenDeletePayload {
   """The ID of the deleted storefront access token."""
   deletedStorefrontAccessTokenId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -31180,7 +31192,7 @@ type SubscriptionBillingAttemptCreatePayload {
   """The subscription billing attempt."""
   subscriptionBillingAttempt: SubscriptionBillingAttempt
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [BillingAttemptUserError!]!
 }
 
@@ -31478,7 +31490,7 @@ type SubscriptionContractCreatePayload {
   """The Subscription Contract object."""
   draft: SubscriptionDraft
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SubscriptionDraftUserError!]!
 }
 
@@ -31516,7 +31528,7 @@ type SubscriptionContractSetNextBillingDatePayload {
   """The updated Subscription Contract object."""
   contract: SubscriptionContract
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SubscriptionContractUserError!]!
 }
 
@@ -31543,16 +31555,16 @@ type SubscriptionContractUpdatePayload {
   """The Subscription Contract object."""
   draft: SubscriptionDraft
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SubscriptionDraftUserError!]!
 }
 
 """Represents a Subscription Contract error."""
 type SubscriptionContractUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: SubscriptionContractErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -31998,7 +32010,7 @@ type SubscriptionDraftCommitPayload {
   """The updated Subscription Contract object."""
   contract: SubscriptionContract
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SubscriptionDraftUserError!]!
 }
 
@@ -32010,7 +32022,7 @@ type SubscriptionDraftDiscountAddPayload {
   """The Subscription Contract draft object."""
   draft: SubscriptionDraft
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SubscriptionDraftUserError!]!
 }
 
@@ -32022,7 +32034,7 @@ type SubscriptionDraftDiscountCodeApplyPayload {
   """The subscription contract draft object."""
   draft: SubscriptionDraft
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SubscriptionDraftUserError!]!
 }
 
@@ -32034,7 +32046,7 @@ type SubscriptionDraftDiscountRemovePayload {
   """The subscription contract draft object."""
   draft: SubscriptionDraft
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SubscriptionDraftUserError!]!
 }
 
@@ -32046,7 +32058,7 @@ type SubscriptionDraftDiscountUpdatePayload {
   """The Subscription Contract draft object."""
   draft: SubscriptionDraft
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SubscriptionDraftUserError!]!
 }
 
@@ -32145,7 +32157,7 @@ type SubscriptionDraftFreeShippingDiscountAddPayload {
   """The subscription contract draft object."""
   draft: SubscriptionDraft
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SubscriptionDraftUserError!]!
 }
 
@@ -32159,7 +32171,7 @@ type SubscriptionDraftFreeShippingDiscountUpdatePayload {
   """The Subscription Contract draft object."""
   draft: SubscriptionDraft
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SubscriptionDraftUserError!]!
 }
 
@@ -32195,7 +32207,7 @@ type SubscriptionDraftLineAddPayload {
   """The added Subscription Line."""
   lineAdded: SubscriptionLine
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SubscriptionDraftUserError!]!
 }
 
@@ -32212,7 +32224,7 @@ type SubscriptionDraftLineRemovePayload {
   """The removed Subscription Line."""
   lineRemoved: SubscriptionLine
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SubscriptionDraftUserError!]!
 }
 
@@ -32224,7 +32236,7 @@ type SubscriptionDraftLineUpdatePayload {
   """The updated Subscription Line."""
   lineUpdated: SubscriptionLine
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SubscriptionDraftUserError!]!
 }
 
@@ -32233,16 +32245,16 @@ type SubscriptionDraftUpdatePayload {
   """The Subscription Draft object."""
   draft: SubscriptionDraft
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [SubscriptionDraftUserError!]!
 }
 
 """Represents a Subscription Draft error."""
 type SubscriptionDraftUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: SubscriptionDraftErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -32796,7 +32808,7 @@ type TagsAddPayload {
   """The object that was updated."""
   node: Node
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -32805,7 +32817,7 @@ type TagsRemovePayload {
   """The object that was updated."""
   node: Node
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -33288,10 +33300,10 @@ input TranslationInput {
 Represents an error that happens during the execution of a translation mutation.
 """
 type TranslationUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: TranslationErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -33303,7 +33315,7 @@ type TranslationsRegisterPayload {
   """The translations that were created or updated."""
   translations: [Translation!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [TranslationUserError!]!
 }
 
@@ -33312,7 +33324,7 @@ type TranslationsRemovePayload {
   """The translations that were deleted."""
   translations: [Translation!]
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [TranslationUserError!]!
 }
 
@@ -33415,7 +33427,7 @@ type UrlRedirectBulkDeleteAllPayload {
   """The asynchronous job removing the redirects."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -33424,7 +33436,7 @@ type UrlRedirectBulkDeleteByIdsPayload {
   """The asynchronous job removing the redirects."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UrlRedirectBulkDeleteByIdsUserError!]!
 }
 
@@ -33432,10 +33444,10 @@ type UrlRedirectBulkDeleteByIdsPayload {
 An error that occurs during the execution of UrlRedirectBulkDeleteByIds.
 """
 type UrlRedirectBulkDeleteByIdsUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: UrlRedirectBulkDeleteByIdsUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -33455,7 +33467,7 @@ type UrlRedirectBulkDeleteBySavedSearchPayload {
   """The asynchronous job removing the redirects."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UrlRedirectBulkDeleteBySavedSearchUserError!]!
 }
 
@@ -33463,10 +33475,10 @@ type UrlRedirectBulkDeleteBySavedSearchPayload {
 An error that occurs during the execution of UrlRedirectBulkDeleteBySavedSearch.
 """
 type UrlRedirectBulkDeleteBySavedSearchUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: UrlRedirectBulkDeleteBySavedSearchUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -33489,7 +33501,7 @@ type UrlRedirectBulkDeleteBySearchPayload {
   """The asynchronous job removing the redirects."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UrlRedirectBulkDeleteBySearchUserError!]!
 }
 
@@ -33497,10 +33509,10 @@ type UrlRedirectBulkDeleteBySearchPayload {
 An error that occurs during the execution of UrlRedirectBulkDeleteBySearch.
 """
 type UrlRedirectBulkDeleteBySearchUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: UrlRedirectBulkDeleteBySearchUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -33532,7 +33544,7 @@ type UrlRedirectCreatePayload {
   """The created redirect."""
   urlRedirect: UrlRedirect
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UrlRedirectUserError!]!
 }
 
@@ -33541,7 +33553,7 @@ type UrlRedirectDeletePayload {
   """The ID of the deleted redirect."""
   deletedUrlRedirectId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UrlRedirectUserError!]!
 }
 
@@ -33604,7 +33616,7 @@ type UrlRedirectImportCreatePayload {
   """The created URL redirect import."""
   urlRedirectImport: UrlRedirectImport
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UrlRedirectImportUserError!]!
 }
 
@@ -33641,7 +33653,7 @@ type UrlRedirectImportSubmitPayload {
   """The asynchronous job importing the redirects."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UrlRedirectImportUserError!]!
 }
 
@@ -33649,10 +33661,10 @@ type UrlRedirectImportSubmitPayload {
 Represents an error that happens during execution of a redirect import mutation.
 """
 type UrlRedirectImportUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: UrlRedirectImportErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -33692,7 +33704,7 @@ type UrlRedirectUpdatePayload {
   """The updated redirect."""
   urlRedirect: UrlRedirect
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UrlRedirectUserError!]!
 }
 
@@ -33700,10 +33712,10 @@ type UrlRedirectUpdatePayload {
 Represents an error that happens during execution of a redirect mutation.
 """
 type UrlRedirectUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: UrlRedirectErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -33712,7 +33724,7 @@ type UrlRedirectUserError implements DisplayableError {
 
 """Represents an error in the input of a mutation."""
 type UserError implements DisplayableError {
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -33792,7 +33804,7 @@ type VoidSession {
 
 """Return type for `voidSessionReject` mutation."""
 type VoidSessionRejectPayload {
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [VoidSessionRejectUserError!]!
 
   """The updated void session."""
@@ -33801,10 +33813,10 @@ type VoidSessionRejectPayload {
 
 """An error that occurs during the execution of VoidSessionReject."""
 type VoidSessionRejectUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: VoidSessionRejectUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -33833,7 +33845,7 @@ input VoidSessionRejectionReasonInput {
 
 """Return type for `voidSessionResolve` mutation."""
 type VoidSessionResolvePayload {
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [VoidSessionResolveUserError!]!
 
   """The updated void session."""
@@ -33842,10 +33854,10 @@ type VoidSessionResolvePayload {
 
 """An error that occurs during the execution of VoidSessionResolve."""
 type VoidSessionResolveUserError implements DisplayableError {
-  """Error code to uniquely identify the error."""
+  """The error code."""
   code: VoidSessionResolveUserErrorCode
 
-  """Path to the input field which caused the error."""
+  """The path to the input field that caused the error."""
   field: [String!]
 
   """The error message."""
@@ -34023,7 +34035,7 @@ type WebhookSubscriptionConnection {
 
 """Return type for `webhookSubscriptionCreate` mutation."""
 type WebhookSubscriptionCreatePayload {
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 
   """The webhook subscription that was created."""
@@ -34035,7 +34047,7 @@ type WebhookSubscriptionDeletePayload {
   """The ID of the deleted webhook subscription."""
   deletedWebhookSubscriptionId: ID
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -34389,7 +34401,7 @@ enum WebhookSubscriptionTopic {
 
 """Return type for `webhookSubscriptionUpdate` mutation."""
 type WebhookSubscriptionUpdatePayload {
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 
   """The webhook subscription that was updated."""
@@ -34437,7 +34449,7 @@ type deliveryProfileCreatePayload {
   """The delivery profile that was created."""
   profile: DeliveryProfile
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -34446,7 +34458,7 @@ type deliveryProfileRemovePayload {
   """The profile deletion job triggered by the mutation."""
   job: Job
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
 
@@ -34455,6 +34467,6 @@ type deliveryProfileUpdatePayload {
   """The delivery profile that was updated."""
   profile: DeliveryProfile
 
-  """List of errors that occurred executing the mutation."""
+  """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
 }
