@@ -19186,7 +19186,7 @@ The application that created the order.
 """
 type OrderApp {
   """The app icon."""
-  icon: Image
+  icon: Image!
 
   """The name of the app."""
   name: String!
