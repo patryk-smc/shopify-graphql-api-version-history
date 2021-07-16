@@ -160,6 +160,9 @@ type App implements Node {
   """Whether the app is published."""
   published: Boolean!
 
+  """The access scopes requested by the app."""
+  requestedAccessScopes: [AccessScope!]!
+
   """Screenshots of the app."""
   screenshots: [Image!]!
 
