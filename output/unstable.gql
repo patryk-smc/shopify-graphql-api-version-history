@@ -1610,7 +1610,7 @@ type CalculatedDraftOrderLineItem {
   """
   custom: Boolean!
 
-  """List of additional information (metafields) about the line item."""
+  """List of additional information about the line item."""
   customAttributes: [Attribute!]!
 
   """Total price with discounts applied."""
@@ -1692,7 +1692,7 @@ type CalculatedLineItem {
   """
   calculatedDiscountAllocations: [CalculatedDiscountAllocation!]!
 
-  """List of additional information (metafields) about the line item."""
+  """List of additional information about the line item."""
   customAttributes: [Attribute!]!
 
   """
@@ -8248,11 +8248,11 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
-  """Value is outside allowed range."""
-  VALUE_OUTSIDE_RANGE
-
   """Cannot have both minimum subtotal and quantity present."""
   MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
+
+  """Value is outside allowed range."""
+  VALUE_OUTSIDE_RANGE
 
   """Exceeded maximum allowed value."""
   EXCEEDED_MAX
@@ -9290,7 +9290,7 @@ type DraftOrderLineItem implements Node {
   """
   custom: Boolean!
 
-  """List of additional information (metafields) about the line item."""
+  """List of additional information about the line item."""
   customAttributes: [Attribute!]!
 
   """
@@ -12582,7 +12582,7 @@ type LineItem implements Node {
   """The line item's quantity minus the removed quantity."""
   currentQuantity: Int!
 
-  """List of additional information (metafields) about the line item."""
+  """List of additional information about the line item."""
   customAttributes: [Attribute!]!
 
   """
@@ -12789,7 +12789,7 @@ type LineItemMutable implements Node {
   """
   canRestock: Boolean! @deprecated(reason: "Use `restockable` instead")
 
-  """List of additional information (metafields) about the line item."""
+  """List of additional information about the line item."""
   customAttributes: [Attribute!]!
 
   """
@@ -15709,8 +15709,7 @@ Other formatting libraries include:
 * Android - [NumberFormat](https://developer.android.com/reference/java/text/NumberFormat.html)
 * PHP - [NumberFormatter](http://php.net/manual/en/class.numberformatter.php)
 
-For a more general solution, the [Unicode CLDR number formatting database] is available with many implementations
-(such as [TwitterCldr](https://github.com/twitter/twitter-cldr-rb)).
+For a more general solution, the [Unicode CLDR number formatting database](https://github.com/unicode-org/cldr) is available with many implementations, such as [TwitterCldr](https://github.com/twitter/twitter-cldr-rb).
 
 """
 type MoneyV2 {
@@ -28485,9 +28484,7 @@ input SellingPlanRecurringPricingPolicyInput {
   """Price adjustment value defined by the policy."""
   adjustmentValue: SellingPlanPricingPolicyValueInput
 
-  """
-  Cycle after which the pricing policy applies. If not provided the policy will be applicable from the first cycle.
-  """
+  """Cycle after which the pricing policy applies."""
   afterCycle: Int!
 }
 
