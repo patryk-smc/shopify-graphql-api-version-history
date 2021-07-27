@@ -10488,6 +10488,36 @@ enum FulfillmentEventStatus {
   FAILURE
 }
 
+"""
+A fulfillment hold currently applied on a fulfillment order.
+
+"""
+type FulfillmentHold {
+  """The reason for the fulfillment hold."""
+  reason: FulfillmentHoldReason!
+
+  """Additional information about the fulfillment hold reason."""
+  reasonNotes: String
+}
+
+"""The reason for a fulfillment hold."""
+enum FulfillmentHoldReason {
+  """The fulfillment hold is applied because payment is pending."""
+  AWAITING_PAYMENT
+
+  """The fulfillment hold is applied because of a high risk of fraud."""
+  HIGH_RISK_OF_FRAUD
+
+  """The fulfillment hold is applied because of an incorrect address."""
+  INCORRECT_ADDRESS
+
+  """The fulfillment hold is applied because inventory is out of stock."""
+  INVENTORY_OUT_OF_STOCK
+
+  """The fulfillment hold is applied for another reason."""
+  OTHER
+}
+
 """The input fields used to create a fulfillment."""
 input FulfillmentInput {
   """The ID of the order to be fulfilled."""
@@ -10605,6 +10635,9 @@ type FulfillmentOrder implements Node {
 
   """The date and time at which the fulfillment order will be fulfillable."""
   fulfillAt: DateTime
+
+  """The fulfillment holds applied on the fulfillment order."""
+  fulfillmentHolds: [FulfillmentHold!]!
 
   """A list of fulfillments for the fulfillment order."""
   fulfillments(
@@ -10751,6 +10784,12 @@ enum FulfillmentOrderAction {
 
   """Mark the fulfillment order as open."""
   MARK_AS_OPEN
+
+  """Release the fulfillment hold on the fulfillment order."""
+  RELEASE_HOLD
+
+  """Applies a fulfillment hold on an open fulfillment order."""
+  HOLD
 
   """
   Open an external URL to initiate the fulfillment process outside Shopify.
@@ -10908,6 +10947,51 @@ type FulfillmentOrderEdge {
 
   """The item at the end of FulfillmentOrderEdge."""
   node: FulfillmentOrder!
+}
+
+"""
+Input arguments for the fulfillment hold applied on the fulfillment order.
+"""
+input FulfillmentOrderHoldInput {
+  """The reason for the fulfillment hold."""
+  reason: FulfillmentHoldReason!
+
+  """Additional information about the fulfillment hold reason."""
+  reasonNotes: String
+
+  """
+  Whether the merchant receives a notification about the fulfillment hold.
+  """
+  notifyMerchant: Boolean = false
+}
+
+"""Return type for `fulfillmentOrderHold` mutation."""
+type FulfillmentOrderHoldPayload {
+  """The fulfillment order on which a fulfillment hold was applied."""
+  fulfillmentOrder: FulfillmentOrder
+
+  """List of errors that occurred from executing the mutation."""
+  userErrors: [FulfillmentOrderHoldUserError!]!
+}
+
+"""An error that occurs during the execution of FulfillmentOrderHold."""
+type FulfillmentOrderHoldUserError implements DisplayableError {
+  """The error code."""
+  code: FulfillmentOrderHoldUserErrorCode
+
+  """The path to the input field that caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by FulfillmentOrderHoldUserError.
+"""
+enum FulfillmentOrderHoldUserErrorCode {
+  """The fulfillment order could not be found."""
+  FULFILLMENT_ORDER_NOT_FOUND
 }
 
 """
@@ -11149,6 +11233,37 @@ type FulfillmentOrderRejectFulfillmentRequestPayload {
 
   """List of errors that occurred from executing the mutation."""
   userErrors: [UserError!]!
+}
+
+"""Return type for `fulfillmentOrderReleaseHold` mutation."""
+type FulfillmentOrderReleaseHoldPayload {
+  """The fulfillment order on which the hold was released."""
+  fulfillmentOrder: FulfillmentOrder
+
+  """List of errors that occurred from executing the mutation."""
+  userErrors: [FulfillmentOrderReleaseHoldUserError!]!
+}
+
+"""
+An error that occurs during the execution of FulfillmentOrderReleaseHold.
+"""
+type FulfillmentOrderReleaseHoldUserError implements DisplayableError {
+  """The error code."""
+  code: FulfillmentOrderReleaseHoldUserErrorCode
+
+  """The path to the input field that caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by FulfillmentOrderReleaseHoldUserError.
+"""
+enum FulfillmentOrderReleaseHoldUserErrorCode {
+  """The fulfillment order was not found."""
+  FULFILLMENT_ORDER_NOT_FOUND
 }
 
 """The request status of a fulfillment order."""
@@ -16542,6 +16657,17 @@ type Mutation {
     message: String
   ): FulfillmentOrderClosePayload
 
+  """Applies a fulfillment hold on an open fulfillment order."""
+  fulfillmentOrderHold(
+    """
+    The ID of the fulfillment order on which a fulfillment hold is applied.
+    """
+    id: ID!
+
+    """The details of the fulfillment hold applied on the fulfillment order."""
+    fulfillmentHold: FulfillmentOrderHoldInput!
+  ): FulfillmentOrderHoldPayload
+
   """Moves a fulfillment order to a new location."""
   fulfillmentOrderMove(
     """The ID of the fulfillment order to be moved."""
@@ -16582,6 +16708,14 @@ type Mutation {
     """An optional reason for rejecting the fulfillment request."""
     message: String
   ): FulfillmentOrderRejectFulfillmentRequestPayload
+
+  """Releases the fulfillment hold on a fulfillment order."""
+  fulfillmentOrderReleaseHold(
+    """
+    The ID of the fulfillment order for which to release the fulfillment hold.
+    """
+    id: ID!
+  ): FulfillmentOrderReleaseHoldPayload
 
   """Reschedules a scheduled fulfillment order."""
   fulfillmentOrderReschedule(
@@ -17050,6 +17184,17 @@ type Mutation {
     """The input for the mutation."""
     input: OrderOpenInput!
   ): OrderOpenPayload
+
+  """
+  Sets the latest date and time when all items in the order must be fulfilled.
+  """
+  orderSetFulfillmentDeadline(
+    """The ID of the order for which the deadline is being set."""
+    orderId: ID!
+
+    """The new fulfillment deadline of the order."""
+    fulfillmentDeadline: DateTime!
+  ): OrderSetFulfillmentDeadlinePayload
 
   """Updates the fields of an order."""
   orderUpdate(
@@ -18520,6 +18665,9 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   """
   fulfillable: Boolean!
 
+  """The fulfillment related details for the order."""
+  fulfillmentDetails: OrderFulfillmentDetails!
+
   """List of fulfillment orders with pagination."""
   fulfillmentOrders(
     """
@@ -19476,6 +19624,9 @@ type OrderEditSetQuantityPayload {
   userErrors: [UserError!]!
 }
 
+"""A collection of data representing the fulfillments of an order."""
+type OrderFulfillmentDetails
+
 """Specifies the information to be updated on the requested order."""
 input OrderInput {
   """The email address associated with the order."""
@@ -19579,6 +19730,37 @@ enum OrderRiskLevel {
 
   """There is a high level of risk that this order is fraudulent."""
   HIGH
+}
+
+"""Return type for `orderSetFulfillmentDeadline` mutation."""
+type OrderSetFulfillmentDeadlinePayload {
+  """Whether the fulfillment deadline was successfully set."""
+  success: Boolean
+
+  """List of errors that occurred from executing the mutation."""
+  userErrors: [OrderSetFulfillmentDeadlineUserError!]!
+}
+
+"""
+An error that occurs during the execution of OrderSetFulfillmentDeadline.
+"""
+type OrderSetFulfillmentDeadlineUserError implements DisplayableError {
+  """The error code."""
+  code: OrderSetFulfillmentDeadlineUserErrorCode
+
+  """The path to the input field that caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by OrderSetFulfillmentDeadlineUserError.
+"""
+enum OrderSetFulfillmentDeadlineUserErrorCode {
+  """The order could not be found."""
+  ORDER_NOT_FOUND
 }
 
 """The set of valid sort keys for the Order query."""
