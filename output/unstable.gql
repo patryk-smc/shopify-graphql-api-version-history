@@ -18573,6 +18573,11 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   currentTaxLines: [TaxLine!]!
 
   """
+  The total amount of additional fees for the order, minus the amount that has been returned. The value is `null` if there are no additional fees.
+  """
+  currentTotalAdditionalFeesSet: MoneyBag
+
+  """
   The total amount discounted from the order (including order-level and line item discounts) minus the amounts for items that have been returned.
   """
   currentTotalDiscountsSet: MoneyBag!
@@ -18950,6 +18955,11 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   
   """
   note: String
+
+  """
+  The total amount of additional fees at the time of order creation. The value is `null` if there are no additional fees.
+  """
+  originalTotalAdditionalFeesSet: MoneyBag
 
   """
   The total amount of duties at the time of order creation. If duties aren't applicable, then this value is `null`.
