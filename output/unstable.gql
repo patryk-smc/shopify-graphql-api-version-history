@@ -34502,12 +34502,6 @@ enum WebhookSubscriptionSortKeys {
 
 """The supported topics for webhook subscriptions."""
 enum WebhookSubscriptionTopic {
-  """The webhook topic for `tax_calculations/create` events."""
-  TAX_CALCULATIONS_CREATE
-
-  """The webhook topic for `tax_calculations/update` events."""
-  TAX_CALCULATIONS_UPDATE
-
   """The webhook topic for `app/uninstalled` events."""
   APP_UNINSTALLED
 
