@@ -8310,14 +8310,14 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
-  """Value is outside allowed range."""
-  VALUE_OUTSIDE_RANGE
-
   """Cannot have both minimum subtotal and quantity present."""
   MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
 
   """Exceeded maximum allowed value."""
   EXCEEDED_MAX
+
+  """Value is outside allowed range."""
+  VALUE_OUTSIDE_RANGE
 
   """
   Active period overlaps with other automatic discounts. At any given time, only one automatic discount can be active.
@@ -15231,6 +15231,12 @@ type MetafieldDefinitionOptionMaxPrecision {
   value: Int!
 }
 
+"""The maximum scale for a rating metafield definition."""
+type MetafieldDefinitionOptionMaxRatingScale {
+  """The maximum scale for a rating."""
+  value: Decimal!
+}
+
 """The maximum volume option value for a metafield definition."""
 type MetafieldDefinitionOptionMaxVolume {
   """The maximum volume value."""
@@ -15277,6 +15283,12 @@ type MetafieldDefinitionOptionMinInteger {
 type MetafieldDefinitionOptionMinLength {
   """The minimum length value."""
   value: Int!
+}
+
+"""The minimum scale for a rating metafield definition."""
+type MetafieldDefinitionOptionMinRatingScale {
+  """The minimum scale for a rating."""
+  value: Decimal!
 }
 
 """The minimum volume option value for a metafield definition."""
@@ -15358,10 +15370,16 @@ enum MetafieldDefinitionOptionType {
 
   """An option for setting the maximum decimal number."""
   MAX_DECIMAL
+
+  """An option for setting the minimum rating scale number."""
+  MIN_RATING_SCALE
+
+  """An option for setting the maximum rating scale number."""
+  MAX_RATING_SCALE
 }
 
 """The type and value for a metafield definition configuration."""
-union MetafieldDefinitionOptionValue = MetafieldDefinitionOptionAllowedDomains | MetafieldDefinitionOptionFileTypeOptions | MetafieldDefinitionOptionMaxDate | MetafieldDefinitionOptionMaxDateTime | MetafieldDefinitionOptionMaxDecimal | MetafieldDefinitionOptionMaxDimension | MetafieldDefinitionOptionMaxInteger | MetafieldDefinitionOptionMaxLength | MetafieldDefinitionOptionMaxPrecision | MetafieldDefinitionOptionMaxVolume | MetafieldDefinitionOptionMaxWeight | MetafieldDefinitionOptionMinDate | MetafieldDefinitionOptionMinDateTime | MetafieldDefinitionOptionMinDecimal | MetafieldDefinitionOptionMinDimension | MetafieldDefinitionOptionMinInteger | MetafieldDefinitionOptionMinLength | MetafieldDefinitionOptionMinVolume | MetafieldDefinitionOptionMinWeight | MetafieldDefinitionOptionRegex
+union MetafieldDefinitionOptionValue = MetafieldDefinitionOptionAllowedDomains | MetafieldDefinitionOptionFileTypeOptions | MetafieldDefinitionOptionMaxDate | MetafieldDefinitionOptionMaxDateTime | MetafieldDefinitionOptionMaxDecimal | MetafieldDefinitionOptionMaxDimension | MetafieldDefinitionOptionMaxInteger | MetafieldDefinitionOptionMaxLength | MetafieldDefinitionOptionMaxPrecision | MetafieldDefinitionOptionMaxRatingScale | MetafieldDefinitionOptionMaxVolume | MetafieldDefinitionOptionMaxWeight | MetafieldDefinitionOptionMinDate | MetafieldDefinitionOptionMinDateTime | MetafieldDefinitionOptionMinDecimal | MetafieldDefinitionOptionMinDimension | MetafieldDefinitionOptionMinInteger | MetafieldDefinitionOptionMinLength | MetafieldDefinitionOptionMinRatingScale | MetafieldDefinitionOptionMinVolume | MetafieldDefinitionOptionMinWeight | MetafieldDefinitionOptionRegex
 
 """Possible metafield definition pinned statuses."""
 enum MetafieldDefinitionPinnedStatus {
@@ -31306,6 +31324,9 @@ enum StandardMetafieldDefinitionEnableUserErrorCode {
 
   """Maximum limit of definitions per owner type exceeded."""
   LIMIT_EXCEEDED
+
+  """Namespace and key is already in use for a set of your metafields."""
+  UNSTRUCTURED_ALREADY_EXISTS
 }
 
 """
