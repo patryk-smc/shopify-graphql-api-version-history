@@ -6494,7 +6494,7 @@ type DeliveryProfile implements Node {
   """The location groups and associated zones using this profile."""
   profileLocationGroups: [DeliveryProfileLocationGroup!]!
 
-  """Selling Plan Groups associated with the specified Delivery Profile."""
+  """Selling plan groups associated with the specified delivery profile."""
   sellingPlanGroups(
     """Returns up to the first `n` elements from the list."""
     first: Int
@@ -6589,7 +6589,10 @@ input DeliveryProfileInput {
 """
 A product and the subset of associated variants that are part of this delivery profile.
 """
-type DeliveryProfileItem {
+type DeliveryProfileItem implements Node {
+  """A globally unique identifier."""
+  id: ID!
+
   """A product associated with this profile."""
   product: Product!
 
