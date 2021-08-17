@@ -4844,6 +4844,7 @@ type Customer implements Node & CommentEventSubject & HasMetafields & LegacyInte
      - `fraud_protection_level`
      - `fulfillment_location_id`
      - `fulfillment_status`
+     - `gateway`
      - `location_id`
      - `name`
      - `processed_at`
@@ -26049,6 +26050,7 @@ type QueryRoot {
      - `fraud_protection_level`
      - `fulfillment_location_id`
      - `fulfillment_status`
+     - `gateway`
      - `location_id`
      - `name`
      - `processed_at`
@@ -29682,6 +29684,7 @@ type Shop implements Node & HasPublishedTranslations & HasMetafields {
      - `fraud_protection_level`
      - `fulfillment_location_id`
      - `fulfillment_status`
+     - `gateway`
      - `location_id`
      - `name`
      - `processed_at`
