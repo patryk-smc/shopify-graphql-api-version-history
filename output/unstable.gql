@@ -12779,7 +12779,7 @@ type LineItem implements Node {
   discountedTotal: Money! @deprecated(reason: "Use `discountedTotalSet` instead")
 
   """
-  The total line price after discounts are applied in shop and presentment currencies.
+  The total line price after discounts are applied, in shop and presentment currencies.
   """
   discountedTotalSet: MoneyBag!
 
@@ -12789,7 +12789,7 @@ type LineItem implements Node {
   discountedUnitPrice: Money! @deprecated(reason: "Use `discountedUnitPriceSet` instead")
 
   """
-  The price of a single variant unit after line item discounts are applied in shop and presentment currencies.
+  The price of a single quantity of the line item with line item discounts applied, in shop and presentment currencies. Discounts applied to the entire order aren't included in this price.
   """
   discountedUnitPriceSet: MoneyBag!
 
@@ -12859,7 +12859,7 @@ type LineItem implements Node {
   originalTotal: Money! @deprecated(reason: "Use `originalTotalSet` instead")
 
   """
-  Total price (without discounts) of the line item, based on the original unit price of the  variant x quantity in shop and presentment currencies.
+  Total price (without discounts) of the line item, based on the original unit price of the  variant x quantity, in shop and presentment currencies.
   """
   originalTotalSet: MoneyBag!
 
@@ -12867,7 +12867,7 @@ type LineItem implements Node {
   originalUnitPrice: Money! @deprecated(reason: "Use `originalUnitPriceSet` instead")
 
   """
-  Variant price without any discounts applied in shop and presentment currencies.
+  Variant price without any discounts applied, in shop and presentment currencies.
   """
   originalUnitPriceSet: MoneyBag!
 
@@ -12912,7 +12912,7 @@ type LineItem implements Node {
   totalDiscount: Money! @deprecated(reason: "Use `totalDiscountSet` instead")
 
   """
-  The sum of all AppliedDiscounts on this line item in shop and presentment currencies.
+  The sum of all AppliedDiscounts on this line item, in shop and presentment currencies.
   """
   totalDiscountSet: MoneyBag!
 
@@ -12920,7 +12920,7 @@ type LineItem implements Node {
   unfulfilledDiscountedTotal: Money! @deprecated(reason: "Use `unfulfilledDiscountedTotalSet` instead")
 
   """
-  The total discounted value of unfulfilled units in shop and presentment currencies.
+  The total discounted value of unfulfilled units, in shop and presentment currencies.
   """
   unfulfilledDiscountedTotalSet: MoneyBag!
 
@@ -12928,7 +12928,7 @@ type LineItem implements Node {
   unfulfilledOriginalTotal: Money! @deprecated(reason: "Use `unfulfilledOriginalTotalSet` instead")
 
   """
-  The total value before discount of all unfulfilled units in shop and presentment currencies.
+  The total value before discount of all unfulfilled units, in shop and presentment currencies.
   """
   unfulfilledOriginalTotalSet: MoneyBag!
 
