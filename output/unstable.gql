@@ -192,6 +192,89 @@ type App implements Node {
   webhookApiVersion: String!
 }
 
+"""Advertising audience for apps."""
+type AppAdAudience {
+  """Link to the audience on the ad platform."""
+  externalLink: String
+
+  """Globally unique identifier."""
+  id: ID!
+
+  """The members of the audience."""
+  members(
+    """Cursor for the current batch of records to fetch."""
+    after: String
+
+    """Algorithm for hashing emails of audience members."""
+    hashingAlgorithm: String!
+  ): AppAdAudienceMembers!
+
+  """The audience's name."""
+  name: String!
+
+  """The audience's current state."""
+  state: AppAdAudienceState!
+}
+
+"""Members of an ad audience for an app."""
+type AppAdAudienceMembers {
+  """The cursor for the next batch of records."""
+  cursor: String!
+
+  """The hashed emails of the ad audience members."""
+  emails: [String!]!
+
+  """Whether or not there is another page after the current page."""
+  hasNextPage: Boolean!
+}
+
+"""The states that an ad audience for an app can have."""
+enum AppAdAudienceState {
+  """The audience is being generated."""
+  PENDING
+
+  """The audience is being exported."""
+  EXPORTING
+
+  """The audience is fully exported."""
+  EXPORTED
+
+  """The generation or the export of the audience has failed."""
+  FAILED
+}
+
+"""Return type for `appAdAudienceUpdate` mutation."""
+type AppAdAudienceUpdatePayload {
+  """The updated audience."""
+  audience: AppAdAudience
+
+  """The list of errors that occurred from executing the mutation."""
+  userErrors: [AppAdAudienceUpdateUserError!]!
+}
+
+"""An error that occurs during the execution of AppAdAudienceUpdate."""
+type AppAdAudienceUpdateUserError implements DisplayableError {
+  """The error code."""
+  code: AppAdAudienceUpdateUserErrorCode
+
+  """The path to the input field that caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by AppAdAudienceUpdateUserError.
+"""
+enum AppAdAudienceUpdateUserErrorCode {
+  """Shop cannot access this feature."""
+  AUDIENCE_FEATURE_NOT_ENABLED
+
+  """Audience does not exist."""
+  AUDIENCE_NOT_FOUND
+}
+
 """
 An auto-generated type for paginating through multiple Apps.
 
@@ -8316,11 +8399,11 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
-  """Value is outside allowed range."""
-  VALUE_OUTSIDE_RANGE
-
   """Exceeded maximum allowed value."""
   EXCEEDED_MAX
+
+  """Value is outside allowed range."""
+  VALUE_OUTSIDE_RANGE
 
   """Cannot have both minimum subtotal and quantity present."""
   MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
@@ -15927,6 +16010,18 @@ input MoveInput {
 
 """The schema's entry point for all mutation operations."""
 type Mutation {
+  """Update an ad audience for an app."""
+  appAdAudienceUpdate(
+    """The ID of the audience to update."""
+    id: ID!
+
+    """The audience's current state."""
+    state: AppAdAudienceState
+
+    """Link to the audience on the ad platform."""
+    externalLink: String
+  ): AppAdAudienceUpdatePayload
+
   """
   Allows an app to create a credit for a shop that can be used towards future app purchases.
   """
@@ -24861,6 +24956,12 @@ type QueryRoot {
     id: ID
   ): App
 
+  """Returns an AdAudience resource for an app by ID."""
+  appAdAudience(
+    """The ID of the audience to return."""
+    id: ID!
+  ): AppAdAudience
+
   """
   Fetches app by handle.
   Returns null if the app doesn't exist.
@@ -33611,6 +33712,9 @@ enum TranslatableResourceType {
   An online store theme. Translatable fields: `dynamic keys based on theme data`
   """
   ONLINE_STORE_THEME
+
+  """A packing slip template. Translatable fields: `body`"""
+  PACKING_SLIP_TEMPLATE
 
   """A payment gateway. Translatable fields: `name`"""
   PAYMENT_GATEWAY
