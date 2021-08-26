@@ -202,11 +202,14 @@ type AppAdAudience {
 
   """The audience members."""
   members(
+    """The number of records to fetch."""
+    first: Int! = 10000
+
     """The cursor for the current batch of records to fetch."""
     after: String
 
     """The algorithm for hashing emails of audience members."""
-    hashingAlgorithm: String!
+    hashingAlgorithm: AppAdAudienceHashingAlgorithm!
   ): AppAdAudienceMembers!
 
   """The audience's name."""
@@ -214,6 +217,14 @@ type AppAdAudience {
 
   """The audience's current state."""
   state: AppAdAudienceState!
+}
+
+"""
+The hashing algorithms that can be used to encode audience member emails.
+"""
+enum AppAdAudienceHashingAlgorithm {
+  """Encode using SHA256."""
+  SHA256
 }
 
 """The members of an app's ad audience."""
@@ -4719,11 +4730,11 @@ type CurrencySettingEdge {
 
 """
 Represents information about a customer of the shop, such as the customer's contact details, their order
-history, and whether they've agreed to receive email marketing.
+history, and whether they've agreed to receive marketing material by email.
 
 """
 type Customer implements Node & CommentEventSubject & HasMetafields & LegacyInteroperability & HasEvents {
-  """Whether the customer has agreed to receive marketing materials."""
+  """Whether the customer has agreed to receive marketing material."""
   acceptsMarketing: Boolean!
 
   """
@@ -4847,7 +4858,7 @@ type Customer implements Node & CommentEventSubject & HasMetafields & LegacyInte
   locale: String!
 
   """
-  The marketing subscription opt-in level (as described by the M3AAWG best practices guideline) that the
+  The marketing subscription opt-in level, as described by the M3AAWG best practices guidelines, that the
   customer gave when they consented to receive marketing material by email.
   
   If the customer does not accept email marketing, then this property will be null.
@@ -6903,6 +6914,9 @@ enum DigitalWallet {
 
   """Shopify Pay."""
   SHOPIFY_PAY
+
+  """Facebook Pay."""
+  FACEBOOK_PAY
 }
 
 """Represents a dimension."""
@@ -8399,11 +8413,11 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
-  """Exceeded maximum allowed value."""
-  EXCEEDED_MAX
-
   """Value is outside allowed range."""
   VALUE_OUTSIDE_RANGE
+
+  """Exceeded maximum allowed value."""
+  EXCEEDED_MAX
 
   """Cannot have both minimum subtotal and quantity present."""
   MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
@@ -16276,7 +16290,7 @@ type Mutation {
 
   """Creates a new customer."""
   customerCreate(
-    """Specifies the fields to use when creating the customer."""
+    """The fields to use when creating the customer."""
     input: CustomerInput!
   ): CustomerCreatePayload
 
@@ -23859,6 +23873,26 @@ type ProductVariant implements Node & HasMetafields & HasMetafieldDefinitions & 
 
   """Count of selling plan groups associated with the product variant."""
   sellingPlanGroupCount: Int!
+
+  """
+  A list of all selling plan groups defined in the current shop associated with the product variant.
+  """
+  sellingPlanGroups(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): SellingPlanGroupConnection!
 
   """
   An identifier for the product variant in the shop. Required in order to connect to a fulfillment service.
