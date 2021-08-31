@@ -120,7 +120,7 @@ type App implements Node {
   """Icon that represents the app."""
   icon: Image!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Webpage where you can install the app."""
@@ -217,7 +217,7 @@ type AppCredit implements Node {
   """The description of the app credit."""
   description: String!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Whether the app credit is a test transaction."""
@@ -342,7 +342,7 @@ type AppInstallation implements Node {
     sortKey: AppTransactionSortKeys = CREATED_AT
   ): AppCreditConnection!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Url used to launch the app."""
@@ -560,7 +560,7 @@ type AppPurchaseOneTime implements AppPurchase & Node {
   """The date and time when the app purchase was created."""
   createdAt: DateTime!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The name of the app purchase."""
@@ -676,7 +676,7 @@ type AppRevenueAttributionRecord implements Node {
   """The timestamp at which this revenue attribution was issued."""
   createdAt: DateTime!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -848,7 +848,7 @@ type AppSubscription implements Node {
   """The date and time when the current app subscription period ends."""
   currentPeriodEnd: DateTime
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Attaches a plan to an app subscription."""
@@ -922,7 +922,7 @@ type AppSubscriptionEdge {
 
 """Attaches a plan to an app subscription."""
 type AppSubscriptionLineItem {
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Defines the pricing model for the app subscription."""
@@ -1066,7 +1066,7 @@ type AppUsageRecord implements Node {
   """The description of the app usage record."""
   description: String!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -1214,7 +1214,7 @@ type BasicEvent implements Node & Event {
   """Whether the event is critical."""
   criticalAlert: Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Human readable text that describes the event."""
@@ -1290,7 +1290,7 @@ type BulkOperation implements Node {
   """File size in bytes of the file in the `url` field."""
   fileSize: UnsignedInt64
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -1491,7 +1491,7 @@ type CalculatedAutomaticDiscountApplication implements CalculatedDiscountApplica
   """
   description: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """How the discount amount is distributed on the discounted lines."""
@@ -1539,7 +1539,7 @@ interface CalculatedDiscountApplication {
   """
   description: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """How the discount amount is distributed on the discounted lines."""
@@ -1603,7 +1603,7 @@ type CalculatedDiscountCodeApplication implements CalculatedDiscountApplication 
   """
   description: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """How the discount amount is distributed on the discounted lines."""
@@ -1777,7 +1777,7 @@ type CalculatedLineItem {
   """Whether the calculated line item has a staged discount."""
   hasStagedLineItemDiscount: Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The Image object associated to the line item's variant."""
@@ -1867,7 +1867,7 @@ type CalculatedManualDiscountApplication implements CalculatedDiscountApplicatio
   """
   description: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """How the discount amount is distributed on the discounted lines."""
@@ -1935,7 +1935,7 @@ type CalculatedOrder implements Node {
   """Will be true when the changes have been applied to the order."""
   committed: Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -2052,7 +2052,7 @@ type CalculatedScriptDiscountApplication implements CalculatedDiscountApplicatio
   """
   description: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """How the discount amount is distributed on the discounted lines."""
@@ -2067,7 +2067,7 @@ type CalculatedScriptDiscountApplication implements CalculatedDiscountApplicatio
 
 """Represents a capture session."""
 type CaptureSession {
-  """A globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The capture status."""
@@ -2239,7 +2239,7 @@ type Channel implements Node {
     id: ID!
   ): Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Name of the channel."""
@@ -2405,7 +2405,7 @@ type Collection implements HasMetafields & Node & Publishable & HasPublishedTran
     id: ID!
   ): Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The image associated with the collection."""
@@ -3201,7 +3201,7 @@ type CommentEvent implements Node & Event {
   """The references associated with the comment event."""
   embed: CommentEventEmbed
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Human readable text that describes the event."""
@@ -3221,7 +3221,7 @@ type CommentEventAttachment {
   """
   fileExtension: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The image attached to the comment event."""
@@ -3267,7 +3267,7 @@ interface CommentEventSubject {
   """
   hasTimelineComment: Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 }
 
@@ -4732,7 +4732,7 @@ type Customer implements Node & CommentEventSubject & HasMetafields & LegacyInte
   """
   hasTimelineComment: Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The image associated with the customer."""
@@ -5745,7 +5745,7 @@ type CustomerUpdatePayload {
 
 """Information about a customer's session on a shop's online store."""
 type CustomerVisit implements CustomerMoment & Node {
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """URL of the first page the customer landed on for the session."""
@@ -5938,7 +5938,7 @@ type DeliveryCarrierService implements Node {
   """The logo of the service provider."""
   icon: Image!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The name of the service provider."""
@@ -5966,7 +5966,7 @@ type DeliveryCondition implements Node {
   """The field to compare the criteria unit against, using the operator."""
   field: DeliveryConditionField!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The operator to compare the field and criteria."""
@@ -6007,7 +6007,7 @@ type DeliveryCountry implements Node {
   """
   code: DeliveryCountryCodeOrRestOfWorld!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The name of the country."""
@@ -6094,7 +6094,7 @@ enum DeliveryLegacyModeBlockedReason {
 A location group is a collection of active locations that share zone and delivery methods across delivery profiles.
 """
 type DeliveryLocationGroup implements Node {
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """List of active locations that are part of this location group."""
@@ -6211,7 +6211,7 @@ type DeliveryLocationGroupZoneEdge {
 Input fields for a delivery zone associated to a location group and profile.
 """
 input DeliveryLocationGroupZoneInput {
-  """Globally unique identifier of the Zone."""
+  """A globally-unique identifier of the zone."""
   id: ID
 
   """The name of the zone."""
@@ -6229,7 +6229,7 @@ input DeliveryLocationGroupZoneInput {
 
 """Delivery method."""
 type DeliveryMethod implements Node {
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The type of the delivery method."""
@@ -6246,7 +6246,7 @@ type DeliveryMethodDefinition implements Node {
   """The description of the method definition."""
   description: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -6301,7 +6301,7 @@ type DeliveryMethodDefinitionEdge {
 """Input fields for a method definition."""
 input DeliveryMethodDefinitionInput {
   """
-  Globally unique identifier of the method definition. Use only when updating a method definiton.
+  A globally-unique identifier of the method definition. Use only when updating a method definiton.
   """
   id: ID
 
@@ -6372,7 +6372,7 @@ type DeliveryParticipant implements Node {
   """The merchant-set fixed fee for this participant."""
   fixedFee: MoneyV2
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Services offered by the participant and their active status."""
@@ -6384,7 +6384,7 @@ type DeliveryParticipant implements Node {
 
 """Input fields for a participant."""
 input DeliveryParticipantInput {
-  """Globally unique identifier of the participant."""
+  """A globally-unique identifier of the participant."""
   id: ID
 
   """Global identifier of the carrier service."""
@@ -6449,7 +6449,7 @@ type DeliveryProfile implements Node {
   """Whether this is the default profile."""
   default: Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -6591,7 +6591,7 @@ input DeliveryProfileInput {
 A product and the subset of associated variants that are part of this delivery profile.
 """
 type DeliveryProfileItem implements Node {
-  """A globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """A product associated with this profile."""
@@ -6673,7 +6673,7 @@ type DeliveryProfileLocationGroup {
 
 """Input fields for a delivery location group associated to a profile."""
 input DeliveryProfileLocationGroupInput {
-  """Globally unique identifier of the LocationGroup."""
+  """A globally-unique identifier of the LocationGroup."""
   id: ID
 
   """The location ids of the locations to be moved to this location group."""
@@ -6691,7 +6691,7 @@ type DeliveryProvince implements Node {
   """The code of this region."""
   code: String!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The name of the region."""
@@ -6709,7 +6709,7 @@ input DeliveryProvinceInput {
 
 """The merchant-defined rate of the DeliveryMethodDefinition."""
 type DeliveryRateDefinition implements Node {
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The price of this rate."""
@@ -6718,7 +6718,7 @@ type DeliveryRateDefinition implements Node {
 
 """Input fields for a rate definition."""
 input DeliveryRateDefinitionInput {
-  """Globally unique identifier of the rate definition."""
+  """A globally-unique identifier of the rate definition."""
   id: ID
 
   """The price of the rate definition."""
@@ -6766,7 +6766,7 @@ type DeliveryShippingOriginAssignPayload {
 
 """Input fields for updating the conditions of a method definition."""
 input DeliveryUpdateConditionInput {
-  """Globally unique identifier of the condition."""
+  """A globally-unique identifier of the condition."""
   id: ID!
 
   """The value of the criteria of the condition."""
@@ -6798,7 +6798,7 @@ type DeliveryZone implements Node {
   """The list of countries within the zone."""
   countries: [DeliveryCountry!]!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The name of the zone."""
@@ -7304,7 +7304,7 @@ type DiscountAutomaticNode implements Node & HasEvents {
     query: String
   ): EventConnection!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 }
 
@@ -7974,7 +7974,7 @@ type DiscountCodeNode implements Node & HasEvents {
     query: String
   ): EventConnection!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 }
 
@@ -8319,14 +8319,14 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
+  """Cannot have both minimum subtotal and quantity present."""
+  MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
+
   """Value is outside allowed range."""
   VALUE_OUTSIDE_RANGE
 
   """Exceeded maximum allowed value."""
   EXCEEDED_MAX
-
-  """Cannot have both minimum subtotal and quantity present."""
-  MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
 
   """
   Active period overlaps with other automatic discounts. At any given time, only one automatic discount can be active.
@@ -8519,7 +8519,7 @@ type DiscountRedeemCode {
   """The application that created the discount code."""
   createdBy: App
 
-  """Globally unique identifier of the discount redeem code."""
+  """A globally-unique identifier of the discount redeem code."""
   id: ID!
 }
 
@@ -8569,7 +8569,7 @@ type DiscountRedeemCodeBulkCreation implements Node {
   """The number of codes that weren't created successfully."""
   failedCount: Int!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The number of codes created successfully."""
@@ -8770,7 +8770,7 @@ type Domain implements Node {
   """The host name of the domain (eg: `example.com`)."""
   host: String!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The localization of the domain, if it does not redirect."""
@@ -8898,7 +8898,7 @@ type DraftOrder implements Node & HasMetafields & CommentEventSubject & LegacyIn
   """Whether the merchant has added timeline comments to the draft order."""
   hasTimelineComment: Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Date and time when the invoice was last emailed to the customer."""
@@ -8995,6 +8995,9 @@ type DraftOrder implements Node & HasMetafields & CommentEventSubject & LegacyIn
 
   """Order that was created from this draft order."""
   order: Order
+
+  """The associated payment term for this draft order."""
+  paymentTerms: PaymentTerms
 
   """
   Returns a private metafield by namespace and key that belongs to the resource.
@@ -9326,6 +9329,9 @@ input DraftOrderInput {
   
   """
   useCustomerDefaultAddress: Boolean
+
+  """The fields used to create payment terms."""
+  paymentTerms: PaymentTermsInput
 }
 
 """Return type for `draftOrderInvoicePreview` mutation."""
@@ -9393,7 +9399,7 @@ type DraftOrderLineItem implements Node {
   """
   grams: Int @deprecated(reason: "Use `weight` instead")
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Image associated with the draft order line item."""
@@ -9624,7 +9630,7 @@ type Duty implements Node {
   """The harmonized system code of the line item."""
   harmonizedSystemCode: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The price of the duty for the line item."""
@@ -9744,7 +9750,7 @@ interface Event {
   """Whether the event is critical."""
   criticalAlert: Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Human readable text that describes the event."""
@@ -9844,7 +9850,7 @@ type ExternalVideo implements Node & Media {
   """The host of the external video."""
   host: MediaHost!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The media content type."""
@@ -10323,7 +10329,7 @@ type Fulfillment implements LegacyInteroperability & Node {
     reverse: Boolean = false
   ): FulfillmentOrderConnection!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The date and time when the fulfillment went into transit."""
@@ -10480,7 +10486,7 @@ type FulfillmentEvent implements Node {
   """The time at which this fulfillment event happened."""
   happenedAt: DateTime!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The status of this fulfillment event."""
@@ -10635,7 +10641,7 @@ type FulfillmentLineItem implements Node {
   """
   discountedTotalSet: MoneyBag!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The associated order's line item."""
@@ -10730,7 +10736,7 @@ type FulfillmentOrder implements Node {
     reverse: Boolean = false
   ): FulfillmentConnection!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The duties delivery method of this fulfillment order."""
@@ -10994,7 +11000,7 @@ type FulfillmentOrderDestination implements Node {
   """The first name of the customer at the destination."""
   firstName: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The last name of the customer at the destination."""
@@ -11081,7 +11087,7 @@ Represents a line item belonging to a fulfillment order.
 
 """
 type FulfillmentOrderLineItem implements Node {
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The associated order line item."""
@@ -11193,7 +11199,7 @@ Represents a request made by the merchant to a fulfillment service for a fulfill
 
 """
 type FulfillmentOrderMerchantRequest implements Node {
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The kind of request made."""
@@ -11693,7 +11699,7 @@ type GenericFile implements Node & File {
   """The status of the file."""
   fileStatus: FileStatus!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The mime type of the file."""
@@ -11726,7 +11732,7 @@ type GiftCard implements Node {
   """The date when the gift card will expire."""
   expiresOn: Date
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The initial value of the gift card."""
@@ -12345,7 +12351,7 @@ type ImageEdge {
 
 """Specifies the input fields for an image."""
 input ImageInput {
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID
 
   """A word or phrase to share the nature or contents of an image."""
@@ -12453,7 +12459,7 @@ type InventoryItem implements Node & LegacyInteroperability {
   """The harmonized system code of the item."""
   harmonizedSystemCode: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """URL for inventory history web page."""
@@ -12622,7 +12628,7 @@ type InventoryLevel implements Node {
   """
   deactivationAlertHtml: FormattedString
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Quantity of items incoming to the location."""
@@ -12683,7 +12689,7 @@ type Job {
   """This indicates if the job is still queued or has been run."""
   done: Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -12820,7 +12826,7 @@ type LineItem implements Node {
   """
   fulfillmentStatus: String!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The Image object associated to the line item's variant."""
@@ -13026,7 +13032,7 @@ type LineItemMutable implements Node {
   """
   fulfillmentStatus: String!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The Image object associated to the line item's variant."""
@@ -13330,7 +13336,7 @@ type Location implements HasMetafieldDefinitions & Node & LegacyInteroperability
   """Indicates whether or not this location has unfulfilled orders."""
   hasUnfulfilledOrders: Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """A single inventory level for the given inventory item."""
@@ -13624,7 +13630,7 @@ type MailingAddress implements Node {
   """A comma-separated list of the values for city, province, and country."""
   formattedArea: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The last name of the customer."""
@@ -13811,7 +13817,7 @@ type MarketingActivity implements Node {
   """The form data of the marketing activity."""
   formData: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Whether the marketing activity is in the main workflow version."""
@@ -14344,7 +14350,7 @@ type MarketingEvent implements Node & LegacyInteroperability {
   """The date and time when the marketing event ended."""
   endedAt: DateTime
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The ID of the corresponding resource in the REST Admin API."""
@@ -14727,7 +14733,7 @@ type MediaImage implements Node & File & Media {
   """The status of the file."""
   fileStatus: FileStatus!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The image for the media."""
@@ -14884,7 +14890,7 @@ type Metafield implements Node & LegacyInteroperability {
   """The description of a metafield."""
   description: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The key name for a metafield."""
@@ -14950,7 +14956,7 @@ type MetafieldDefinition implements Node {
   """The description of a metafield definition."""
   description: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The key name for a metafield definition."""
@@ -15637,7 +15643,7 @@ type MetafieldStorefrontVisibility implements Node & LegacyInteroperability {
   """The date and time when the allowlist record was created."""
   createdAt: DateTime!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Key of a metafield in the visibility allowlist."""
@@ -15843,7 +15849,7 @@ type Model3d implements Node & Media {
   """The filename of the 3d model."""
   filename: String!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The media content type."""
@@ -17324,6 +17330,27 @@ type Mutation {
     authorizationExpiresAt: DateTime
   ): PaymentSessionResolvePayload
 
+  """Create payment terms."""
+  paymentTermsCreate(
+    """Specifies the reference to add the payment terms for."""
+    referenceId: ID!
+
+    """The attributes used to create the payment terms."""
+    paymentTermsAttributes: PaymentTermsCreateInput!
+  ): PaymentTermsCreatePayload
+
+  """Delete payment terms."""
+  paymentTermsDelete(
+    """The input fields used to delete the payment terms."""
+    input: PaymentTermsDeleteInput!
+  ): PaymentTermsDeletePayload
+
+  """Update payment terms."""
+  paymentTermsUpdate(
+    """The input fields used to update the payment terms."""
+    input: PaymentTermsUpdateInput!
+  ): PaymentTermsUpdatePayload
+
   """Configure the partner managed gateway onto the merchant's store."""
   paymentsAppConfigure(
     """Handle used in the external system."""
@@ -18384,7 +18411,7 @@ type NavigationItem {
 
 """An object with an ID to support global identification."""
 interface Node {
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 }
 
@@ -18402,7 +18429,7 @@ type OnlineStoreArticle implements Node & Navigable & HasPublishedTranslations {
   """
   defaultCursor: String!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The translations associated with the resource."""
@@ -18418,7 +18445,7 @@ to be used as a type of magazine or newsletter for the shop, with content that c
 
 """
 type OnlineStoreBlog implements Node & HasPublishedTranslations {
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The translations associated with the resource."""
@@ -18436,7 +18463,7 @@ type OnlineStorePage implements Node & Navigable & HasPublishedTranslations {
   """
   defaultCursor: String!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The translations associated with the resource."""
@@ -18807,7 +18834,7 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   """Whether the merchant added timeline comments to the order."""
   hasTimelineComment: Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -18999,6 +19026,9 @@ type Order implements Node & CommentEventSubject & HasMetafields & LegacyInterop
   
   """
   paymentGatewayNames: [String!]!
+
+  """The associated payment term for this order."""
+  paymentTerms: PaymentTerms
 
   """The phone number associated with the customer."""
   phone: String
@@ -19342,7 +19372,7 @@ type OrderAdjustment implements Node {
   """The amount of the order adjustment in shop and presentment currencies."""
   amountSet: MoneyBag!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The order adjustment type."""
@@ -19575,7 +19605,7 @@ enum OrderDisplayFulfillmentStatus {
 
 """A summary of the important details for a dispute on an order."""
 type OrderDisputeSummary implements Node {
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The type that the dispute was initiated as."""
@@ -19926,7 +19956,7 @@ type OrderStagedChangeAddLineItemDiscount {
   """The description of the discount."""
   description: String!
 
-  """A globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The amount of the discount."""
@@ -20056,7 +20086,7 @@ type OrderTransaction implements Node {
   """The payment gateway used to process the transaction."""
   gateway: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The kind of transaction."""
@@ -20397,12 +20427,69 @@ enum PaymentMethods {
   DOGECOIN
 }
 
+"""
+Represents the payment schedule for a single payment defined in the payment terms.
+"""
+type PaymentSchedule implements Node {
+  """Amount owed for this payment schedule."""
+  amount: MoneyV2!
+
+  """Date and time when the payment schedule is paid or fulfilled."""
+  completedAt: DateTime
+
+  """Date and time when the payment schedule is due."""
+  dueAt: DateTime
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """Date and time when the invoice is sent."""
+  issuedAt: DateTime
+}
+
+"""
+An auto-generated type for paginating through multiple PaymentSchedules.
+
+"""
+type PaymentScheduleConnection {
+  """A list of edges."""
+  edges: [PaymentScheduleEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+}
+
+"""
+An auto-generated type which holds one PaymentSchedule and a cursor during pagination.
+
+"""
+type PaymentScheduleEdge {
+  """A cursor for use in pagination."""
+  cursor: String!
+
+  """The item at the end of PaymentScheduleEdge."""
+  node: PaymentSchedule!
+}
+
+"""The input fields used to create a payment schedule for payment terms."""
+input PaymentScheduleInput {
+  """
+  Specifies the date and time that the payment schedule was issued. This field must be provided for net type payment terms.
+  """
+  issuedAt: DateTime
+
+  """
+  Specifies the date and time when the payment schedule is due. This field must be provided for fixed type payment terms.
+  """
+  dueAt: DateTime
+}
+
 """Represents a payment session."""
 type PaymentSession {
   """The date and time when an authorized payment session expires."""
   authorizationExpiresAt: DateTime
 
-  """A globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The next action expected by the partner."""
@@ -20505,6 +20592,212 @@ type PaymentSettings {
   supportedDigitalWallets: [DigitalWallet!]!
 }
 
+"""Represents the payment terms for an order or draft order."""
+type PaymentTerms implements Node {
+  """
+  Duration of payment terms in days based on the payment terms template used to create the payment terms.
+  
+  """
+  dueInDays: Int
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """Whether the payment terms have overdue payment schedules."""
+  overdue: Boolean!
+
+  """List of schedules for the payment terms."""
+  paymentSchedules(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): PaymentScheduleConnection
+
+  """
+  The name of the payment terms template used to create the payment terms.
+  """
+  paymentTermsName: String!
+
+  """The type of a payment terms template used to create the payment terms."""
+  paymentTermsType: PaymentTermsType!
+
+  """The translated payment terms name."""
+  translatedName: String!
+}
+
+"""The input fields used to create a payment terms."""
+input PaymentTermsCreateInput {
+  """
+  Specifies the payment terms template ID used to generate payment terms.
+  """
+  paymentTermsTemplateId: ID!
+
+  """Specifies the payment schedules for the payment terms."""
+  paymentSchedules: [PaymentScheduleInput!]
+}
+
+"""Return type for `paymentTermsCreate` mutation."""
+type PaymentTermsCreatePayload {
+  """The created payment terms."""
+  paymentTerms: PaymentTerms
+
+  """The list of errors that occurred from executing the mutation."""
+  userErrors: [PaymentTermsCreateUserError!]!
+}
+
+"""An error that occurs during the execution of PaymentTermsCreate."""
+type PaymentTermsCreateUserError implements DisplayableError {
+  """The error code."""
+  code: PaymentTermsCreateUserErrorCode
+
+  """The path to the input field that caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by PaymentTermsCreateUserError.
+"""
+enum PaymentTermsCreateUserErrorCode {
+  """An error occurred while creating payment terms."""
+  PAYMENT_TERMS_CREATION_UNSUCCESSFUL
+}
+
+"""The input fields used to delete the payment terms."""
+input PaymentTermsDeleteInput {
+  """The ID of the payment terms being deleted."""
+  paymentTermsId: ID!
+}
+
+"""Return type for `paymentTermsDelete` mutation."""
+type PaymentTermsDeletePayload {
+  """The deleted payment terms id."""
+  deletedId: ID
+
+  """The list of errors that occurred from executing the mutation."""
+  userErrors: [PaymentTermsDeleteUserError!]!
+}
+
+"""An error that occurs during the execution of PaymentTermsDelete."""
+type PaymentTermsDeleteUserError implements DisplayableError {
+  """The error code."""
+  code: PaymentTermsDeleteUserErrorCode
+
+  """The path to the input field that caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by PaymentTermsDeleteUserError.
+"""
+enum PaymentTermsDeleteUserErrorCode {
+  """An error occurred while deleting payment terms."""
+  PAYMENT_TERMS_DELETE_UNSUCCESSFUL
+}
+
+"""The input fields used to create a payment terms."""
+input PaymentTermsInput {
+  """
+  Specifies the payment terms template ID used to generate payment terms.
+  """
+  paymentTermsTemplateId: ID
+
+  """Specifies the payment schedules for the payment terms."""
+  paymentSchedules: [PaymentScheduleInput!]
+}
+
+"""Represents the payment terms template object."""
+type PaymentTermsTemplate implements Node {
+  """The description of the payment terms template."""
+  description: String!
+
+  """
+  The number of days between the issued date and due date if this is the net type of payment terms.
+  """
+  dueInDays: Int
+
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The name of the payment terms template."""
+  name: String!
+
+  """The type of the payment terms template."""
+  paymentTermsType: PaymentTermsType!
+
+  """The translated payment terms template name."""
+  translatedName: String!
+}
+
+"""The type of a payment terms or a payment terms template."""
+enum PaymentTermsType {
+  """The payment terms or payment terms template is due on receipt."""
+  RECEIPT
+
+  """The payment terms or payment terms template is net type."""
+  NET
+
+  """The payment terms or payment terms template is fixed type."""
+  FIXED
+
+  """The type of the payment terms or payment terms template is unknown."""
+  UNKNOWN
+}
+
+"""The input fields used to update the payment terms."""
+input PaymentTermsUpdateInput {
+  """The ID of the payment terms being updated."""
+  paymentTermsId: ID!
+
+  """The attributes used to update the payment terms."""
+  paymentTermsAttributes: PaymentTermsInput!
+}
+
+"""Return type for `paymentTermsUpdate` mutation."""
+type PaymentTermsUpdatePayload {
+  """The updated payment terms."""
+  paymentTerms: PaymentTerms
+
+  """The list of errors that occurred from executing the mutation."""
+  userErrors: [PaymentTermsUpdateUserError!]!
+}
+
+"""An error that occurs during the execution of PaymentTermsUpdate."""
+type PaymentTermsUpdateUserError implements DisplayableError {
+  """The error code."""
+  code: PaymentTermsUpdateUserErrorCode
+
+  """The path to the input field that caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by PaymentTermsUpdateUserError.
+"""
+enum PaymentTermsUpdateUserErrorCode {
+  """An error occurred while updating payment terms."""
+  PAYMENT_TERMS_UPDATE_UNSUCCESSFUL
+}
+
 """The production configuration of the payments app."""
 type PaymentsAppConfiguration {
   """Handle used by the provider."""
@@ -20554,7 +20847,7 @@ type PriceList implements Node {
   """The currency for fixed prices associated with this price list."""
   currency: CurrencyCode!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -21070,7 +21363,7 @@ type PriceRule implements Node & CommentEventSubject & LegacyInteroperability & 
   """Indicates whether there are any timeline comments on the price rule."""
   hasTimelineComment: Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The items to which the price rule applies."""
@@ -21318,7 +21611,7 @@ type PriceRuleDiscountCode implements Node {
   """The code to use the discount."""
   code: String!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -22318,7 +22611,7 @@ type Product implements Node & Navigable & HasMetafields & HasMetafieldDefinitio
   """Whether the product has out of stock variants."""
   hasOutOfStockVariants: Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The images associated with the product."""
@@ -23191,7 +23484,7 @@ Variants are selected based on permutations of these options.
 
 """
 type ProductOption implements Node & HasPublishedTranslations {
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The product option’s name."""
@@ -23557,7 +23850,7 @@ type ProductVariant implements Node & HasMetafields & HasMetafieldDefinitions & 
   """The Harmonized System Code (or HS Tariff Code) for the variant."""
   harmonizedSystemCode: String @deprecated(reason: "Use `InventoryItem.harmonizedSystemCode` instead.")
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The featured image for the variant."""
@@ -24596,7 +24889,7 @@ type Publication implements Node {
     id: ID!
   ): Boolean!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Name of the publication."""
@@ -26103,6 +26396,12 @@ type QueryRoot {
     savedSearchId: ID
   ): OrderConnection!
 
+  """The list of payment terms templates eligible for all shops and users."""
+  paymentTermsTemplates(
+    """The payment terms type to filter the payment terms templates list."""
+    paymentTermsType: PaymentTermsType
+  ): [PaymentTermsTemplate!]!
+
   """A list of price lists."""
   priceList(
     """Returns a price list resource by ID."""
@@ -26742,7 +27041,7 @@ type Refund implements Node & LegacyInteroperability {
   """A list of the order's refunded duties."""
   duties: [RefundDuty!]
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The ID of the corresponding resource in the REST Admin API."""
@@ -27036,7 +27335,7 @@ enum RefundLineItemRestockType {
 
 """Represents a refund session."""
 type RefundSession {
-  """A globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The refund status."""
@@ -27595,7 +27894,7 @@ type SavedSearch implements Node & LegacyInteroperability {
   """The filters of a saved search."""
   filters: [SearchFilter!]!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The ID of the corresponding resource in the REST Admin API."""
@@ -27760,7 +28059,7 @@ type ScriptTag implements Node & LegacyInteroperability {
   """
   displayScope: ScriptTagDisplayScope!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The ID of the corresponding resource in the REST Admin API."""
@@ -27980,7 +28279,7 @@ type SellingPlan implements Node {
   """Buyer facing string which describes the selling plan commitment."""
   description: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -28200,7 +28499,7 @@ type SellingPlanGroup implements Node {
   """The merchant-facing description of the selling plan group."""
   description: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The merchant-facing label of the selling plan group."""
@@ -28897,7 +29196,7 @@ type ShippingLine {
   """The pre-tax shipping price with discounts applied."""
   discountedPriceSet: MoneyBag!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID
 
   """The pre-tax shipping price without any discounts applied."""
@@ -29479,7 +29778,7 @@ type Shop implements Node & HasPublishedTranslations & HasMetafields {
   """The shop's time zone as defined by the IANA."""
   ianaTimezone: String!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """List of the shop's inventory items."""
@@ -30336,7 +30635,7 @@ type ShopPolicy implements Node & HasPublishedTranslations {
   """The text of the policy. The maximum size is 512kb."""
   body: HTML!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The translations associated with the resource."""
@@ -30530,7 +30829,7 @@ type ShopifyPaymentsAccount implements Node {
   """The fraud settings of the Shopify Payments account."""
   fraudSettings: ShopifyPaymentsFraudSettings!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The notifications settings for the account."""
@@ -30618,7 +30917,7 @@ type ShopifyPaymentsBankAccount implements Node {
   """
   currency: CurrencyCode!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -30734,7 +31033,7 @@ type ShopifyPaymentsDispute implements LegacyInteroperability & Node {
   """
   finalizedOn: Date
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The date when this dispute was initiated."""
@@ -30910,7 +31209,7 @@ type ShopifyPaymentsPayout implements LegacyInteroperability & Node {
   """The total amount and currency of the payout."""
   gross: MoneyV2! @deprecated(reason: "Use `net` instead")
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -31102,7 +31401,7 @@ Each subject (individual) of an account has a verification object giving
 
 """
 type ShopifyPaymentsVerification implements Node {
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The status of the verification."""
@@ -31374,7 +31673,7 @@ type StandardMetafieldDefinitionTemplate implements Node {
   """The description of the standard metafield definition template."""
   description: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The key name for the standard metafield definition template."""
@@ -31436,7 +31735,7 @@ type StorefrontAccessToken implements Node {
   """The date and time when the public access token was created."""
   createdAt: DateTime!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -31563,7 +31862,7 @@ type SubscriptionBillingAttempt implements Node {
   """A message describing a payment error during processing."""
   errorMessage: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """A unique key generated by the client to avoid duplicate payments."""
@@ -31811,7 +32110,7 @@ type SubscriptionContract implements Node {
     reverse: Boolean = false
   ): SubscriptionManualDiscountConnection!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The current status of the last payment."""
@@ -32336,7 +32635,7 @@ type SubscriptionDraft implements Node {
     reverse: Boolean = false
   ): SubscriptionDiscountConnection!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -33373,7 +33672,7 @@ type TenderTransaction implements Node {
   """The amount and currency of the tender transaction."""
   amount: MoneyV2!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """
@@ -33506,7 +33805,7 @@ type TransactionFee implements Node {
   """Name of the credit card flat fee."""
   flatFeeName: String
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """Percentage charge."""
@@ -34186,7 +34485,7 @@ type Video implements Node & Media {
   """The filename of the video."""
   filename: String!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The media content type."""
@@ -34195,13 +34494,17 @@ type Video implements Node & Media {
   """Any errors which have occurred on the media."""
   mediaErrors: [MediaError!]!
 
-  """The original source for a video."""
+  """
+  The original source for a video. Value is `null` when `status` is PROCESSING.
+  """
   originalSource: VideoSource
 
   """The preview image for the media."""
   preview: MediaPreviewImage
 
-  """The sources for a video."""
+  """
+  The sources for a video. Sources are only available when `status` is READY.
+  """
   sources: [VideoSource!]!
 
   """Current status of the media."""
@@ -34231,7 +34534,7 @@ type VideoSource {
 
 """Represents a void session."""
 type VoidSession {
-  """A globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The void status."""
@@ -34434,7 +34737,7 @@ type WebhookSubscription implements Node & LegacyInteroperability {
   """The format in which the webhook subscription should send the data."""
   format: WebhookSubscriptionFormat!
 
-  """Globally unique identifier."""
+  """A globally-unique identifier."""
   id: ID!
 
   """The list of fields to be included in the webhook subscription."""
@@ -34841,6 +35144,15 @@ enum WebhookSubscriptionTopic {
   The webhook topic for `subscription_billing_attempts/challenged` events.
   """
   SUBSCRIPTION_BILLING_ATTEMPTS_CHALLENGED
+
+  """The webhook topic for `payment_terms/create` events."""
+  PAYMENT_TERMS_CREATE
+
+  """The webhook topic for `payment_terms/delete` events."""
+  PAYMENT_TERMS_DELETE
+
+  """The webhook topic for `payment_terms/update` events."""
+  PAYMENT_TERMS_UPDATE
 
   """The webhook topic for `selling_plan_groups/create` events."""
   SELLING_PLAN_GROUPS_CREATE
