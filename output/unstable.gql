@@ -12722,23 +12722,6 @@ type Job {
   query: QueryRoot
 }
 
-"""The locale language allowed for Kit Skill."""
-enum KitSkillLocale {
-  """English language."""
-  EN @deprecated(reason: "Kit Skills will be deprecated as of 2021-04-01.")
-}
-
-"""Return type for `kitSkillTriggerRequest` mutation."""
-type KitSkillTriggerRequestPayload {
-  """
-  Conversation unique identifier sent to Conversation API and returned to app developer.
-  """
-  conversationUid: String
-
-  """The list of errors that occurred from executing the mutation."""
-  userErrors: [UserError!]!
-}
-
 """
 Interoperability metadata for types that directly correspond to a REST Admin API resource.
 For example, on the Product type, LegacyInteroperability returns metadata for the corresponding [Product object](https://help.shopify.com/api/reference/products/product) in the REST Admin API.
@@ -17045,18 +17028,6 @@ type Mutation {
     """The updated properties for the inventory item."""
     input: InventoryItemUpdateInput!
   ): InventoryItemUpdatePayload
-
-  """Kit Skill requested by developer for app and shop."""
-  kitSkillTriggerRequest(
-    """Kit Skill ID."""
-    id: ID!
-
-    """Locale language."""
-    locale: KitSkillLocale!
-
-    """Placeholders (template variables) for opening message."""
-    placeholders: JSON = "{}"
-  ): KitSkillTriggerRequestPayload @deprecated(reason: "Kit Skills will be deprecated as of 2021-04-01.")
 
   """Create new marketing activity."""
   marketingActivityCreate(
