@@ -4957,6 +4957,14 @@ type Customer implements Node & CommentEventSubject & HasMetafields & LegacyInte
   """
   productSubscriberStatus: CustomerProductSubscriberStatus!
 
+  """
+  The current SMS marketing state for the customer's phone number.
+  
+  If the customer does not have a phone number, then this property is `null`.
+  
+  """
+  smsMarketingConsent: CustomerSmsMarketingConsentState
+
   """The state of the customer's account with the shop."""
   state: CustomerState!
 
@@ -5034,6 +5042,24 @@ type CustomerConnection {
 
   """Information to aid in pagination."""
   pageInfo: PageInfo!
+}
+
+"""
+The source for whether the customer has agreed to receive marketing materials.
+
+"""
+enum CustomerConsentCollectedFrom {
+  """
+  The customer consent was collected by Shopify.
+  
+  """
+  SHOPIFY
+
+  """
+  The customer consent was collected outside of Shopify.
+  
+  """
+  OTHER
 }
 
 """Return type for `customerCreate` mutation."""
@@ -5216,6 +5242,12 @@ input CustomerInput {
   
   """
   tags: [String!]
+
+  """
+  The marketing consent information when the customer consented to receiving marketing
+          material by SMS.
+  """
+  smsMarketingConsent: CustomerSmsMarketingConsentInput
 
   """Whether the customer is exempt from paying taxes on their order."""
   taxExempt: Boolean
@@ -5405,6 +5437,9 @@ type CustomerPaymentMethod implements Node {
   """The time that the payment method was revoked."""
   revokedAt: DateTime
 
+  """The revocation reason for this payment method."""
+  revokedReason: CustomerPaymentMethodRevocationReason
+
   """List Subscription Contracts."""
   subscriptionContracts(
     """Returns up to the first `n` elements from the list."""
@@ -5558,6 +5593,37 @@ enum CustomerPaymentMethodRemoteUserErrorCode {
   AUTHORIZE_NET_NOT_ENABLED_FOR_SUBSCRIPTIONS
 }
 
+"""The revocation reason types for a customer payment method."""
+enum CustomerPaymentMethodRevocationReason {
+  """The Authorize.net payment gateway is not enabled."""
+  AUTHORIZE_NET_GATEWAY_NOT_ENABLED
+
+  """
+  Authorize.net did not return any payment methods. Make sure the correct Authorize.net account is linked.
+  """
+  AUTHORIZE_NET_RETURNED_NO_PAYMENT_METHOD
+
+  """The credit card failed to update."""
+  FAILED_TO_UPDATE_CREDIT_CARD
+
+  """Failed to contact Stripe API."""
+  STRIPE_API_AUTHENTICATION_ERROR
+
+  """Invalid request. Failed to retrieve payment method from Stripe."""
+  STRIPE_API_INVALID_REQUEST_ERROR
+
+  """The Stripe payment gateway is not enabled."""
+  STRIPE_GATEWAY_NOT_ENABLED
+
+  """
+  Stripe did not return any payment methods. Make sure the correct Stripe account is linked.
+  """
+  STRIPE_RETURNED_NO_PAYMENT_METHOD
+
+  """Stripe payment method type should be card."""
+  STRIPE_PAYMENT_METHOD_NOT_CARD
+}
+
 """Return type for `customerPaymentMethodRevoke` mutation."""
 type CustomerPaymentMethodRevokePayload {
   """The ID of the revoked customer payment method."""
@@ -5698,6 +5764,146 @@ enum CustomerSavedSearchSortKeys {
   
   """
   RELEVANCE
+}
+
+"""
+An error during the execution of a customer SMS marketing consent mutation.
+"""
+type CustomerSmsMarketingConsentError implements DisplayableError {
+  """The error code."""
+  code: CustomerSmsMarketingConsentErrorCode
+
+  """The path to the input field that caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by CustomerSmsMarketingConsentError.
+"""
+enum CustomerSmsMarketingConsentErrorCode {
+  """The input value is invalid."""
+  INVALID
+
+  """The input value isn't included in the list."""
+  INCLUSION
+
+  """Unexpected internal error happened."""
+  INTERNAL_ERROR
+
+  """Missing a required argument."""
+  MISSING_ARGUMENT
+}
+
+"""
+The marketing consent information when the customer consented to
+        receiving marketing material by SMS.
+"""
+input CustomerSmsMarketingConsentInput {
+  """The customer opt in level at the time of subscription."""
+  marketingOptInLevel: CustomerMarketingOptInLevel
+
+  """
+  The current marketing state for the customer's phone number.
+            If the customer does not have a phone number, then this property will be null.
+  """
+  marketingState: CustomerSmsMarketingState!
+
+  """
+  The date and time when the customer consented or objected to receiving marketing material by SMS.
+           Set whenever the customer consents or objects to marketing material.
+  """
+  consentUpdatedAt: DateTime
+}
+
+"""
+The record of when a customer consented to receive marketing material by SMS.
+
+"""
+type CustomerSmsMarketingConsentState {
+  """
+  The source for whether the customer has consented to receive marketing material by SMS.
+  """
+  consentCollectedFrom: CustomerConsentCollectedFrom
+
+  """
+  The date and time at which the customer consented to receive marketing material by SMS.
+  """
+  consentUpdatedAt: DateTime
+
+  """
+  The marketing subscription opt-in level, as described by the M3AAWG best practices guidelines,
+  that the customer gave when they consented to receive marketing material by SMS.
+  
+  """
+  marketingOptInLevel: CustomerMarketingOptInLevel!
+
+  """The current SMS marketing state for the customer."""
+  marketingState: CustomerSmsMarketingState!
+}
+
+"""
+The SMS information to update for a given customer ID.
+
+"""
+input CustomerSmsMarketingConsentUpdateInput {
+  """The ID of the customer for which to update the SMS information."""
+  customerId: ID!
+
+  """
+  The marketing consent information when the customer consented to receiving marketing material by SMS.
+  """
+  smsMarketingConsent: CustomerSmsMarketingConsentInput!
+}
+
+"""Return type for `customerSmsMarketingConsentUpdate` mutation."""
+type CustomerSmsMarketingConsentUpdatePayload {
+  """
+  The updated customer.
+  
+  """
+  customer: Customer
+
+  """The list of errors that occurred from executing the mutation."""
+  userErrors: [CustomerSmsMarketingConsentError!]!
+}
+
+"""
+The possible SMS marketing states for a customer’s phone number.
+
+"""
+enum CustomerSmsMarketingState {
+  """
+  The customer isn't subscribed to SMS marketing.
+  
+  """
+  NOT_SUBSCRIBED
+
+  """
+  The customer is in the process of subscribing to SMS marketing.
+  
+  """
+  PENDING
+
+  """
+  The customer is subscribed to SMS marketing.
+  
+  """
+  SUBSCRIBED
+
+  """
+  The customer isn't currently subscribed to SMS marketing but was previously subscribed.
+  
+  """
+  UNSUBSCRIBED
+
+  """
+  The customer's personal data is erased. This value is internally-set and read-only.
+  
+  """
+  REDACTED
 }
 
 """The set of valid sort keys for the Customer query."""
@@ -8343,11 +8549,11 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
-  """Exceeded maximum allowed value."""
-  EXCEEDED_MAX
-
   """Value is outside allowed range."""
   VALUE_OUTSIDE_RANGE
+
+  """Exceeded maximum allowed value."""
+  EXCEEDED_MAX
 
   """Cannot have both minimum subtotal and quantity present."""
   MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
@@ -16318,6 +16524,15 @@ type Mutation {
     """
     taxExemptions: [TaxExemption!]!
   ): CustomerReplaceTaxExemptionsPayload
+
+  """
+  Updates a customer's SMS information.
+  
+  """
+  customerSmsMarketingConsentUpdate(
+    """The customers and corresponding SMS consent information to update."""
+    input: CustomerSmsMarketingConsentUpdateInput!
+  ): CustomerSmsMarketingConsentUpdatePayload
 
   """Updates a customer's attributes."""
   customerUpdate(
@@ -34934,6 +35149,9 @@ enum WebhookSubscriptionTopic {
 
   """The webhook topic for `customers/update` events."""
   CUSTOMERS_UPDATE
+
+  """The webhook topic for `customers_marketing_consent/update` events."""
+  CUSTOMERS_MARKETING_CONSENT_UPDATE
 
   """The webhook topic for `disputes/create` events."""
   DISPUTES_CREATE
