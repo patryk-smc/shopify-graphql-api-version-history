@@ -8549,11 +8549,11 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
-  """Value is outside allowed range."""
-  VALUE_OUTSIDE_RANGE
-
   """Exceeded maximum allowed value."""
   EXCEEDED_MAX
+
+  """Value is outside allowed range."""
+  VALUE_OUTSIDE_RANGE
 
   """Cannot have both minimum subtotal and quantity present."""
   MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
@@ -11762,6 +11762,11 @@ type FulfillmentService {
 
   """Location associated with the fulfillment service."""
   location: Location
+
+  """
+  Whether the fulfillment service can stock inventory alongside other locations.
+  """
+  permitsSkuSharing: Boolean!
 
   """Whether the fulfillment service supports local deliveries."""
   productBased: Boolean!
@@ -15209,7 +15214,7 @@ type MetafieldDefinition implements Node {
   namespace: String!
 
   """The configured options for the metafield definition."""
-  options: [MetafieldDefinitionOption!]!
+  options: [MetafieldDefinitionOption!]! @deprecated(reason: "Use `validations` instead")
 
   """The resource type that the definition applies to."""
   ownerType: MetafieldOwnerType!
@@ -15230,6 +15235,9 @@ type MetafieldDefinition implements Node {
 
   """The validation status of the metafield definition."""
   validationStatus: MetafieldDefinitionValidationStatus!
+
+  """The validation options associated with a definition."""
+  validations: [MetafieldDefinitionValidation!]!
 }
 
 """
@@ -15383,8 +15391,8 @@ input MetafieldDefinitionInput {
   """The associated metafield definition type."""
   type: String!
 
-  """The custom validations for the metafield definition."""
-  options: [MetafieldDefinitionOptionInput!]
+  """The custom validation options for the metafield definition."""
+  validations: [MetafieldDefinitionValidationInput!]
 
   """Whether to pin the metafield definition."""
   pin: Boolean = false
@@ -15738,6 +15746,27 @@ enum MetafieldDefinitionUpdateUserErrorCode {
 
   """An internal error occurred."""
   INTERNAL_ERROR
+}
+
+"""A configured metafield definition validation."""
+type MetafieldDefinitionValidation {
+  """The validation name."""
+  name: String!
+
+  """The name for the metafield type of this validation."""
+  type: String!
+
+  """The validation value."""
+  value: String
+}
+
+"""The name and value for a metafield definition validation."""
+input MetafieldDefinitionValidationInput {
+  """The name for the metafield definition validation."""
+  name: String!
+
+  """The value for the metafield definition validation."""
+  value: String!
 }
 
 """Possible metafield definition validation statuses."""
@@ -17109,6 +17138,11 @@ type Mutation {
     fulfillmentOrdersOptIn: Boolean = false
 
     """
+    Whether the fulfillment service can stock inventory alongside other locations.
+    """
+    permitsSkuSharing: Boolean = false
+
+    """
     Whether the fulfillment service manages product inventory and provides updates to Shopify.
     
     """
@@ -17150,6 +17184,11 @@ type Mutation {
     
     """
     fulfillmentOrdersOptIn: Boolean
+
+    """
+    Whether the fulfillment service can stock inventory alongside other locations.
+    """
+    permitsSkuSharing: Boolean
   ): FulfillmentServiceUpdatePayload
 
   """Updates tracking information for a fulfillment."""
