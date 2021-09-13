@@ -8549,14 +8549,14 @@ enum DiscountErrorCode {
   """Missing a required argument."""
   MISSING_ARGUMENT
 
-  """Exceeded maximum allowed value."""
-  EXCEEDED_MAX
-
   """Value is outside allowed range."""
   VALUE_OUTSIDE_RANGE
 
   """Cannot have both minimum subtotal and quantity present."""
   MINIMUM_SUBTOTAL_AND_QUANTITY_RANGE_BOTH_PRESENT
+
+  """Exceeded maximum allowed value."""
+  EXCEEDED_MAX
 
   """
   Active period overlaps with other automatic discounts. At any given time, only one automatic discount can be active.
@@ -10320,6 +10320,9 @@ enum FileErrorCode {
   """File could not be created because the model file failed processing."""
   MODEL3D_GLB_OUTPUT_CREATION_ERROR
 
+  """File could not be created because the model file failed processing."""
+  MODEL3D_PROCESSING_FAILURE
+
   """
   File could not be created because the image is an unsupported file type.
   """
@@ -10576,6 +10579,9 @@ type Fulfillment implements LegacyInteroperability & Node {
 
   """The order for which the fulfillment was created."""
   order: Order!
+
+  """Represents the address from where the fulfillment occurred."""
+  originAddress: FulfillmentOriginAddress
 
   """Whether any of the line items in the fulfillment require shipping."""
   requiresShipping: Boolean!
@@ -10859,6 +10865,12 @@ input FulfillmentInput {
 
   """Indicates whether fulfillment should be created in an `OPEN` state."""
   createAsOpen: Boolean = true
+
+  """
+  Address information about the location from which the order was fulfilled.
+  
+  """
+  originAddress: FulfillmentOriginAddressInput
 }
 
 """Represents a line item from an order that's included in a fulfillment."""
@@ -11736,6 +11748,54 @@ type FulfillmentOrderSupportedAction {
   externalUrl: URL
 }
 
+"""Represents the address from where the fulfillment occurred."""
+type FulfillmentOriginAddress {
+  """The street address of the fulfillment location."""
+  address1: String
+
+  """
+  The second line of the address. Typically the number of the apartment, suite, or unit.
+  """
+  address2: String
+
+  """The city in which the fulfillment location is located."""
+  city: String
+
+  """The country code of the fulfillment location."""
+  countryCode: String!
+
+  """The province code of the fulfillment location."""
+  provinceCode: String
+
+  """The zip code of the fulfillment location."""
+  zip: String
+}
+
+"""
+The input fields used to include the address from where the fulfillment occured.
+"""
+input FulfillmentOriginAddressInput {
+  """The street address of the fulfillment location."""
+  address1: String
+
+  """
+  The second line of the address. Typically the number of the apartment, suite, or unit.
+  """
+  address2: String
+
+  """The city in which the fulfillment location is located."""
+  city: String
+
+  """The zip code of the fulfillment location."""
+  zip: String
+
+  """The province of the fulfillment location."""
+  provinceCode: String
+
+  """The country of the fulfillment location."""
+  countryCode: String!
+}
+
 """
 Represents a fulfillment service. A fulfillment service is a third-party service that prepares and ships orders on behalf of the store owner.
 
@@ -11915,6 +11975,12 @@ input FulfillmentV2Input {
   
   """
   lineItemsByFulfillmentOrder: [FulfillmentOrderLineItemsInput!]!
+
+  """
+  Address information about the location from which the order was fulfilled.
+  
+  """
+  originAddress: FulfillmentOriginAddressInput
 }
 
 """A generic file."""
@@ -14898,6 +14964,9 @@ enum MediaErrorCode {
   """Media could not be created because the model file failed processing."""
   MODEL3D_GLB_OUTPUT_CREATION_ERROR
 
+  """Media could not be created because the model file failed processing."""
+  MODEL3D_PROCESSING_FAILURE
+
   """
   Media could not be created because the image is an unsupported file type.
   """
@@ -15623,6 +15692,44 @@ enum MetafieldDefinitionOptionType {
 """The type and value for a metafield definition configuration."""
 union MetafieldDefinitionOptionValue = MetafieldDefinitionOptionAllowedDomains | MetafieldDefinitionOptionFileTypeOptions | MetafieldDefinitionOptionMaxDate | MetafieldDefinitionOptionMaxDateTime | MetafieldDefinitionOptionMaxDecimal | MetafieldDefinitionOptionMaxDimension | MetafieldDefinitionOptionMaxInteger | MetafieldDefinitionOptionMaxLength | MetafieldDefinitionOptionMaxPrecision | MetafieldDefinitionOptionMaxRatingScale | MetafieldDefinitionOptionMaxVolume | MetafieldDefinitionOptionMaxWeight | MetafieldDefinitionOptionMinDate | MetafieldDefinitionOptionMinDateTime | MetafieldDefinitionOptionMinDecimal | MetafieldDefinitionOptionMinDimension | MetafieldDefinitionOptionMinInteger | MetafieldDefinitionOptionMinLength | MetafieldDefinitionOptionMinRatingScale | MetafieldDefinitionOptionMinVolume | MetafieldDefinitionOptionMinWeight | MetafieldDefinitionOptionRegex
 
+"""Return type for `metafieldDefinitionPin` mutation."""
+type MetafieldDefinitionPinPayload {
+  """The metafield definition that was pinned."""
+  pinnedDefinition: MetafieldDefinition
+
+  """The list of errors that occurred from executing the mutation."""
+  userErrors: [MetafieldDefinitionPinUserError!]!
+}
+
+"""An error that occurs during the execution of MetafieldDefinitionPin."""
+type MetafieldDefinitionPinUserError implements DisplayableError {
+  """The error code."""
+  code: MetafieldDefinitionPinUserErrorCode
+
+  """The path to the input field that caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by MetafieldDefinitionPinUserError.
+"""
+enum MetafieldDefinitionPinUserErrorCode {
+  """Definition not found."""
+  NOT_FOUND
+
+  """Pinned limit reached for owner type."""
+  PINNED_LIMIT_REACHED
+
+  """Definition already pinned."""
+  ALREADY_PINNED
+
+  """An internal error occurred."""
+  INTERNAL_ERROR
+}
+
 """Possible metafield definition pinned statuses."""
 enum MetafieldDefinitionPinnedStatus {
   """All metafield definitions."""
@@ -15656,6 +15763,18 @@ enum MetafieldDefinitionSortKeys {
 }
 
 """
+The name and type for a metafield definition supported validation.
+
+"""
+type MetafieldDefinitionSupportedValidation {
+  """The name for the metafield definition validation."""
+  name: String!
+
+  """The name for the metafield type of this validation."""
+  type: String!
+}
+
+"""
 Metafield definition types provide basic foundation and validation for a metafield.
 
 """
@@ -15667,7 +15786,10 @@ type MetafieldDefinitionType {
   name: String!
 
   """The supported options for a metafield definition type."""
-  supportedOptions: [MetafieldDefinitionOptionType!]!
+  supportedOptions: [MetafieldDefinitionOptionType!]! @deprecated(reason: "Use `supportedValidations` instead")
+
+  """The supported validations for a metafield definition type."""
+  supportedValidations: [MetafieldDefinitionSupportedValidation!]!
 
   """
   Whether metafields without a definition can be migrated to a definition of this type.
@@ -15676,6 +15798,41 @@ type MetafieldDefinitionType {
 
   """The value type for a metafield created with this definition type."""
   valueType: MetafieldValueType!
+}
+
+"""Return type for `metafieldDefinitionUnpin` mutation."""
+type MetafieldDefinitionUnpinPayload {
+  """The metafield definition that was unpinned."""
+  unpinnedDefinition: MetafieldDefinition
+
+  """The list of errors that occurred from executing the mutation."""
+  userErrors: [MetafieldDefinitionUnpinUserError!]!
+}
+
+"""An error that occurs during the execution of MetafieldDefinitionUnpin."""
+type MetafieldDefinitionUnpinUserError implements DisplayableError {
+  """The error code."""
+  code: MetafieldDefinitionUnpinUserErrorCode
+
+  """The path to the input field that caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by MetafieldDefinitionUnpinUserError.
+"""
+enum MetafieldDefinitionUnpinUserErrorCode {
+  """Definition not found."""
+  NOT_FOUND
+
+  """Definition isn't pinned."""
+  NOT_PINNED
+
+  """An internal error occurred."""
+  INTERNAL_ERROR
 }
 
 """
@@ -17325,6 +17482,24 @@ type Mutation {
     """Whether to delete all associated metafields."""
     deleteAllAssociatedMetafields: Boolean = false
   ): MetafieldDefinitionDeletePayload
+
+  """
+  Pins a metafield definition.
+  
+  """
+  metafieldDefinitionPin(
+    """The ID of the metafield definition to pin."""
+    definitionId: ID!
+  ): MetafieldDefinitionPinPayload
+
+  """
+  Unpins a metafield definition.
+  
+  """
+  metafieldDefinitionUnpin(
+    """The ID of the metafield definition to unpin."""
+    definitionId: ID!
+  ): MetafieldDefinitionUnpinPayload
 
   """
   Updates a metafield definition.
