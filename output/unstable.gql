@@ -14993,7 +14993,7 @@ type MediaImage implements Node & File & Media {
   """A globally-unique identifier."""
   id: ID!
 
-  """The image for the media."""
+  """The image for the media. Returns `null` until `status` is `READY`."""
   image: Image
 
   """The media content type."""
@@ -15014,7 +15014,9 @@ type MediaImage implements Node & File & Media {
 
 """Represents the preview image for a media."""
 type MediaPreviewImage {
-  """The preview image for the media."""
+  """
+  The preview image for the media. Returns `null` until `status` is `READY`.
+  """
   image: Image
 
   """Current status of the preview image."""
@@ -31859,6 +31861,11 @@ type StandardMetafieldDefinitionTemplate implements Node {
 
   """The associated metafield definition type."""
   type: MetafieldDefinitionType!
+
+  """
+  The configured validations for the standard metafield definition template.
+  """
+  validations: [MetafieldDefinitionValidation!]!
 }
 
 """
@@ -32143,6 +32150,9 @@ enum SubscriptionBillingAttemptErrorCode {
 
   """Customer is invalid."""
   CUSTOMER_INVALID
+
+  """The shipping address is either missing or invalid."""
+  INVALID_SHIPPING_ADDRESS
 }
 
 """
