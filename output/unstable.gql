@@ -24,6 +24,21 @@ type AccessScope {
   handle: String!
 }
 
+"""Additional fees that have been applied to the order."""
+type AdditionalFee implements Node {
+  """A globally-unique identifier."""
+  id: ID!
+
+  """The name of the additional fee."""
+  name: String!
+
+  """The price of the additional fee."""
+  price: MoneyBag!
+
+  """The TaxLine objects connected to the additional fee."""
+  taxLines: [TaxLine!]!
+}
+
 """A sale associated with an order price adjustment."""
 type AdjustmentSale implements Sale {
   """The type of order action that the sale represents."""
@@ -3296,6 +3311,12 @@ interface CommentEventSubject {
   id: ID!
 }
 
+"""The context data that determines the pricing of a variant."""
+input ContextualPricingContext {
+  """The country code used to fetch country-specific prices."""
+  country: CountryCode
+}
+
 """Countries that have been defined in shipping zones for the shop."""
 type CountriesInShippingZones {
   """Countries that have been defined in shipping zones."""
@@ -5247,7 +5268,8 @@ input CustomerInput {
 
   """
   The marketing consent information when the customer consented to receiving marketing
-          material by SMS.
+          material by SMS. The `phone` field is required when creating a customer with SMS
+          marketing consent information.
   """
   smsMarketingConsent: CustomerSmsMarketingConsentInput
 
@@ -5501,6 +5523,46 @@ type CustomerPaymentMethodEdge {
 
   """The item at the end of CustomerPaymentMethodEdge."""
   node: CustomerPaymentMethod!
+}
+
+"""Return type for `customerPaymentMethodGetUpdateUrl` mutation."""
+type CustomerPaymentMethodGetUpdateUrlPayload {
+  """The URL to redirect the customer to update the payment method."""
+  updatePaymentMethodUrl: URL
+
+  """The list of errors that occurred from executing the mutation."""
+  userErrors: [CustomerPaymentMethodGetUpdateUrlUserError!]!
+}
+
+"""
+An error that occurs during the execution of CustomerPaymentMethodGetUpdateUrl.
+"""
+type CustomerPaymentMethodGetUpdateUrlUserError implements DisplayableError {
+  """The error code."""
+  code: CustomerPaymentMethodGetUpdateUrlUserErrorCode
+
+  """The path to the input field that caused the error."""
+  field: [String!]
+
+  """The error message."""
+  message: String!
+}
+
+"""
+Possible error codes that could be returned by CustomerPaymentMethodGetUpdateUrlUserError.
+"""
+enum CustomerPaymentMethodGetUpdateUrlUserErrorCode {
+  """Payment method doesn't exist."""
+  PAYMENT_METHOD_DOES_NOT_EXIST
+
+  """Invalid payment instrument."""
+  INVALID_INSTRUMENT
+
+  """Too many requests."""
+  TOO_MANY_REQUESTS
+
+  """Customer doesn't exist."""
+  CUSTOMER_DOES_NOT_EXIST
 }
 
 """
@@ -5832,6 +5894,9 @@ type CustomerSmsMarketingConsentState {
 
   """
   The date and time at which the customer consented to receive marketing material by SMS.
+  The customer's consent state reflects the consent record with the most recent `last_consent_updated_at` date.
+  If no date is provided, then the date and time at which the consent information was sent is used.
+  
   """
   consentUpdatedAt: DateTime
 
@@ -15137,6 +15202,21 @@ enum MediaUserErrorCode {
 }
 
 """
+Merchant approval for accelerated onboarding to channel integration apps.
+"""
+type MerchantApprovalSignals {
+  """
+  Whether the shop's Shopify Payments account identity is verified. Returns `false` if the identity is unverified or if the shop doesn't have a Shopify Payments account.
+  """
+  identityVerified: Boolean!
+
+  """
+  Whether Shopify has pre-verified the merchant's business for onboarding to channel integration apps. Returns `false` if the shop is not marked for verification.
+  """
+  verifiedByShopify: Boolean!
+}
+
+"""
 Metafields represent custom metadata attached to a resource. Metafields can be sorted into namespaces and are
 composed of keys, values, and value types.
 
@@ -16363,6 +16443,14 @@ type Mutation {
     """The Cardserver session ID."""
     sessionId: String!
   ): CustomerPaymentMethodCreditCardUpdatePayload
+
+  """
+  Returns a URL that allows the customer to update a specific payment method.
+  """
+  customerPaymentMethodGetUpdateUrl(
+    """The payment method to be updated."""
+    customerPaymentMethodId: ID!
+  ): CustomerPaymentMethodGetUpdateUrlPayload
 
   """Creates a PayPal billing agreement for a customer."""
   customerPaymentMethodPaypalBillingAgreementCreate(
@@ -18644,6 +18732,9 @@ Learn more about [editing an existing order with the Admin API](https://shopify.
 
 """
 type Order implements Node & CommentEventSubject & HasMetafields & LegacyInteroperability & HasEvents & HasLocalizationExtensions {
+  """Additional fees that have been applied to the order."""
+  additionalFees: [AdditionalFee!]!
+
   """Paginated list of sale agreements associated with an order."""
   agreements(
     """Returns up to the first `n` elements from the list."""
@@ -20783,7 +20874,7 @@ type PaymentTerms implements Node {
 
     """Reverse the order of the underlying list."""
     reverse: Boolean = false
-  ): PaymentScheduleConnection
+  ): PaymentScheduleConnection!
 
   """
   The name of the payment terms template used to create the payment terms.
@@ -21402,7 +21493,9 @@ enum PriceListUserErrorCode {
   """A country within a pricing rule must use a valid currency."""
   COUNTRY_CURRENCY_MISMATCH
 
-  """The adjustment value must be a positive value."""
+  """
+  The adjustment value must be a positive value and not be greater than 100% for PERCENTAGE_DECREASE and not be greater than 1000% for PERCENTAGE_INCREASE.
+  """
   INVALID_ADJUSTMENT_VALUE
 
   """A price list for this country is already taken."""
@@ -22717,6 +22810,12 @@ type Product implements Node & Navigable & HasMetafields & HasMetafieldDefinitio
     query: String
   ): CollectionConnection!
 
+  """The pricing that applies for a customer in a given context."""
+  contextualPricing(
+    """The context used to generate contextual pricing for the variant."""
+    context: ContextualPricingContext!
+  ): ProductContextualPricing!
+
   """
   The date and time ([ISO 8601 format](http://en.wikipedia.org/wiki/ISO_8601)) when the product was created.
   
@@ -23117,6 +23216,26 @@ type Product implements Node & Navigable & HasMetafields & HasMetafieldDefinitio
   """Count of selling plan groups associated with the product."""
   sellingPlanGroupCount: Int!
 
+  """
+  A list of all selling plan groups defined in the current shop associated with the product either directly or through any of its variants.
+  """
+  sellingPlanGroups(
+    """Returns up to the first `n` elements from the list."""
+    first: Int
+
+    """Returns the elements that come after the specified cursor."""
+    after: String
+
+    """Returns up to the last `n` elements from the list."""
+    last: Int
+
+    """Returns the elements that come before the specified cursor."""
+    before: String
+
+    """Reverse the order of the underlying list."""
+    reverse: Boolean = false
+  ): SellingPlanGroupConnection!
+
   """SEO information of the product."""
   seo: SEO!
 
@@ -23338,6 +23457,20 @@ type ProductConnection {
 
   """Information to aid in pagination."""
   pageInfo: PageInfo!
+}
+
+"""The pricing of a particular product in a given context."""
+type ProductContextualPricing {
+  """
+  The pricing of the variant with the highest price in the given context.
+  """
+  maxVariantPricing: ProductVariantContextualPricing
+
+  """The pricing of the variant with the lowest price in the given context."""
+  minVariantPricing: ProductVariantContextualPricing
+
+  """The price range of the product with prices formatted as decimals."""
+  priceRange: ProductPriceRangeV2!
 }
 
 """Return type for `productCreateMedia` mutation."""
@@ -23983,6 +24116,12 @@ type ProductVariant implements Node & HasMetafields & HasMetafieldDefinitions & 
   """The compare-at price of the variant in the default shop currency."""
   compareAtPrice: Money
 
+  """The pricing that applies for a customer in a given context."""
+  contextualPricing(
+    """The context used to generate contextual pricing for the variant."""
+    context: ContextualPricingContext!
+  ): ProductVariantContextualPricing!
+
   """The date and time when the variant was created."""
   createdAt: DateTime!
 
@@ -24317,6 +24456,15 @@ type ProductVariantConnection {
 
   """Information to aid in pagination."""
   pageInfo: PageInfo!
+}
+
+"""The pricing of a particular product variant in a given context."""
+type ProductVariantContextualPricing {
+  """The final compare-at price after all adjustments are applied."""
+  compareAtPrice: MoneyV2
+
+  """The final price after all adjustments are applied."""
+  price: MoneyV2!
 }
 
 """Return type for `productVariantCreate` mutation."""
@@ -27197,6 +27345,9 @@ type QueryRoot {
 
 """Represents a refund of items or transactions in an order."""
 type Refund implements Node & LegacyInteroperability {
+  """A list of the order's refunded additional fees."""
+  additionalFees: [RefundAdditionalFee!]!
+
   """When the refund was created."""
   createdAt: DateTime
 
@@ -27279,6 +27430,25 @@ type Refund implements Node & LegacyInteroperability {
 
   """When the refund was last updated."""
   updatedAt: DateTime!
+}
+
+"""Represents a refunded additional fee."""
+type RefundAdditionalFee {
+  """
+  Returns the amount of a refunded additional fees in shop and presentment currencies.
+  """
+  amountSet: MoneyBag!
+
+  """
+  Returns an `AdditionalFee` resource. This represents the `AdditionalFee` in the non-refund context.
+  """
+  originalAdditionalFee: AdditionalFee
+}
+
+"""Specifies the fields required to return additional fees on a refund."""
+input RefundAdditionalFeeInput {
+  """The ID of the additional fee in the refund."""
+  additionalFeeId: ID!
 }
 
 """An agreement associated with an order refund."""
@@ -27386,6 +27556,9 @@ input RefundInput {
 
   """A list of duties to refund."""
   refundDuties: [RefundDutyInput!]
+
+  """A list of additional fees to refund."""
+  refundAdditionalFees: [RefundAdditionalFeeInput!]
 
   """A list of transactions involved in the refund."""
   transactions: [OrderTransactionInput!]
@@ -30061,6 +30234,9 @@ type Shop implements Node & HasPublishedTranslations & HasMetafields {
     """
     query: String
   ): MarketingEventConnection! @deprecated(reason: "Use `QueryRoot.marketingEvents` instead.")
+
+  """Approval signals for a merchant to support onboarding to channel apps."""
+  merchantApprovalSignals: MerchantApprovalSignals
 
   """Returns a metafield by namespace and key that belongs to the resource."""
   metafield(
